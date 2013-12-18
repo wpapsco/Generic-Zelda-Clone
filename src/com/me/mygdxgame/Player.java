@@ -2,6 +2,7 @@ package com.me.mygdxgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,9 +25,14 @@ public class Player extends Sprite {
 	public int width;
 	public int height;
 	public Body body;
+	protected OrthographicCamera camera;
+	protected OrthographicCamera lightCamera;
 	protected float stateTime;
 	
-	public Player(int x, int y) {
+	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera) {
+	//public Player(int x, int y) {
+		this.camera = camera;
+		this.lightCamera = lightCamera;
 		width = 8;
 		height = 13;
 		createBody(x, y, width, height);
@@ -99,6 +105,13 @@ public class Player extends Sprite {
 		}
 		setX((this.body.getPosition().x * Values.BOX_PIXEL) - (width / 2));
 		setY((this.body.getPosition().y * Values.BOX_PIXEL) - (height / 2));
+		//lightCamera.translate(new Vector2(0, .5f * Values.PIXEL_BOX));
+		camera.position.x = this.getX();
+		camera.position.y = this.getY();
+		lightCamera.position.x = this.getX() * Values.PIXEL_BOX;
+		lightCamera.position.y = this.getY() * Values.PIXEL_BOX;
+		//System.out.println(lightCamera.position.x * Values.BOX_PIXEL);
+		
 		spriteBatch.draw(currentAnim.getKeyFrame(stateTime), this.getX(), this.getY());
 	}
 }

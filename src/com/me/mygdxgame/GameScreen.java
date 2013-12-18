@@ -47,10 +47,10 @@ public class GameScreen implements Screen, InputProcessor {
 		renderer = new OrthogonalTiledMapRenderer(map, game.batch);
 		renderer.setView(game.camera);
 		createBox2dWorld();
-		Values.handler.setAmbientLight(0, 0, 0, 0f);
-		light = new PointLight(Values.handler, 300, new Color(1f, .5f, 0f, 1f), 200 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX);
+		Values.handler.setAmbientLight(0, 0, 0, .2f);
+		light = new PointLight(Values.handler, 300, new Color(0f, 0f, 0f, 1f), 200 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX);
 		light.setSoft(true);
-		Player player = new Player(132, 100);
+		Player player = new Player(132, 100, game.camera, game.lightCamera);
 		light.attachToBody(player.body, 0, 0);
 		add(player);
 	}
@@ -191,7 +191,7 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
-		lights.add(new FlickeringLight(Values.handler, 300, light, .5f, .01f));
+		lights.add(new FlickeringLight(Values.handler, 300, light, 1f, .01f));
 		return false;
 	}
 
