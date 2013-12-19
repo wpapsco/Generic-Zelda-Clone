@@ -105,12 +105,10 @@ public class Player extends Sprite {
 		}
 		setX((this.body.getPosition().x * Values.BOX_PIXEL) - (width / 2));
 		setY((this.body.getPosition().y * Values.BOX_PIXEL) - (height / 2));
-		//lightCamera.translate(new Vector2(0, .5f * Values.PIXEL_BOX));
 		camera.position.x = this.getX();
 		camera.position.y = this.getY();
 		lightCamera.position.x = this.getX() * Values.PIXEL_BOX;
 		lightCamera.position.y = this.getY() * Values.PIXEL_BOX;
-		//System.out.println(lightCamera.position.x * Values.BOX_PIXEL);
 		
 		spriteBatch.draw(currentAnim.getKeyFrame(stateTime), this.getX(), this.getY());
 	}

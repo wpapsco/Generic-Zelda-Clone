@@ -21,7 +21,7 @@ public class GZCGame extends Game {
 		Texture.setEnforcePotImages(false);
 		Values.world = new World(new Vector2(), true);
 		Values.handler = new RayHandler(Values.world);
-		float scale = 1f;
+		float scale = 2f;
 		//camera positioning, scaling, etc
 		camera = new OrthographicCamera(Gdx.graphics.getWidth() / scale, Gdx.graphics.getHeight() / scale);
 		camera.position.x += camera.viewportWidth / 2;

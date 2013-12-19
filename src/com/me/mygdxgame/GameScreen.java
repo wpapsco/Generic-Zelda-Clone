@@ -23,6 +23,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 
@@ -47,7 +48,7 @@ public class GameScreen implements Screen, InputProcessor {
 		renderer = new OrthogonalTiledMapRenderer(map, game.batch);
 		renderer.setView(game.camera);
 		createBox2dWorld();
-		Values.handler.setAmbientLight(0, 0, 0, .2f);
+		Values.handler.setAmbientLight(0, 0, 0, 0f);
 		light = new PointLight(Values.handler, 300, new Color(0f, 0f, 0f, 1f), 200 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX);
 		light.setSoft(true);
 		Player player = new Player(132, 100, game.camera, game.lightCamera);
@@ -59,14 +60,21 @@ public class GameScreen implements Screen, InputProcessor {
 		for (int i = 0; i < map.getLayers().getCount(); i++) {
 			if (map.getLayers().get(i) instanceof TiledMapTileLayer) {
 				TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(i);
-				System.out.println(layer.getProperties().get("collide"));
 				if (Boolean.parseBoolean(layer.getProperties().get("collide").toString())) {
 					for (int x = 0; x < layer.getWidth(); x++) {
 						for (int y = 0; y < layer.getHeight(); y++) {
 							//create a box2d body
 							if (layer.getCell(x, y) != null) {
-								createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight());
-						
+								createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), true);
+							}
+						}
+					}
+				} else if (layer.getProperties().get("casts_shadow") != null && Boolean.parseBoolean(layer.getProperties().get("casts_shadow").toString())) {
+					for (int x = 0; x < layer.getWidth(); x++) {
+						for (int y = 0; y < layer.getHeight(); y++) {
+							//create a box2d body
+							if (layer.getCell(x, y) != null) {
+								createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), false);
 							}
 						}
 					}
@@ -77,7 +85,7 @@ public class GameScreen implements Screen, InputProcessor {
 		}
 	}
 
-	private void createWallCube(int x, int y, float tileWidth, float tileHeight) {
+	private void createWallCube(int x, int y, float tileWidth, float tileHeight, boolean collide) {
 		BodyDef def = new BodyDef();
 		def.position.x = ((x * tileWidth) + (tileWidth / 2)) * Values.PIXEL_BOX;
 		def.position.y = ((y * tileHeight) + (tileHeight / 2)) * Values.PIXEL_BOX; //THIS MIGHT CAUSE A PROBLEM (INVERTED Y)
@@ -86,8 +94,15 @@ public class GameScreen implements Screen, InputProcessor {
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox((tileWidth / 2) * Values.PIXEL_BOX, (tileHeight / 2) * Values.PIXEL_BOX);
 		
+		FixtureDef fixDef = new FixtureDef();
+		if (!collide) {
+			fixDef.filter.maskBits = 0;
+		}
+		fixDef.shape = shape;
+		fixDef.density = 0;
+		
 		Body bod = Values.world.createBody(def);
-		bod.createFixture(shape, 0);
+		bod.createFixture(fixDef);
 		bodyWalls.add(bod);
 	}
 
