@@ -30,8 +30,6 @@ public class GZCGame extends Game {
 		lightCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		lightCamera.zoom = 1f/30f;
 		lightCamera.update();
-		lightCamera.position.x += ((lightCamera.viewportWidth / 2) * Values.PIXEL_BOX);
-		lightCamera.position.y += ((lightCamera.viewportHeight / 2) * Values.PIXEL_BOX);
 		batch = new SpriteBatch();
 		startScreen = new GameScreen(this);
 		this.setScreen(startScreen);

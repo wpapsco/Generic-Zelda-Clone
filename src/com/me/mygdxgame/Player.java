@@ -16,18 +16,19 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 public class Player extends Sprite {
 	
+	private int coin;
 	protected TextureRegion[] frameRegions;
 	protected Animation nAnimation;
 	protected Animation sAnimation;
 	protected Animation eAnimation;
 	protected Animation wAnimation;
 	protected Animation currentAnim;
-	public int width;
-	public int height;
-	public Body body;
 	protected OrthographicCamera camera;
 	protected OrthographicCamera lightCamera;
 	protected float stateTime;
+	public int width;
+	public int height;
+	public Body body;
 	
 	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera) {
 	//public Player(int x, int y) {
@@ -36,7 +37,7 @@ public class Player extends Sprite {
 		width = 8;
 		height = 13;
 		createBody(x, y, width, height);
-		TextureRegion[][] tRegions = Sprite.split(new Texture(Gdx.files.local("data/mage.png")), width, height);
+		TextureRegion[][] tRegions = Sprite.split(new Texture(Gdx.files.internal("data/mage.png")), width, height);
 		frameRegions = new TextureRegion[tRegions.length * tRegions[0].length];
 		int index = 0;
 		for (int i = 0; i < tRegions.length; i++) {
@@ -111,5 +112,18 @@ public class Player extends Sprite {
 		lightCamera.position.y = this.getY() * Values.PIXEL_BOX;
 		
 		spriteBatch.draw(currentAnim.getKeyFrame(stateTime), this.getX(), this.getY());
+	}
+
+	public int getCoin() {
+		return coin;
+	}
+
+	public void setCoin(int coin) {
+		this.coin = coin;
+	}
+	
+	public void addCoin(float coin) {
+		this.coin += coin;
+		System.out.println(this.coin);
 	}
 }

@@ -7,25 +7,23 @@ import box2dLight.PointLight;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 
 public class GameScreen implements Screen, InputProcessor {
 
@@ -36,6 +34,8 @@ public class GameScreen implements Screen, InputProcessor {
 	protected ArrayList<Body> bodyWalls;
 	protected ArrayList<FlickeringLight> lights;
 	protected PointLight light;
+	protected MapObjects objects;
+	protected Player player;
 	
 	public GameScreen(GZCGame game) {
 		Gdx.input.setInputProcessor(this);
@@ -43,6 +43,7 @@ public class GameScreen implements Screen, InputProcessor {
 		bodyWalls = new ArrayList<Body>();
 		sprites = new ArrayList<Sprite>();
 		lights = new ArrayList<FlickeringLight>();
+		objects = new MapObjects();
 		TmxMapLoader loader = new TmxMapLoader();
 		map = loader.load("data/testMap1.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map, game.batch);
@@ -51,7 +52,7 @@ public class GameScreen implements Screen, InputProcessor {
 		Values.handler.setAmbientLight(0, 0, 0, 0f);
 		light = new PointLight(Values.handler, 300, new Color(0f, 0f, 0f, 1f), 200 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX);
 		light.setSoft(true);
-		Player player = new Player(132, 100, game.camera, game.lightCamera);
+		player = new Player(132, 100, game.camera, game.lightCamera);
 		light.attachToBody(player.body, 0, 0);
 		add(player);
 	}
@@ -65,7 +66,11 @@ public class GameScreen implements Screen, InputProcessor {
 						for (int y = 0; y < layer.getHeight(); y++) {
 							//create a box2d body
 							if (layer.getCell(x, y) != null) {
-								createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), true);
+								if (layer.getProperties().get("block_layer") != null) {
+									createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), true, Boolean.parseBoolean(layer.getProperties().get("block_layer").toString()), layer.getCell(x, y).getTile().getTextureRegion());
+								} else {
+									createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), true, false, layer.getCell(x, y).getTile().getTextureRegion());
+								}
 							}
 						}
 					}
@@ -74,25 +79,35 @@ public class GameScreen implements Screen, InputProcessor {
 						for (int y = 0; y < layer.getHeight(); y++) {
 							//create a box2d body
 							if (layer.getCell(x, y) != null) {
-								createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), false);
+								if (layer.getProperties().get("block_layer") != null) {
+									createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), true, Boolean.parseBoolean(layer.getProperties().get("block_layer").toString()), layer.getCell(x, y).getTile().getTextureRegion());
+								} else {
+									createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), true, false, layer.getCell(x, y).getTile().getTextureRegion());
+								}
 							}
 						}
 					}
 				}
 			} else { // layer is object layer
-				
+				MapObjects objects = map.getLayers().get(i).getObjects();
+				for (int j = 0; j < objects.getCount(); j++) {
+					this.objects.add(objects.get(j));
+					if (objects.get(j).getProperties().get("enabled") == null) {
+						objects.get(j).getProperties().put("enabled", "true");
+					}
+				}
 			}
 		}
 	}
 
-	private void createWallCube(int x, int y, float tileWidth, float tileHeight, boolean collide) {
+	private void createWallCube(int x, int y, float tileWidth, float tileHeight, boolean collide, boolean moveable, TextureRegion region) {
 		BodyDef def = new BodyDef();
 		def.position.x = ((x * tileWidth) + (tileWidth / 2)) * Values.PIXEL_BOX;
 		def.position.y = ((y * tileHeight) + (tileHeight / 2)) * Values.PIXEL_BOX; //THIS MIGHT CAUSE A PROBLEM (INVERTED Y)
-		def.type = BodyType.StaticBody;
+		def.fixedRotation = true;
 		
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox((tileWidth / 2) * Values.PIXEL_BOX, (tileHeight / 2) * Values.PIXEL_BOX);
+		shape.setAsBox(((tileWidth) / 2) * Values.PIXEL_BOX, ((tileHeight) / 2) * Values.PIXEL_BOX);
 		
 		FixtureDef fixDef = new FixtureDef();
 		if (!collide) {
@@ -101,7 +116,19 @@ public class GameScreen implements Screen, InputProcessor {
 		fixDef.shape = shape;
 		fixDef.density = 0;
 		
-		Body bod = Values.world.createBody(def);
+		Body bod;
+		
+		if (!moveable) {
+			def.type = BodyType.StaticBody;
+			fixDef.density = 0;
+			bod = Values.world.createBody(def);
+		} else {
+			def.type = BodyType.DynamicBody;
+			fixDef.density = 1;
+			bod = Values.world.createBody(def);
+			add(new MoveableBlock(region, bod));
+		}
+		
 		bod.createFixture(fixDef);
 		bodyWalls.add(bod);
 	}
@@ -117,18 +144,20 @@ public class GameScreen implements Screen, InputProcessor {
 		//renderer.render();
 		for (int i = 0; i < map.getLayers().getCount(); i++) {
 			if (map.getLayers().get(i).getName().equals("Characters")) {
+				game.batch.begin();
 				for (int j = 0; j < sprites.size(); j++) {
-					game.batch.begin();
 					sprites.get(j).draw(game.batch);
-					game.batch.end();
 				}
+				game.batch.end();
 				renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get(i));
 			} else {
 				MapLayer layer = map.getLayers().get(i);
 				if (layer instanceof TiledMapTileLayer) {
-					game.batch.begin();
-					renderer.renderTileLayer((TiledMapTileLayer) layer);
-					game.batch.end();
+					if (layer.getProperties().get("block_layer") == null || !Boolean.parseBoolean(layer.getProperties().get("block_layer").toString())) {
+						game.batch.begin();
+						renderer.renderTileLayer((TiledMapTileLayer) layer);
+						game.batch.end();
+					}
 				}
 			}
 			if (map.getLayers().get(i).getName().equals("Lights")) {
@@ -145,6 +174,42 @@ public class GameScreen implements Screen, InputProcessor {
 		Values.world.step(1f/30f, 10, 10);
 	}
 
+	public void onInteraction(Player player) {
+		//oh god why what do not touch this
+		//holy shit what the fuck
+		for (int j = 0; j < objects.getCount(); j++) {
+			for (int i = 0; i < objects.getCount(); i++) {
+				if (objects.get(i) instanceof RectangleMapObject && 
+					((RectangleMapObject) objects.get(i)).getRectangle().contains(player.getX(), player.getY())) {		
+					RectangleMapObject rect = (RectangleMapObject) objects.get(i);
+					if (rect.getRectangle().overlaps(player.getBoundingRectangle()) && 
+						rect.getProperties().get("enabled").equals("true")) {
+						int order = 0;
+						if (rect.getProperties().get("call_order") != null) {
+							order = Integer.parseInt(rect.getProperties().get("call_order").toString());
+						}
+						if (order == j) {
+//**************************ADD PROPERTY PROCESSING HERE**************************
+							if (rect.getProperties().get("display_text") != null) {
+								System.out.println(rect.getProperties().get("display_text").toString());
+							}
+							if (rect.getProperties().get("enable_object") != null) {
+								objects.get(rect.getProperties().get("enable_object").toString()).getProperties().put("enabled", "true");
+							}
+							if (rect.getProperties().get("disable_object") != null) {
+								objects.get(rect.getProperties().get("disable_object").toString()).getProperties().put("enabled", "false");
+							}
+							if (rect.getProperties().get("add_coin") != null) {
+								player.addCoin(Integer.parseInt(rect.getProperties().get("add_coin").toString()));
+							}
+//**************************END PROPERTY PROCESSING**************************
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
@@ -188,6 +253,9 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
+		if (keycode == Keys.SPACE) {
+			onInteraction(player);
+		}
 		return false;
 	}
 
