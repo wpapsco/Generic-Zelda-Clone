@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="15" height="15" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="StartX" value="1.5"/>
+  <property name="StartY" value="1.5"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="fffffffffffffff" tilewidth="32" tileheight="32" spacing="2">
+  <image source="testingTiles2.png" width="136" height="66"/>
+ </tileset>
+ <layer name="ground" width="15" height="15">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzjYGBg4BjFo3gUDxgGAG5YBwk=
+  </data>
+ </layer>
+ <layer name="walls" width="15" height="15">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYKQAkwNG9Y7qJaSXnHSIK10S4mNzMylmUJJ/QBgAc2AASw==
+  </data>
+ </layer>
+ <layer name="blocks" width="15" height="15">
+  <properties>
+   <property name="collide" value="true"/>
+   <property name="moveable" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgcgH2gHYAFMJGonpkINazkOISOgI1IdSw0dcXIAgA8LAAc
+  </data>
+ </layer>
+ <layer name="Characters" width="15" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUDCQAAAOEAAE=
+  </data>
+ </layer>
+ <layer name="Lights" width="15" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUDCQAAAOEAAE=
+  </data>
+ </layer>
+</map>

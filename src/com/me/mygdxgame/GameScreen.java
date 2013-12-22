@@ -18,7 +18,9 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader.Parameters;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -37,7 +39,7 @@ public class GameScreen implements Screen, InputProcessor {
 	protected MapObjects objects;
 	protected Player player;
 	
-	public GameScreen(GZCGame game) {
+	public GameScreen(GZCGame game, String mapLocation) {
 		Gdx.input.setInputProcessor(this);
 		this.game = game;
 		bodyWalls = new ArrayList<Body>();
@@ -45,50 +47,53 @@ public class GameScreen implements Screen, InputProcessor {
 		lights = new ArrayList<FlickeringLight>();
 		objects = new MapObjects();
 		TmxMapLoader loader = new TmxMapLoader();
-		map = loader.load("data/testMap1.tmx");
+		map = loader.load(mapLocation);
 		renderer = new OrthogonalTiledMapRenderer(map, game.batch);
 		renderer.setView(game.camera);
-		createBox2dWorld();
+		createBox2dWorld(true);
 		Values.handler.setAmbientLight(0, 0, 0, 0f);
 		light = new PointLight(Values.handler, 300, new Color(0f, 0f, 0f, 1f), 200 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX);
 		light.setSoft(true);
-		player = new Player(132, 100, game.camera, game.lightCamera);
+		player = new Player(
+				Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())), 
+				Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())), 
+				game.camera, game.lightCamera);
 		light.attachToBody(player.body, 0, 0);
 		add(player);
 	}
 	
-	private void createBox2dWorld() {
+	private void createBox2dWorld(boolean test) {
 		for (int i = 0; i < map.getLayers().getCount(); i++) {
 			if (map.getLayers().get(i) instanceof TiledMapTileLayer) {
 				TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(i);
-				if (Boolean.parseBoolean(layer.getProperties().get("collide").toString())) {
+				boolean shadow;
+				boolean collide;
+				boolean moveable;
+				if (layer.getProperties().get("casts_shadow") != null) {
+					shadow = Boolean.parseBoolean(layer.getProperties().get("casts_shadow").toString());
+				} else {
+					shadow = false;
+				}
+				if (layer.getProperties().get("collide") != null) {
+					collide = Boolean.parseBoolean(layer.getProperties().get("collide").toString());
+				} else {
+					collide = false;
+				}
+				if (layer.getProperties().get("moveable") != null) {
+					moveable = Boolean.parseBoolean(layer.getProperties().get("moveable").toString());
+				} else {
+					moveable = false;
+				}
+				if (shadow || collide) {
 					for (int x = 0; x < layer.getWidth(); x++) {
 						for (int y = 0; y < layer.getHeight(); y++) {
-							//create a box2d body
 							if (layer.getCell(x, y) != null) {
-								if (layer.getProperties().get("block_layer") != null) {
-									createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), true, Boolean.parseBoolean(layer.getProperties().get("block_layer").toString()), layer.getCell(x, y).getTile().getTextureRegion());
-								} else {
-									createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), true, false, layer.getCell(x, y).getTile().getTextureRegion());
-								}
-							}
-						}
-					}
-				} else if (layer.getProperties().get("casts_shadow") != null && Boolean.parseBoolean(layer.getProperties().get("casts_shadow").toString())) {
-					for (int x = 0; x < layer.getWidth(); x++) {
-						for (int y = 0; y < layer.getHeight(); y++) {
-							//create a box2d body
-							if (layer.getCell(x, y) != null) {
-								if (layer.getProperties().get("block_layer") != null) {
-									createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), true, Boolean.parseBoolean(layer.getProperties().get("block_layer").toString()), layer.getCell(x, y).getTile().getTextureRegion());
-								} else {
-									createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), true, false, layer.getCell(x, y).getTile().getTextureRegion());
-								}
+								createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), collide, moveable, layer.getCell(x, y).getTile().getTextureRegion());
 							}
 						}
 					}
 				}
-			} else { // layer is object layer
+			} else {
 				MapObjects objects = map.getLayers().get(i).getObjects();
 				for (int j = 0; j < objects.getCount(); j++) {
 					this.objects.add(objects.get(j));
@@ -99,7 +104,8 @@ public class GameScreen implements Screen, InputProcessor {
 			}
 		}
 	}
-
+	
+	
 	private void createWallCube(int x, int y, float tileWidth, float tileHeight, boolean collide, boolean moveable, TextureRegion region) {
 		BodyDef def = new BodyDef();
 		def.position.x = ((x * tileWidth) + (tileWidth / 2)) * Values.PIXEL_BOX;
@@ -107,7 +113,6 @@ public class GameScreen implements Screen, InputProcessor {
 		def.fixedRotation = true;
 		
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(((tileWidth) / 2) * Values.PIXEL_BOX, ((tileHeight) / 2) * Values.PIXEL_BOX);
 		
 		FixtureDef fixDef = new FixtureDef();
 		if (!collide) {
@@ -119,10 +124,26 @@ public class GameScreen implements Screen, InputProcessor {
 		Body bod;
 		
 		if (!moveable) {
+			shape.setAsBox(((tileWidth) / 2) * Values.PIXEL_BOX, ((tileHeight) / 2) * Values.PIXEL_BOX);
 			def.type = BodyType.StaticBody;
 			fixDef.density = 0;
 			bod = Values.world.createBody(def);
 		} else {
+			float boxWidth = (tileWidth - 1) * Values.PIXEL_BOX;
+			float boxHeight = (tileHeight - 1) * Values.PIXEL_BOX;
+			float precentTruncation = .05f;
+			Vector2[] points = new Vector2[] {
+					//making a truncated square
+					new Vector2(-(boxWidth / 2) + (boxWidth * precentTruncation), boxHeight / 2),    //top left
+					new Vector2((boxWidth / 2) - (boxWidth * precentTruncation), boxHeight / 2),     //top right
+					new Vector2(boxWidth / 2, (boxHeight / 2) - (boxHeight * precentTruncation)),     //right top
+					new Vector2(boxWidth / 2, -(boxHeight / 2) + (boxHeight * precentTruncation)),    //right bottom
+					new Vector2(-(boxWidth / 2) + (boxWidth * precentTruncation), -(boxHeight / 2)), //bottom left
+					new Vector2((boxWidth / 2) - (boxWidth * precentTruncation), -(boxHeight / 2)),  //bottom right
+					new Vector2(-(boxWidth / 2), (boxHeight / 2) - (boxHeight * precentTruncation)),  //right top
+					new Vector2(-(boxWidth / 2), -(boxHeight / 2) + (boxHeight * precentTruncation)), //right bottom
+			};
+			shape.set(points);
 			def.type = BodyType.DynamicBody;
 			fixDef.density = 1;
 			bod = Values.world.createBody(def);
@@ -135,7 +156,6 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
 		game.camera.update();
 		game.lightCamera.update();
 		game.batch.setProjectionMatrix(game.camera.combined);
@@ -153,7 +173,7 @@ public class GameScreen implements Screen, InputProcessor {
 			} else {
 				MapLayer layer = map.getLayers().get(i);
 				if (layer instanceof TiledMapTileLayer) {
-					if (layer.getProperties().get("block_layer") == null || !Boolean.parseBoolean(layer.getProperties().get("block_layer").toString())) {
+					if (layer.getProperties().get("moveable") == null || !Boolean.parseBoolean(layer.getProperties().get("moveable").toString())) {
 						game.batch.begin();
 						renderer.renderTileLayer((TiledMapTileLayer) layer);
 						game.batch.end();

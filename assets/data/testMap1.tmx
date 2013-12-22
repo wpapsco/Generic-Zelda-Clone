@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="30" height="20" tilewidth="32" tileheight="32">
  <properties>
-  <property name="StartX" value="2"/>
+  <property name="StartX" value="5"/>
   <property name="StartY" value="2"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
   <property name="darkness" value="1"/>
   <property name="darkness_color" value="0, 0, 0"/>
  </properties>
@@ -27,8 +29,8 @@
  </layer>
  <layer name="moveable blocks" width="30" height="20">
   <properties>
-   <property name="block_layer" value="true"/>
    <property name="collide" value="true"/>
+   <property name="moveable" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
    eJxjYBgFIMAx0A6AgsHijpEA6BXWo3E6CkbBKBgFIw8AAO2gACE=
@@ -42,20 +44,21 @@
    eJztwTEBAAAAwqD1T20JT6AAAHgaCWAAAQ==
   </data>
  </layer>
+ <layer name="hidden passages" width="30" height="20">
+  <properties>
+   <property name="casts_shadow" value="true"/>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2DwAxYgZkbDw9neUTAKRgHlAJZ/R4q9o2BwAQD3kAAv
+  </data>
+ </layer>
  <layer name="Lights" width="30" height="20">
   <properties>
    <property name="collide" value="false"/>
   </properties>
   <data encoding="base64" compression="zlib">
    eJztwTEBAAAAwqD1T20JT6AAAHgaCWAAAQ==
-  </data>
- </layer>
- <layer name="hidden passages" width="30" height="20">
-  <properties>
-   <property name="collide" value="false"/>
-  </properties>
-  <data encoding="base64" compression="zlib">
-   eJxjYBgFo2DwAxYgZkbDw9neUTAKRgHlAJZ/R4q9o2BwAQD3kAAv
   </data>
  </layer>
  <objectgroup name="Object Interactions" width="30" height="20">
@@ -78,7 +81,7 @@
    <properties>
     <property name="call_order" value="0"/>
     <property name="display_text" value="Too bad there's no money here."/>
-    <property name="start_enabled" value="false"/>
+    <property name="enabled" value="false"/>
    </properties>
   </object>
  </objectgroup>

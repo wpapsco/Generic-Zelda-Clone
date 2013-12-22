@@ -4,6 +4,7 @@ import box2dLight.RayHandler;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class GZCGame extends Game {
-	private GameScreen startScreen;
+	private Screen startScreen;
 	public OrthographicCamera camera;
 	public OrthographicCamera lightCamera;
 	public SpriteBatch batch;
@@ -31,7 +32,8 @@ public class GZCGame extends Game {
 		lightCamera.zoom = 1f/30f;
 		lightCamera.update();
 		batch = new SpriteBatch();
-		startScreen = new GameScreen(this);
+		//startScreen = new GameScreen(this);
+		startScreen = new UiTestScreen(this);
 		this.setScreen(startScreen);
 	}
 	
