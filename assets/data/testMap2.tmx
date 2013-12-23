@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="15" height="15" tilewidth="32" tileheight="32">
  <properties>
+  <property name="LightColor" value="1, 0, 0, .2"/>
   <property name="StartX" value="1.5"/>
   <property name="StartY" value="1.5"/>
   <property name="TileHeight" value="32"/>
@@ -14,7 +15,7 @@
    <property name="collide" value="false"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzjYGBg4BjFo3gUDxgGAG5YBwk=
+   eJxjZGBgYBzFo3gUDxgGAJDXAOI=
   </data>
  </layer>
  <layer name="walls" width="15" height="15">
@@ -22,7 +23,7 @@
    <property name="collide" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjZGBgYKQAkwNG9Y7qJaSXnHSIK10S4mNzMylmUJJ/QBgAc2AASw==
+   eJzjYGBg4KAAkwNG9Y7qJaSXnHSIK10S4mNzMylmUJJ/QBgAgpECUQ==
   </data>
  </layer>
  <layer name="blocks" width="15" height="15">
@@ -44,4 +45,41 @@
    eJxjYBgFo2AUDCQAAAOEAAE=
   </data>
  </layer>
+ <objectgroup name="objects" width="15" height="15">
+  <object x="32" y="32" width="32" height="32">
+   <properties>
+    <property name="interaction_type" value="block"/>
+   </properties>
+  </object>
+  <object name="RedBlocksLight" x="274" y="242" width="154" height="154">
+   <properties>
+    <property name="LightColor" value="1, 0, 0, 1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object name="GreenBlocksLight" x="308" y="14" width="154" height="154">
+   <properties>
+    <property name="LightColor" value="0, 1, 0, 1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object name="PurpleBlocksLight" x="211" y="176" width="154" height="154">
+   <properties>
+    <property name="LightColor" value="1, 0, 1, 1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object name="BlueBlocksLight" x="44" y="87" width="154" height="154">
+   <properties>
+    <property name="LightColor" value="0, 0, 1, 1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object name="BlankEntranceLight" x="160" y="-5" width="182" height="182">
+   <properties>
+    <property name="LightColor" value="0, 0, 0, 1"/>
+   </properties>
+   <ellipse/>
+  </object>
+ </objectgroup>
 </map>

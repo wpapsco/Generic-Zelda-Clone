@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -51,8 +52,18 @@ public class GameScreen implements Screen, InputProcessor {
 		renderer = new OrthogonalTiledMapRenderer(map, game.batch);
 		renderer.setView(game.camera);
 		createBox2dWorld(true);
-		Values.handler.setAmbientLight(0, 0, 0, 0f);
-		light = new PointLight(Values.handler, 300, new Color(0f, 0f, 0f, 1f), 200 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX);
+		String[] vals;
+		if (map.getProperties().get("LightColor") != null) {
+			vals = map.getProperties().get("LightColor").toString().split(",");
+		} else {
+			vals = new String[]{"0", "0", "0", "1"};
+		}
+		if (map.getProperties().get("AmbientLight") != null) {
+			Values.handler.setAmbientLight(Float.parseFloat(map.getProperties().get("AmbientLight").toString()));
+		} else {
+			Values.handler.setAmbientLight(0);
+		}
+		light = new PointLight(Values.handler, 300, new Color(Float.parseFloat(vals[0]), Float.parseFloat(vals[1]), Float.parseFloat(vals[2]), Float.parseFloat(vals[3])), 200 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX);
 		light.setSoft(true);
 		player = new Player(
 				Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())), 
@@ -99,6 +110,21 @@ public class GameScreen implements Screen, InputProcessor {
 					this.objects.add(objects.get(j));
 					if (objects.get(j).getProperties().get("enabled") == null) {
 						objects.get(j).getProperties().put("enabled", "true");
+					}
+					if (objects.get(j) instanceof EllipseMapObject) {
+						EllipseMapObject ellipse = (EllipseMapObject) objects.get(j);
+						float radius = (ellipse.getEllipse().height + ellipse.getEllipse().width) / 2;
+						float centerX = ellipse.getEllipse().x + (ellipse.getEllipse().width / 2);
+						float centerY = ellipse.getEllipse().y + (ellipse.getEllipse().height / 2);
+						
+						Color lightColor;
+						if (ellipse.getProperties().get("LightColor") != null) {
+							String[] colorVals = ellipse.getProperties().get("LightColor").toString().split(",");
+							lightColor = new Color(Float.parseFloat(colorVals[0]), Float.parseFloat(colorVals[1]), Float.parseFloat(colorVals[2]), Float.parseFloat(colorVals[3]));
+						} else {
+							lightColor = new Color(0, 0, 0, 1);
+						}
+						new PointLight(Values.handler, 300, lightColor, radius * Values.PIXEL_BOX, centerX * Values.PIXEL_BOX, centerY * Values.PIXEL_BOX);
 					}
 				}
 			}

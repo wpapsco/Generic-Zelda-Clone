@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="30" height="20" tilewidth="32" tileheight="32">
  <properties>
+  <property name="AmbientLight" value="0"/>
+  <property name="LightColor" value="0, 0, 1, .2"/>
   <property name="StartX" value="5"/>
   <property name="StartY" value="2"/>
   <property name="TileHeight" value="32"/>
   <property name="TileWidth" value="32"/>
-  <property name="darkness" value="1"/>
-  <property name="darkness_color" value="0, 0, 0"/>
  </properties>
- <tileset firstgid="1" name="testingTiles" tilewidth="32" tileheight="32">
-  <image source="testingTiles.png" width="128" height="64"/>
+ <tileset firstgid="1" name="testtiles2" tilewidth="32" tileheight="32" spacing="2">
+  <image source="testingTiles2.png" width="136" height="66"/>
  </tileset>
  <layer name="ground" width="30" height="20">
   <properties>
    <property name="collide" value="false"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjZWBgYB3Fo3gUj+JRPIpH8SimM2YaBG6gFQYAD/ULtg==
+   eJxjZWBgYB3Fo3gUj+JRPIpH8SgexVTDABKJC7k=
   </data>
  </layer>
- <layer name="walls" width="30" height="20">
+ <layer name="new walls" width="30" height="20">
   <properties>
    <property name="collide" value="true"/>
   </properties>
@@ -83,6 +83,15 @@
     <property name="display_text" value="Too bad there's no money here."/>
     <property name="enabled" value="false"/>
    </properties>
+  </object>
+  <object name="BlocksLight" x="180" y="48" width="203" height="203">
+   <properties>
+    <property name="LightColor" value="0, 0, 0, 1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="333" y="382" width="229" height="229">
+   <ellipse/>
   </object>
  </objectgroup>
 </map>
