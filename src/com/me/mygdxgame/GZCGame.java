@@ -15,13 +15,12 @@ public class GZCGame extends Game {
 	private Screen startScreen;
 	public OrthographicCamera camera;
 	public OrthographicCamera lightCamera;
+	public OrthographicCamera hudCamera;
 	public SpriteBatch batch;
 
 	@Override
 	public void create() {
 		Texture.setEnforcePotImages(false);
-		Values.world = new World(new Vector2(), true);
-		Values.handler = new RayHandler(Values.world);
 		float scale = 2f;
 		//camera positioning, scaling, etc
 		camera = new OrthographicCamera(Gdx.graphics.getWidth() / scale, Gdx.graphics.getHeight() / scale);
@@ -31,6 +30,7 @@ public class GZCGame extends Game {
 		lightCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		lightCamera.zoom = 1f/30f;
 		lightCamera.update();
+		//hudCamera = new OrthographicCamera()
 		batch = new SpriteBatch();
 		//startScreen = new GameScreen(this);
 		startScreen = new UiTestScreen(this);

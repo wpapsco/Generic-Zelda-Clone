@@ -3,6 +3,7 @@ package com.me.mygdxgame;
 import java.util.ArrayList;
 
 import box2dLight.PointLight;
+import box2dLight.RayHandler;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -24,9 +25,12 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.joints.FrictionJoint;
+import com.badlogic.gdx.physics.box2d.joints.FrictionJointDef;
 
 public class GameScreen implements Screen, InputProcessor {
 
@@ -71,15 +75,19 @@ public class GameScreen implements Screen, InputProcessor {
 				game.camera, game.lightCamera);
 		light.attachToBody(player.body, 0, 0);
 		add(player);
+		//add(new HUD(game.camera));
 	}
 	
 	private void createBox2dWorld(boolean test) {
+		Values.world = new World(new Vector2(), true);
+		Values.handler = new RayHandler(Values.world);
+
 		for (int i = 0; i < map.getLayers().getCount(); i++) {
 			if (map.getLayers().get(i) instanceof TiledMapTileLayer) {
 				TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(i);
 				boolean shadow;
 				boolean collide;
-				boolean moveable;
+				boolean movable;
 				if (layer.getProperties().get("casts_shadow") != null) {
 					shadow = Boolean.parseBoolean(layer.getProperties().get("casts_shadow").toString());
 				} else {
@@ -91,15 +99,15 @@ public class GameScreen implements Screen, InputProcessor {
 					collide = false;
 				}
 				if (layer.getProperties().get("moveable") != null) {
-					moveable = Boolean.parseBoolean(layer.getProperties().get("moveable").toString());
+					movable = Boolean.parseBoolean(layer.getProperties().get("moveable").toString());
 				} else {
-					moveable = false;
+					movable = false;
 				}
 				if (shadow || collide) {
 					for (int x = 0; x < layer.getWidth(); x++) {
 						for (int y = 0; y < layer.getHeight(); y++) {
 							if (layer.getCell(x, y) != null) {
-								createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), collide, moveable, layer.getCell(x, y).getTile().getTextureRegion());
+								createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), collide, movable, layer.getCell(x, y).getTile().getTextureRegion());
 							}
 						}
 					}
@@ -124,8 +132,9 @@ public class GameScreen implements Screen, InputProcessor {
 						} else {
 							lightColor = new Color(0, 0, 0, 1);
 						}
-						new PointLight(Values.handler, 300, lightColor, radius * Values.PIXEL_BOX, centerX * Values.PIXEL_BOX, centerY * Values.PIXEL_BOX);
-					}
+                        lights.add(new FlickeringLight(Values.handler, 300, lightColor, radius * Values.PIXEL_BOX, centerX * Values.PIXEL_BOX, centerY * Values.PIXEL_BOX, 0, Float.MAX_VALUE));
+
+                    }
 				}
 			}
 		}
@@ -157,20 +166,21 @@ public class GameScreen implements Screen, InputProcessor {
 		} else {
 			float boxWidth = (tileWidth - 1) * Values.PIXEL_BOX;
 			float boxHeight = (tileHeight - 1) * Values.PIXEL_BOX;
-			float precentTruncation = .05f;
+			float presentTruncation = .05f;
 			Vector2[] points = new Vector2[] {
 					//making a truncated square
-					new Vector2(-(boxWidth / 2) + (boxWidth * precentTruncation), boxHeight / 2),    //top left
-					new Vector2((boxWidth / 2) - (boxWidth * precentTruncation), boxHeight / 2),     //top right
-					new Vector2(boxWidth / 2, (boxHeight / 2) - (boxHeight * precentTruncation)),     //right top
-					new Vector2(boxWidth / 2, -(boxHeight / 2) + (boxHeight * precentTruncation)),    //right bottom
-					new Vector2(-(boxWidth / 2) + (boxWidth * precentTruncation), -(boxHeight / 2)), //bottom left
-					new Vector2((boxWidth / 2) - (boxWidth * precentTruncation), -(boxHeight / 2)),  //bottom right
-					new Vector2(-(boxWidth / 2), (boxHeight / 2) - (boxHeight * precentTruncation)),  //right top
-					new Vector2(-(boxWidth / 2), -(boxHeight / 2) + (boxHeight * precentTruncation)), //right bottom
+					new Vector2(-(boxWidth / 2) + (boxWidth * presentTruncation), boxHeight / 2),    //top left
+					new Vector2((boxWidth / 2) - (boxWidth * presentTruncation), boxHeight / 2),     //top right
+					new Vector2(boxWidth / 2, (boxHeight / 2) - (boxHeight * presentTruncation)),     //right top
+					new Vector2(boxWidth / 2, -(boxHeight / 2) + (boxHeight * presentTruncation)),    //right bottom
+					new Vector2(-(boxWidth / 2) + (boxWidth * presentTruncation), -(boxHeight / 2)), //bottom left
+					new Vector2((boxWidth / 2) - (boxWidth * presentTruncation), -(boxHeight / 2)),  //bottom right
+					new Vector2(-(boxWidth / 2), (boxHeight / 2) - (boxHeight * presentTruncation)),  //right top
+					new Vector2(-(boxWidth / 2), -(boxHeight / 2) + (boxHeight * presentTruncation)), //right bottom
 			};
 			shape.set(points);
 			def.type = BodyType.DynamicBody;
+            def.linearDamping = .7f;
 			fixDef.density = 1;
 			bod = Values.world.createBody(def);
 			add(new MoveableBlock(region, bod));
@@ -217,7 +227,7 @@ public class GameScreen implements Screen, InputProcessor {
 		//Vector3 thing = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 		//game.lightCamera.unproject(thing);
 		//light.setPosition(thing.x, thing.y);
-		Values.world.step(1f/30f, 10, 10);
+		Values.world.step(Gdx.graphics.getDeltaTime(), 10, 10);
 	}
 
 	public void onInteraction(Player player) {
@@ -247,6 +257,9 @@ public class GameScreen implements Screen, InputProcessor {
 							}
 							if (rect.getProperties().get("add_coin") != null) {
 								player.addCoin(Integer.parseInt(rect.getProperties().get("add_coin").toString()));
+							}
+							if (rect.getProperties().get("change_map") != null) {
+								game.setScreen(new GameScreen(this.game, rect.getProperties().get("change_map").toString()));
 							}
 //**************************END PROPERTY PROCESSING**************************
 						}
