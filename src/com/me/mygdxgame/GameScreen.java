@@ -169,12 +169,12 @@ public class GameScreen implements Screen, InputProcessor {
 			float presentTruncation = .05f;
 			Vector2[] points = new Vector2[] {
 					//making a truncated square
-					new Vector2(-(boxWidth / 2) + (boxWidth * presentTruncation), boxHeight / 2),    //top left
-					new Vector2((boxWidth / 2) - (boxWidth * presentTruncation), boxHeight / 2),     //top right
+				    new Vector2(-(boxWidth / 2) + (boxWidth * presentTruncation), boxHeight / 2),     //top left
+					new Vector2((boxWidth / 2) - (boxWidth * presentTruncation), boxHeight / 2),      //top right
 					new Vector2(boxWidth / 2, (boxHeight / 2) - (boxHeight * presentTruncation)),     //right top
 					new Vector2(boxWidth / 2, -(boxHeight / 2) + (boxHeight * presentTruncation)),    //right bottom
-					new Vector2(-(boxWidth / 2) + (boxWidth * presentTruncation), -(boxHeight / 2)), //bottom left
-					new Vector2((boxWidth / 2) - (boxWidth * presentTruncation), -(boxHeight / 2)),  //bottom right
+					new Vector2(-(boxWidth / 2) + (boxWidth * presentTruncation), -(boxHeight / 2)),  //bottom left
+					new Vector2((boxWidth / 2) - (boxWidth * presentTruncation), -(boxHeight / 2)),   //bottom right
 					new Vector2(-(boxWidth / 2), (boxHeight / 2) - (boxHeight * presentTruncation)),  //right top
 					new Vector2(-(boxWidth / 2), -(boxHeight / 2) + (boxHeight * presentTruncation)), //right bottom
 			};
