@@ -136,8 +136,6 @@ public class Player extends Sprite {
 		}else if (currentAnim == eAnimation) {
 			projectile.body.applyLinearImpulse(3, 0, projectile.pos.x, projectile.pos.y, true);
 		}
-		
-		projectile.body.applyLinearImpulse(3, 0, projectile.pos.x, projectile.pos.y, true);
 		projectiles.add(projectile);
 		shotTime = TimeUtils.nanoTime();
 	}
