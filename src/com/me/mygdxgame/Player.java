@@ -13,6 +13,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class Player extends Sprite {
 	
@@ -29,6 +31,10 @@ public class Player extends Sprite {
 	public int width;
 	public int height;
 	public Body body;
+	public boolean xDown; //temp iskeydown X
+	public boolean zDown;
+	public Array<Projectile> projectiles;
+	public long shotTime;
 	
 	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera) {
 	//public Player(int x, int y) {
@@ -56,6 +62,8 @@ public class Player extends Sprite {
 		wAnimation.setPlayMode(Animation.LOOP);
 		currentAnim = nAnimation;
 		stateTime = 0;
+		projectiles = new Array<Projectile>();
+		xDown = false;
 	}
 	
 	private void createBody(int x, int y, int tWidth, int tHeight) {
@@ -85,6 +93,9 @@ public class Player extends Sprite {
 	@Override
 	public void draw(SpriteBatch spriteBatch) {
 		float speed = 3f;
+		if(Gdx.input.isKeyPressed(Keys.X)) {
+			xDown = true;
+		} else {xDown=false;}
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
 			currentAnim = nAnimation;
 			this.body.setLinearVelocity(new Vector2(0, speed));
@@ -112,6 +123,23 @@ public class Player extends Sprite {
 		lightCamera.position.y = this.getY() * Values.PIXEL_BOX;
 		
 		spriteBatch.draw(currentAnim.getKeyFrame(stateTime), this.getX(), this.getY());
+	}
+	
+	public void createProjectile() {
+		Projectile projectile = new Projectile(this.getX(), this.getY());
+		if (currentAnim == nAnimation) {
+			projectile.body.applyLinearImpulse(0, 3, projectile.pos.x, projectile.pos.y, true);
+		}else if (currentAnim == sAnimation) {
+			projectile.body.applyLinearImpulse(0, -3, projectile.pos.x, projectile.pos.y, true);
+		}else if (currentAnim == wAnimation) {
+			projectile.body.applyLinearImpulse(-3, 0, projectile.pos.x,  projectile.pos.y, true);
+		}else if (currentAnim == eAnimation) {
+			projectile.body.applyLinearImpulse(3, 0, projectile.pos.x, projectile.pos.y, true);
+		}
+		
+		projectile.body.applyLinearImpulse(3, 0, projectile.pos.x, projectile.pos.y, true);
+		projectiles.add(projectile);
+		shotTime = TimeUtils.nanoTime();
 	}
 
 	public int getCoin() {
