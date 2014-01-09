@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -87,7 +88,12 @@ public class Player extends Sprite {
 		//shape.setAsBox((tWidth / 2) * Values.PIXEL_BOX, (tHeight / 2) * Values.PIXEL_BOX);
 		
 		this.body = Values.world.createBody(def);
-		this.body.createFixture(shape, 1);
+
+        FixtureDef fixDef = new FixtureDef();
+        fixDef.shape = shape;
+        fixDef.density = 1f;
+        fixDef.filter.groupIndex = -1;
+		this.body.createFixture(fixDef);
 	}
 
 	@Override
@@ -123,18 +129,23 @@ public class Player extends Sprite {
 		lightCamera.position.y = this.getY() * Values.PIXEL_BOX;
 		
 		spriteBatch.draw(currentAnim.getKeyFrame(stateTime), this.getX(), this.getY());
+
+        for (int i = 0; i < projectiles.size; i++) {
+            projectiles.get(i).draw(spriteBatch);
+        }
 	}
 	
 	public void createProjectile() {
 		Projectile projectile = new Projectile(this.getX(), this.getY());
+        float speed = 1.5f;
 		if (currentAnim == nAnimation) {
-			projectile.body.applyLinearImpulse(0, 3, projectile.pos.x, projectile.pos.y, true);
+			projectile.body.applyLinearImpulse(0, speed, projectile.pos.x, projectile.pos.y, true);
 		}else if (currentAnim == sAnimation) {
-			projectile.body.applyLinearImpulse(0, -3, projectile.pos.x, projectile.pos.y, true);
+			projectile.body.applyLinearImpulse(0, -speed, projectile.pos.x, projectile.pos.y, true);
 		}else if (currentAnim == wAnimation) {
-			projectile.body.applyLinearImpulse(-3, 0, projectile.pos.x,  projectile.pos.y, true);
+			projectile.body.applyLinearImpulse(-speed, 0, projectile.pos.x,  projectile.pos.y, true);
 		}else if (currentAnim == eAnimation) {
-			projectile.body.applyLinearImpulse(3, 0, projectile.pos.x, projectile.pos.y, true);
+			projectile.body.applyLinearImpulse(speed, 0, projectile.pos.x, projectile.pos.y, true);
 		}
 		projectiles.add(projectile);
 		shotTime = TimeUtils.nanoTime();

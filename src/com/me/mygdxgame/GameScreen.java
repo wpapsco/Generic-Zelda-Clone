@@ -138,7 +138,6 @@ public class GameScreen implements Screen, InputProcessor {
 		}
 	}
 	
-	
 	private void createWallCube(int x, int y, float tileWidth, float tileHeight, boolean collide, boolean moveable, TextureRegion region) {
 		BodyDef def = new BodyDef();
 		def.position.x = ((x * tileWidth) + (tileWidth / 2)) * Values.PIXEL_BOX;

@@ -18,7 +18,6 @@ public class Projectile extends Sprite {
 	
 	public Vector2 vel;
 	public Vector2 pos;
-	
 	public Texture texture;
 	
 	public Projectile(float x, float y) {
@@ -35,13 +34,14 @@ public class Projectile extends Sprite {
 		def.type = BodyType.DynamicBody;
 		
 		CircleShape circle = new CircleShape();
-		circle.setRadius(8 * Values.PIXEL_BOX);
+		circle.setRadius(4 * Values.PIXEL_BOX);
 		
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = circle;
 		fixtureDef.density = 0.5f;
 		fixtureDef.friction = 0.4f;
 		fixtureDef.restitution = 0.6f;
+        fixtureDef.filter.groupIndex = -1;
 		
 		this.body = Values.world.createBody(def);
 		this.body.createFixture(fixtureDef);
@@ -53,8 +53,8 @@ public class Projectile extends Sprite {
 	
 	@Override
 	public void draw(SpriteBatch spriteBatch) {
-		setX(this.body.getPosition().x);
-		setY(this.body.getPosition().y);
+		setX((this.body.getPosition().x * Values.BOX_PIXEL) - (texture.getWidth() / 2));
+		setY((this.body.getPosition().y * Values.BOX_PIXEL) - (texture.getHeight() / 2));
 		spriteBatch.draw(texture, this.getX(), this.getY());
 	}
 
