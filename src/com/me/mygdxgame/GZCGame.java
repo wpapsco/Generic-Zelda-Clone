@@ -17,11 +17,11 @@ public class GZCGame extends Game {
 	public OrthographicCamera lightCamera;
 	public OrthographicCamera hudCamera;
 	public SpriteBatch batch;
+    public static float scale = 2f;
 
 	@Override
 	public void create() {
 		Texture.setEnforcePotImages(false);
-		float scale = 2f;
 		//camera positioning, scaling, etc
 		camera = new OrthographicCamera(Gdx.graphics.getWidth() / scale, Gdx.graphics.getHeight() / scale);
 		camera.position.x += camera.viewportWidth / 2;

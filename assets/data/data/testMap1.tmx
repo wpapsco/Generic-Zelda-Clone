@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="20" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="AmbientLight" value="0"/>
+  <property name="LightColor" value="0, 0, 1, .2"/>
+  <property name="StartX" value="5"/>
+  <property name="StartY" value="2"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="testtiles2" tilewidth="32" tileheight="32" spacing="2">
+  <image source="testingTiles2.png" width="136" height="66"/>
+ </tileset>
+ <layer name="ground" width="30" height="20">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZWBgYB3Fo3gUj+JRPIpH8SgexVTDABKJC7k=
+  </data>
+ </layer>
+ <layer name="new walls" width="30" height="20">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzllkEKwCAMBLe01P//uHgIBElko8UgDuyllyHSjRYAReUK5HFyE6kuQbwM4m2xvJo3yQvDG+FPb9a8O3sZVs2b1SPWawXGN9kTwPze8HZX69WeWa+md+a9fyrbK1hdOt072qkI3n3EeLPm3d3rZeSNw/b3A/kvA+o=
+  </data>
+ </layer>
+ <layer name="moveable blocks" width="30" height="20">
+  <properties>
+   <property name="collide" value="true"/>
+   <property name="moveable" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFIMAx0A6AgsHijpEA6BXWo3E6CkbBKBgFIw8AAO2gACE=
+  </data>
+ </layer>
+ <layer name="Characters" width="30" height="20">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20JT6AAAHgaCWAAAQ==
+  </data>
+ </layer>
+ <layer name="hidden passages" width="30" height="20">
+  <properties>
+   <property name="casts_shadow" value="true"/>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2DwAxYgZkbDw9neUTAKRgHlAJZ/R4q9o2BwAQD3kAAv
+  </data>
+ </layer>
+ <layer name="Lights" width="30" height="20">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20JT6AAAHgaCWAAAQ==
+  </data>
+ </layer>
+ <objectgroup name="Object Interactions" width="30" height="20">
+  <object name="Chest 1" x="896" y="480" width="32" height="48">
+   <properties>
+    <property name="add_coin" value="-20"/>
+    <property name="display_text" value="Fuck! A theif!"/>
+   </properties>
+  </object>
+  <object name="Chest 2 Money" x="896" y="32" width="32" height="48">
+   <properties>
+    <property name="add_coin" value="50"/>
+    <property name="call_order" value="1"/>
+    <property name="disable_object" value="Chest 2 Money"/>
+    <property name="display_text" value="Cool! A chest! I found 50 coin!"/>
+    <property name="enable_object" value="Chest 2 No Money"/>
+   </properties>
+  </object>
+  <object name="Chest 2 No Money" x="896" y="32" width="32" height="48">
+   <properties>
+    <property name="call_order" value="0"/>
+    <property name="display_text" value="Too bad there's no money here."/>
+    <property name="enabled" value="false"/>
+   </properties>
+  </object>
+  <object name="BlocksLight" x="180" y="48" width="203" height="203">
+   <properties>
+    <property name="LightColor" value="0, 0, 0, 1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="333" y="382" width="229" height="229">
+   <ellipse/>
+  </object>
+  <object x="-52" y="429" width="229" height="229">
+   <ellipse/>
+  </object>
+  <object x="34" y="429" width="229" height="229">
+   <ellipse/>
+  </object>
+  <object x="-52" y="95" width="229" height="229">
+   <ellipse/>
+  </object>
+  <object x="462" y="44" width="229" height="229">
+   <ellipse/>
+  </object>
+  <object x="494" y="273" width="229" height="229">
+   <ellipse/>
+  </object>
+  <object x="762" y="305" width="229" height="229">
+   <ellipse/>
+  </object>
+  <object x="896" y="576" width="32" height="32">
+   <properties>
+    <property name="change_map" value="data/testMap2.tmx"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

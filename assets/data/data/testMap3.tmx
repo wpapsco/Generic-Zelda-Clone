@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="25" height="25" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="StartX" value="2"/>
+  <property name="StartY" value="2"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="testingTiles2" tilewidth="32" tileheight="32" spacing="2">
+  <image source="testingTiles2.png" width="136" height="66"/>
+ </tileset>
+ <layer name="floor" width="25" height="25">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwwEJAAAMBKH7/qWXY6Dgqqmq+uoB+w0Ccg==
+  </data>
+ </layer>
+ <layer name="walls" width="25" height="25">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYmBgYKIDJgWwkKh+1I6hbwepYNSOkWsHCxqmBKCbNdzCatSOoWvHcCnbh0v9Qa4/aI0BET8BBQ==
+  </data>
+ </layer>
+ <layer name="blocks" width="25" height="25">
+  <properties>
+   <property name="collide" value="true"/>
+   <property name="moveable" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzd08EJACAMBMGAqP13bAUSTxKyZH7+9lDNehnJ50qkFpXaTt5KfiOq6ZxvdnRIAK/9dRvR7z0RrOqARORt3h8lt6s6bVEdDpYAZg==
+  </data>
+ </layer>
+ <layer name="Characters" width="25" height="25">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20ON6AAAHgzCcQAAQ==
+  </data>
+ </layer>
+ <layer name="Lights" width="25" height="25">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20ON6AAAHgzCcQAAQ==
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="25" height="25">
+  <object x="37" y="36" width="247" height="259">
+   <ellipse/>
+  </object>
+  <object x="517" y="35" width="247" height="259">
+   <ellipse/>
+  </object>
+  <object x="515" y="504" width="247" height="259">
+   <ellipse/>
+  </object>
+  <object x="34" y="505" width="247" height="259">
+   <ellipse/>
+  </object>
+  <object x="185" y="208" width="431" height="388">
+   <ellipse/>
+  </object>
+ </objectgroup>
+</map>

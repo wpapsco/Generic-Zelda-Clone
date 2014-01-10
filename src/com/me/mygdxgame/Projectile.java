@@ -32,6 +32,7 @@ public class Projectile extends Sprite {
 		BodyDef def = new BodyDef();
 		def.position.set(x * Values.PIXEL_BOX, y * Values.PIXEL_BOX);
 		def.type = BodyType.DynamicBody;
+        def.bullet = true;
 		
 		CircleShape circle = new CircleShape();
 		circle.setRadius(4 * Values.PIXEL_BOX);
@@ -48,14 +49,11 @@ public class Projectile extends Sprite {
 		
 		circle.dispose();
 	}
-	
-	
-	
+
 	@Override
 	public void draw(SpriteBatch spriteBatch) {
 		setX((this.body.getPosition().x * Values.BOX_PIXEL) - (texture.getWidth() / 2));
 		setY((this.body.getPosition().y * Values.BOX_PIXEL) - (texture.getHeight() / 2));
 		spriteBatch.draw(texture, this.getX(), this.getY());
 	}
-
 }

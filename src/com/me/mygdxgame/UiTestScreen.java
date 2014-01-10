@@ -28,7 +28,7 @@ public class UiTestScreen implements Screen {
 		table.setFillParent(true);
 		stage.addActor(table);
 		
-		generateLevelButtons(table, new String[]{"data/testMap1.tmx", "data/testMap2.tmx", "3", "4", "5", "6", "7", "8", "9", "10"}, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
+		generateLevelButtons(table, new String[]{"data/testMap1.tmx", "data/testMap2.tmx", "data/testMap3.tmx", "4", "5", "6", "7", "8", "9", "10"}, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
 	}
 	
 	private void generateLevelButtons(Table table, String[] levels, String[] buttonTitles) {

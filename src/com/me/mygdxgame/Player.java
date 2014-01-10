@@ -4,10 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -28,6 +26,7 @@ public class Player extends Sprite {
 	protected Animation currentAnim;
 	protected OrthographicCamera camera;
 	protected OrthographicCamera lightCamera;
+    protected ParticleEffectPool fireWandPool;
 	protected float stateTime;
 	public int width;
 	public int height;
@@ -41,6 +40,9 @@ public class Player extends Sprite {
 	//public Player(int x, int y) {
 		this.camera = camera;
 		this.lightCamera = lightCamera;
+        ParticleEffect fireEffect = new ParticleEffect();
+        fireEffect.load(Gdx.files.internal("data/fire_wand.p"), Gdx.files.internal("data/"));
+        fireWandPool = new ParticleEffectPool(fireEffect, 1, 10);
 		width = 8;
 		height = 13;
 		createBody(x, y, width, height);
@@ -136,7 +138,7 @@ public class Player extends Sprite {
 	}
 	
 	public void createProjectile() {
-		Projectile projectile = new Projectile(this.getX(), this.getY());
+		ParticleProjectile projectile = new ParticleProjectile(this.getX(), this.getY(), fireWandPool);
         float speed = 1.5f;
 		if (currentAnim == nAnimation) {
 			projectile.body.applyLinearImpulse(0, speed, projectile.pos.x, projectile.pos.y, true);
