@@ -23,7 +23,7 @@
    <property name="collide" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzjYGBg4KAAkwMI6WVFYjORqJdUe9HNJ0UvJfYSAjB30cJeVjQ+tjBA1ktsGBGylxS95KRDXOmSEB+bm0kxg5L8A8IArXkCZQ==
+   eJzjYGBg4KAAkwNG9Y7qJaSXnHSIK10S4mNzMylmUJJ/QBgAgpECUQ==
   </data>
  </layer>
  <layer name="blocks" width="15" height="15">
@@ -32,7 +32,7 @@
    <property name="moveable" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYBgcgH2gHYAFMJGonpkINazkOISOgI1IdSw0dcXIAgA8LAAc
+   eJxjYBgcgH2gHYAFMJGojpkItaxUUgMCbCSqR9dHqhwyYCHRzlGAGwAAZywANA==
   </data>
  </layer>
  <layer name="Characters" width="15" height="15">

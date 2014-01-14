@@ -22,11 +22,11 @@ public class UiTestScreen implements Screen {
 	
 	public UiTestScreen(GZCGame game) {
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-		this.game = game;
-		Gdx.input.setInputProcessor(stage);
-		Table table = new Table();
-		table.setFillParent(true);
-		stage.addActor(table);
+        this.game = game;
+        Gdx.input.setInputProcessor(stage);
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
 		
 		generateLevelButtons(table, new String[]{"data/testMap1.tmx", "data/testMap2.tmx", "data/testMap3.tmx", "4", "5", "6", "7", "8", "9", "10"}, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
 	}

@@ -2,6 +2,7 @@ package com.me.mygdxgame;
 
 import java.util.ArrayList;
 
+import box2dLight.Light;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
@@ -11,8 +12,8 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
@@ -22,32 +23,32 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
+
+import static box2dLight.RayHandler.*;
 
 public class GameScreen implements Screen, InputProcessor {
 
 	protected GZCGame game;
-	protected ArrayList<Sprite> sprites;
+	protected ArrayList<WorldObject> sprites;
 	protected OrthogonalTiledMapRenderer renderer;
 	protected TiledMap map;
 	protected ArrayList<Body> bodyWalls;
 	protected ArrayList<FlickeringLight> lights;
 	protected PointLight light;
 	protected MapObjects objects;
-	protected Player player;
+	protected ArrayList<Player> players;
 	
 	public GameScreen(GZCGame game, String mapLocation) {
 		Gdx.input.setInputProcessor(this);
 		this.game = game;
+        makeParticleEffects();
 		bodyWalls = new ArrayList<Body>();
-		sprites = new ArrayList<Sprite>();
+		sprites = new ArrayList<WorldObject>();
 		lights = new ArrayList<FlickeringLight>();
+        players = new ArrayList<Player>();
 		objects = new MapObjects();
 		TmxMapLoader loader = new TmxMapLoader();
 		map = loader.load(mapLocation);
@@ -67,19 +68,47 @@ public class GameScreen implements Screen, InputProcessor {
 		}
 		light = new PointLight(Values.handler, 300, new Color(Float.parseFloat(vals[0]), Float.parseFloat(vals[1]), Float.parseFloat(vals[2]), Float.parseFloat(vals[3])), 200 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX);
 		light.setSoft(true);
-		player = new Player(
+		players.add(new Player(
 				Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())), 
 				Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())), 
-				game.camera, game.lightCamera);
-		light.attachToBody(player.body, 0, 0);
-		add(player);
+				game.camera, game.lightCamera, false
+        ));
+        OrthographicCamera camera = new OrthographicCamera(game.camera.viewportWidth, game.camera.viewportHeight);
+        camera.view.set(game.camera.view);
+        OrthographicCamera lightCamera = new OrthographicCamera(game.lightCamera.viewportWidth, game.lightCamera.viewportHeight);
+        lightCamera.view.set(game.lightCamera.view);
+        lightCamera.zoom = game.lightCamera.zoom;
+
+        players.add(new Player(
+                Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
+                Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
+                camera, lightCamera, true
+        ));
+
+		light.attachToBody(players.get(0).body, 0, 0);
+        //add(players.get(0));
+        //add(players.get(1));
 		//add(new HUD(game.camera));
 	}
-	
-	private void createBox2dWorld(boolean test) {
+
+    private void makeParticleEffects() {
+        //the effect for the fire wand
+        ParticleEffect fireEffect = new ParticleEffect();
+        fireEffect.load(Gdx.files.internal("data/fire_wand.p"), Gdx.files.internal("data/"));
+        Values.fireWandPool = new ParticleEffectPool(fireEffect, 1, 10);
+
+        //the effect for flaming objects
+        ParticleEffect flamingThingsEffect = new ParticleEffect();
+        flamingThingsEffect.load(Gdx.files.internal("data/square_fire.p"), Gdx.files.internal("data/"));
+        Values.flamingThingsPool = new ParticleEffectPool(flamingThingsEffect, 1, 10);
+    }
+
+    private void createBox2dWorld(boolean test) {
 		Values.world = new World(new Vector2(), true);
 		Values.handler = new RayHandler(Values.world);
-
+        Light.setContactFilter((short) 0, (short) 0, (short) 3);
+        useDiffuseLight(true);
+        Values.world.setContactListener(new GZCContactListener(this));
 		for (int i = 0; i < map.getLayers().getCount(); i++) {
 			if (map.getLayers().get(i) instanceof TiledMapTileLayer) {
 				TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(i);
@@ -91,16 +120,8 @@ public class GameScreen implements Screen, InputProcessor {
 				} else {
 					shadow = false;
 				}
-				if (layer.getProperties().get("collide") != null) {
-					collide = Boolean.parseBoolean(layer.getProperties().get("collide").toString());
-				} else {
-					collide = false;
-				}
-				if (layer.getProperties().get("moveable") != null) {
-					movable = Boolean.parseBoolean(layer.getProperties().get("moveable").toString());
-				} else {
-					movable = false;
-				}
+                collide = layer.getProperties().get("collide") != null ? Boolean.parseBoolean(layer.getProperties().get("collide").toString()) : false;
+                movable = layer.getProperties().get("moveable") != null && Boolean.parseBoolean(layer.getProperties().get("moveable").toString());
 				if (shadow || collide) {
 					for (int x = 0; x < layer.getWidth(); x++) {
 						for (int y = 0; y < layer.getHeight(); y++) {
@@ -163,74 +184,111 @@ public class GameScreen implements Screen, InputProcessor {
 		} else {
 			float boxWidth = (tileWidth - 1) * Values.PIXEL_BOX;
 			float boxHeight = (tileHeight - 1) * Values.PIXEL_BOX;
-			float presentTruncation = .05f;
+			float percentTruncation = .05f;
 			Vector2[] points = new Vector2[] {
 					//making a truncated square
-				    new Vector2(-(boxWidth / 2) + (boxWidth * presentTruncation), boxHeight / 2),     //top left
-					new Vector2((boxWidth / 2) - (boxWidth * presentTruncation), boxHeight / 2),      //top right
-					new Vector2(boxWidth / 2, (boxHeight / 2) - (boxHeight * presentTruncation)),     //right top
-					new Vector2(boxWidth / 2, -(boxHeight / 2) + (boxHeight * presentTruncation)),    //right bottom
-					new Vector2(-(boxWidth / 2) + (boxWidth * presentTruncation), -(boxHeight / 2)),  //bottom left
-					new Vector2((boxWidth / 2) - (boxWidth * presentTruncation), -(boxHeight / 2)),   //bottom right
-					new Vector2(-(boxWidth / 2), (boxHeight / 2) - (boxHeight * presentTruncation)),  //right top
-					new Vector2(-(boxWidth / 2), -(boxHeight / 2) + (boxHeight * presentTruncation)), //right bottom
+				    new Vector2(-(boxWidth / 2) + (boxWidth * percentTruncation), boxHeight / 2),     //top left
+					new Vector2((boxWidth / 2) - (boxWidth * percentTruncation), boxHeight / 2),      //top right
+					new Vector2(boxWidth / 2, (boxHeight / 2) - (boxHeight * percentTruncation)),     //right top
+					new Vector2(boxWidth / 2, -(boxHeight / 2) + (boxHeight * percentTruncation)),    //right bottom
+					new Vector2(-(boxWidth / 2) + (boxWidth * percentTruncation), -(boxHeight / 2)),  //bottom left
+					new Vector2((boxWidth / 2) - (boxWidth * percentTruncation), -(boxHeight / 2)),   //bottom right
+					new Vector2(-(boxWidth / 2), (boxHeight / 2) - (boxHeight * percentTruncation)),  //right top
+					new Vector2(-(boxWidth / 2), -(boxHeight / 2) + (boxHeight * percentTruncation)), //right bottom
 			};
 			shape.set(points);
 			def.type = BodyType.DynamicBody;
             def.linearDamping = .7f;
 			fixDef.density = 1;
 			bod = Values.world.createBody(def);
-			add(new MoveableBlock(region, bod));
+            add(new MovableBlock(region, bod));
 		}
 		
 		bod.createFixture(fixDef);
 		bodyWalls.add(bod);
 	}
 
+    public void renderWorld(Player player) {
+        game.batch.setProjectionMatrix(player.camera.combined);
+        renderer.setView(player.camera);
+        for (int i = 0; i < map.getLayers().getCount(); i++) {
+            if (map.getLayers().get(i).getName().equals("Characters")) {
+                game.batch.begin();
+                for (Player ply : players) {
+                    ply.draw(game.batch);
+                }
+                for (int j = 0; j < sprites.size(); j++) {
+                    sprites.get(j).draw(game.batch);
+                }
+                if(players.get(0).xDown && (TimeUtils.nanoTime() - players.get(0).shotTime > 500000000)) {
+                    players.get(0).createProjectile();
+                }
+                game.batch.end();
+                renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get(i));
+            } else {
+                MapLayer layer = map.getLayers().get(i);
+                if (layer instanceof TiledMapTileLayer) {
+                    if (layer.getProperties().get("moveable") == null || !Boolean.parseBoolean(layer.getProperties().get("moveable").toString())) {
+                        game.batch.begin();
+                        renderer.renderTileLayer((TiledMapTileLayer) layer);
+                        game.batch.end();
+                    }
+                }
+            }
+            if (map.getLayers().get(i).getName().equals("Lights")) {
+                Values.handler.setCombinedMatrix(player.lightCamera.combined, player.lightCamera.position.x, player.lightCamera.position.y, player.lightCamera.viewportWidth, player.lightCamera.viewportHeight);
+                Values.handler.render();
+            }
+        }
+    }
+
 	@Override
 	public void render(float delta) {
-		game.camera.update();
-		game.lightCamera.update();
-		game.batch.setProjectionMatrix(game.camera.combined);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		renderer.setView(game.camera);
-		//renderer.render();
-		for (int i = 0; i < map.getLayers().getCount(); i++) {
-			if (map.getLayers().get(i).getName().equals("Characters")) {
-				game.batch.begin();
-				for (int j = 0; j < sprites.size(); j++) {
-					sprites.get(j).draw(game.batch);
-				}
-				if(player.xDown && (TimeUtils.nanoTime() - player.shotTime > 500000000)) {
-					player.createProjectile();
-				}
-				game.batch.end();
-				renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get(i));
-			} else {
-				MapLayer layer = map.getLayers().get(i);
-				if (layer instanceof TiledMapTileLayer) {
-					if (layer.getProperties().get("moveable") == null || !Boolean.parseBoolean(layer.getProperties().get("moveable").toString())) {
-						game.batch.begin();
-						renderer.renderTileLayer((TiledMapTileLayer) layer);
-						game.batch.end();
-					}
-				}
-			}
-			if (map.getLayers().get(i).getName().equals("Lights")) {
-				Values.handler.setCombinedMatrix(game.lightCamera.combined, game.lightCamera.position.x, game.lightCamera.position.y, game.lightCamera.viewportWidth, game.lightCamera.viewportHeight);
-				Values.handler.updateAndRender();
-			}
-		}
+        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		for (int i = 0; i < lights.size(); i++) {
 			lights.get(i).updateToFlicker();
 		}
-		//Vector3 thing = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-		//game.lightCamera.unproject(thing);
-		//light.setPosition(thing.x, thing.y);
-		Values.world.step(Gdx.graphics.getDeltaTime(), 10, 10);
+        for (WorldObject object : sprites) {
+            object.update();
+        }
+        for (Body body : Values.bodiesToDelete) {
+            Values.world.destroyBody(body);
+        }
+        for (Player player : players) {
+            player.update();
+        }
+        Values.world.step(Gdx.graphics.getDeltaTime(), 10, 10);
+        changeViewportAndRender();
+        Values.handler.update();
 	}
 
-	public void onInteraction(Player player) {
+    private void changeViewportAndRender() {
+        for (Player player : players) {
+            player.camera.update();
+            player.lightCamera.update();
+        }
+        if (players.size() == 1) {
+            players.get(0).camera.viewportWidth = Gdx.graphics.getWidth() / GZCGame.scale;
+            players.get(0).lightCamera.viewportWidth = Gdx.graphics.getWidth() / GZCGame.scale;
+            Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            renderWorld(players.get(0));
+        } else if (players.size() == 2) {
+            players.get(0).camera.viewportWidth = (Gdx.graphics.getWidth() / GZCGame.scale) / 2;
+            players.get(0).lightCamera.viewportWidth = (Gdx.graphics.getWidth() / GZCGame.scale) / 2;
+            Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
+            renderWorld(players.get(0));
+            players.get(1).camera.viewportWidth = (Gdx.graphics.getWidth() / GZCGame.scale) / 2;
+            players.get(1).lightCamera.viewportWidth = (Gdx.graphics.getWidth() / GZCGame.scale) / 2;
+            Gdx.gl.glViewport(Gdx.graphics.getWidth() / 2, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
+            renderWorld(players.get(1));
+        } else if (players.size() == 3) {
+
+        } else if (players.size() == 4) {
+
+        }
+    }
+
+    public void onInteraction(Player player) {
 		//oh god why what do not touch this
 		//holy shit what the fuck
 		for (int j = 0; j < objects.getCount(); j++) {
@@ -305,7 +363,7 @@ public class GameScreen implements Screen, InputProcessor {
 		renderer.dispose();
 	}
 	
-	public void add(Sprite sprite) {
+	public void add(WorldObject sprite) {
 		sprites.add(sprite);
 	}
 
@@ -313,7 +371,7 @@ public class GameScreen implements Screen, InputProcessor {
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
 		if (keycode == Keys.SPACE) {
-			onInteraction(player);
+			onInteraction(players.get(0));
 		}
 		return false;
 	}
