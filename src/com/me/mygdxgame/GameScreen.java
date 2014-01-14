@@ -82,19 +82,12 @@ public class GameScreen implements Screen, InputProcessor {
         lightCamera.view.set(game.lightCamera.view);
         lightCamera.zoom = game.lightCamera.zoom;
         
-        OrthographicCamera hudCam = new OrthographicCamera(game.camera.viewportWidth, game.camera.viewportHeight);
-        hudCam.view.set(game.camera.view);
-        pHud = new HUD(hudCam);
-        
         if (pNum == 2) {
 	        players.add(new Player(
 	                Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
 	                Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
 	                camera, lightCamera, true
 	        		));
-	        
-	        OrthographicCamera hudCam2 = new OrthographicCamera(game.camera.viewportWidth, game.camera.viewportHeight);
-	        hudCam.view.set(game.camera.view);
         }
 
 		light.attachToBody(players.get(0).body, 0, 0);
@@ -232,8 +225,9 @@ public class GameScreen implements Screen, InputProcessor {
                 for (int j = 0; j < sprites.size(); j++) {
                     sprites.get(j).draw(game.batch);
                 }
-                if(players.get(0).xDown && (TimeUtils.nanoTime() - players.get(0).shotTime > 500000000)) {
+                if(players.get(0).xDown && (TimeUtils.nanoTime() - players.get(0).shotTime > 500000000 && player.getCoin() > 0)) {
                     players.get(0).createProjectile();
+                    player.addCoin(-10);
                 }
                 game.batch.end();
                 renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get(i));
@@ -246,13 +240,15 @@ public class GameScreen implements Screen, InputProcessor {
                         game.batch.end();
                     }
                 }
+                game.batch.begin();
+                player.hud.draw(game.batch);
+                game.batch.end();
             }
             if (map.getLayers().get(i).getName().equals("Lights")) {
                 Values.handler.setCombinedMatrix(player.lightCamera.combined, player.lightCamera.position.x, player.lightCamera.position.y, player.lightCamera.viewportWidth, player.lightCamera.viewportHeight);
                 Values.handler.render();
             }
         }
-        pHud.draw(game.batch);
     }
 
 	@Override

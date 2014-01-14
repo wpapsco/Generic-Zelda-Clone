@@ -31,7 +31,7 @@ public class Player extends WorldObject {
 	protected OrthographicCamera camera;
 	protected OrthographicCamera lightCamera;
 	protected OrthographicCamera hudCam;
-	protected HUD hud;
+	public HUD hud;
 	protected float stateTime;
 	public int width;
 	public int height;
@@ -46,7 +46,9 @@ public class Player extends WorldObject {
 		this.lightCamera = lightCamera;
         this.isWasd = isWasd;
         this.setRegion(currentAnim.getKeyFrame(stateTime));
-        //hud = new HUD();
+        coin = 100;
+        hudCam = new OrthographicCamera(Gdx.graphics.getWidth() / GZCGame.scale, Gdx.graphics.getHeight() / GZCGame.scale);
+        hud = new HUD(hudCam);
 	}
 
 	private static Body createBody(int x, int y, int tWidth, int tHeight) {
@@ -132,6 +134,7 @@ public class Player extends WorldObject {
     @Override
     public void update() {
         super.update();
+        hud.setCoin(coin);
         ArrayList<Projectile> itemsToRemove = new ArrayList<Projectile>();
         for (Projectile projectile : projectiles) {
             projectile.update();
