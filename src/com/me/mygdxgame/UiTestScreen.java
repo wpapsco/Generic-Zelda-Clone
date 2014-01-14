@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
@@ -19,6 +20,7 @@ public class UiTestScreen implements Screen {
 	
 	private Stage stage;
 	private GZCGame game;
+	protected int pNum = 1;
 	
 	public UiTestScreen(GZCGame game) {
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
@@ -27,6 +29,24 @@ public class UiTestScreen implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
+        
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = new BitmapFont();
+		style.downFontColor = new Color(1, 0, 0, 1);  
+		style.fontColor = new Color(1, 1, 1, 1);
+		TextButton playersButton = new TextButton("2Play Boolean", style);
+		playersButton.addListener(new ContextualChangeListener(game, pNum) {
+			@Override                                 
+			public void changed(ChangeEvent event, Actor actor) {
+				if (pNum == 1) {
+					pNum++;
+				} else if (pNum == 2) {
+					pNum--;
+				}
+			}
+		});
+		table.add(playersButton);
+		table.row();
 		
 		generateLevelButtons(table, new String[]{"data/testMap1.tmx", "data/testMap2.tmx", "data/testMap3.tmx", "4", "5", "6", "7", "8", "9", "10"}, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
 	}
@@ -44,7 +64,7 @@ public class UiTestScreen implements Screen {
 			buttons[i].addListener(new ContextualChangeListener(game, levels[i]) {
 				@Override                                 
 				public void changed(ChangeEvent event, Actor actor) {
-					game.setScreen(new GameScreen(game, (String) information)); 
+					game.setScreen(new GameScreen(game, (String) information, pNum)); 
 				}
 			});
 			table.add(buttons[i]);

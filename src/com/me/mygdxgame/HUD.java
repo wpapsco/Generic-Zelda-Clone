@@ -14,21 +14,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 public class HUD extends Sprite {
 	protected Stage stage;
-	
 	public HUD(OrthographicCamera camera) {
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		stage.setCamera(camera);
 		Table table = new Table();
 		table.setFillParent(true);
 		stage.addActor(table);
-		table.addActor(new Label("a word", new LabelStyle(new BitmapFont(), Color.WHITE)));
+		table.addActor(new Label("Clams: ", new LabelStyle(new BitmapFont(), Color.WHITE)));
 	}
 
 	@Override
 	public void draw(SpriteBatch spriteBatch) {
-		// TODO Auto-generated method stub
 		//super.draw(spriteBatch);
-		//stage.act();
+		stage.act();
 		stage.draw();
 	}
 }

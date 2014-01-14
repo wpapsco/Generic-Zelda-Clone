@@ -30,6 +30,8 @@ public class Player extends WorldObject {
 	protected Animation currentAnim;
 	protected OrthographicCamera camera;
 	protected OrthographicCamera lightCamera;
+	protected OrthographicCamera hudCam;
+	protected HUD hud;
 	protected float stateTime;
 	public int width;
 	public int height;
@@ -44,6 +46,7 @@ public class Player extends WorldObject {
 		this.lightCamera = lightCamera;
         this.isWasd = isWasd;
         this.setRegion(currentAnim.getKeyFrame(stateTime));
+        //hud = new HUD();
 	}
 
 	private static Body createBody(int x, int y, int tWidth, int tHeight) {

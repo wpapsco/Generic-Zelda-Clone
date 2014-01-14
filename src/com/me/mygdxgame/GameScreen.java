@@ -40,9 +40,12 @@ public class GameScreen implements Screen, InputProcessor {
 	protected PointLight light;
 	protected MapObjects objects;
 	protected ArrayList<Player> players;
+	protected HUD pHud;
+	public int pNum;
 	
-	public GameScreen(GZCGame game, String mapLocation) {
+	public GameScreen(GZCGame game, String mapLocation, int playerNum) {
 		Gdx.input.setInputProcessor(this);
+		pNum = playerNum;
 		this.game = game;
         makeParticleEffects();
 		bodyWalls = new ArrayList<Body>();
@@ -78,17 +81,26 @@ public class GameScreen implements Screen, InputProcessor {
         OrthographicCamera lightCamera = new OrthographicCamera(game.lightCamera.viewportWidth, game.lightCamera.viewportHeight);
         lightCamera.view.set(game.lightCamera.view);
         lightCamera.zoom = game.lightCamera.zoom;
-
-        players.add(new Player(
-                Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
-                Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
-                camera, lightCamera, true
-        ));
+        
+        OrthographicCamera hudCam = new OrthographicCamera(game.camera.viewportWidth, game.camera.viewportHeight);
+        hudCam.view.set(game.camera.view);
+        pHud = new HUD(hudCam);
+        
+        if (pNum == 2) {
+	        players.add(new Player(
+	                Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
+	                Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
+	                camera, lightCamera, true
+	        		));
+	        
+	        OrthographicCamera hudCam2 = new OrthographicCamera(game.camera.viewportWidth, game.camera.viewportHeight);
+	        hudCam.view.set(game.camera.view);
+        }
 
 		light.attachToBody(players.get(0).body, 0, 0);
         //add(players.get(0));
         //add(players.get(1));
-		//add(new HUD(game.camera));
+		
 	}
 
     private void makeParticleEffects() {
@@ -240,6 +252,7 @@ public class GameScreen implements Screen, InputProcessor {
                 Values.handler.render();
             }
         }
+        pHud.draw(game.batch);
     }
 
 	@Override
@@ -317,7 +330,7 @@ public class GameScreen implements Screen, InputProcessor {
 								player.addCoin(Integer.parseInt(rect.getProperties().get("add_coin").toString()));
 							}
 							if (rect.getProperties().get("change_map") != null) {
-								game.setScreen(new GameScreen(this.game, rect.getProperties().get("change_map").toString()));
+								game.setScreen(new GameScreen(this.game, rect.getProperties().get("change_map").toString(), pNum));
 							}
 //**************************END PROPERTY PROCESSING**************************
 						}
