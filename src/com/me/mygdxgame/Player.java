@@ -39,6 +39,7 @@ public class Player extends WorldObject {
 	public boolean zDown;
 	public ArrayList<Projectile> projectiles;
 	public long shotTime;
+	public int health;
 	
 	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd) {
         super(Player.createBody(x, y, 8, 13), true);
@@ -47,8 +48,10 @@ public class Player extends WorldObject {
         this.isWasd = isWasd;
         this.setRegion(currentAnim.getKeyFrame(stateTime));
         coin = 100;
-        hudCam = new OrthographicCamera(Gdx.graphics.getWidth() / GZCGame.scale, Gdx.graphics.getHeight() / GZCGame.scale);
-        hud = new HUD(hudCam);
+        hudCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        health = 2;
+        hud = new HUD(hudCam, health);
+        
 	}
 
 	private static Body createBody(int x, int y, int tWidth, int tHeight) {

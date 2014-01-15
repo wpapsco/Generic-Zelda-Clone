@@ -24,7 +24,7 @@
    <property name="collide" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzllkEKwCAMBLe01P//uHgIBElko8UgDuyllyHSjRYAReUK5HFyE6kuQbwM4m2xvJo3yQvDG+FPb9a8O3sZVs2b1SPWawXGN9kTwPze8HZX69WeWa+md+a9fyrbK1hdOt072qkI3n3EeLPm3d3rZeSNw/b3A/kvA+o=
+   eJzllksKgDAMREeU9v43FheBUJIy/eAgPpiNm0eKk7YCqC7HQK4kJ5HHZZiXwbwtkddTRF4E3hF2elXzftnL8Na8qh6x3igIvtmeANb3Rra7Wq/3rHo9vTPv/VNqrxF16e/e2U6NkN1HjFc17y5vEXmzzLxx2P7e/rcD8A==
   </data>
  </layer>
  <layer name="moveable blocks" width="30" height="20">
@@ -114,6 +114,12 @@
   <object x="896" y="576" width="32" height="32">
    <properties>
     <property name="change_map" value="data/testMap2.tmx"/>
+   </properties>
+  </object>
+  <object name="Chest3" x="33" y="560" width="31" height="50">
+   <properties>
+    <property name="add_coin" value="30"/>
+    <property name="display_text" value="Ya got some coins, bud."/>
    </properties>
   </object>
  </objectgroup>

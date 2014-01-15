@@ -315,6 +315,7 @@ public class GameScreen implements Screen, InputProcessor {
 //**************************ADD PROPERTY PROCESSING HERE**************************
 							if (rect.getProperties().get("display_text") != null) {
 								System.out.println(rect.getProperties().get("display_text").toString());
+								player.hud.dialogText = rect.getProperties().get("display_text").toString();
 							}
 							if (rect.getProperties().get("enable_object") != null) {
 								objects.get(rect.getProperties().get("enable_object").toString()).getProperties().put("enabled", "true");
