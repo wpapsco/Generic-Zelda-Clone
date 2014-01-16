@@ -93,5 +93,9 @@ public class HUD extends Sprite {
 		coin = coins;
 	}
 	
+	public void setDialog(String string) {
+		dialogText = string;
+	}
+	
 	
 }

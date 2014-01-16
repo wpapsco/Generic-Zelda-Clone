@@ -1,5 +1,7 @@
 package com.me.mygdxgame;
 
+import static box2dLight.RayHandler.useDiffuseLight;
+
 import java.util.ArrayList;
 
 import box2dLight.Light;
@@ -10,10 +12,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
@@ -23,11 +28,13 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-
-import static box2dLight.RayHandler.*;
 
 public class GameScreen implements Screen, InputProcessor {
 
@@ -42,8 +49,12 @@ public class GameScreen implements Screen, InputProcessor {
 	protected ArrayList<Player> players;
 	protected HUD pHud;
 	public int pNum;
+	protected Music sound;
 	
 	public GameScreen(GZCGame game, String mapLocation, int playerNum) {
+		sound = Gdx.audio.newMusic(Gdx.files.internal("data/fireballnoise.mp3"));
+		sound.setLooping(true);
+		sound.play();
 		Gdx.input.setInputProcessor(this);
 		pNum = playerNum;
 		this.game = game;
@@ -254,6 +265,7 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public void render(float delta) {
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        
 		for (int i = 0; i < lights.size(); i++) {
 			lights.get(i).updateToFlicker();
 		}
@@ -315,7 +327,7 @@ public class GameScreen implements Screen, InputProcessor {
 //**************************ADD PROPERTY PROCESSING HERE**************************
 							if (rect.getProperties().get("display_text") != null) {
 								System.out.println(rect.getProperties().get("display_text").toString());
-								player.hud.dialogText = rect.getProperties().get("display_text").toString();
+								player.hud.setDialog(rect.getProperties().get("display_text").toString());
 							}
 							if (rect.getProperties().get("enable_object") != null) {
 								objects.get(rect.getProperties().get("enable_object").toString()).getProperties().put("enabled", "true");

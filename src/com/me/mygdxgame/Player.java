@@ -1,28 +1,30 @@
 package com.me.mygdxgame;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-
-import java.util.ArrayList;
 
 public class Player extends WorldObject {
 	
 	private int coin;
     protected boolean isWasd;
 	protected TextureRegion[] frameRegions;
+	protected TextureRegion[] frameregion2;
 	protected Animation nAnimation;
 	protected Animation sAnimation;
 	protected Animation eAnimation;
@@ -90,6 +92,11 @@ public class Player extends WorldObject {
         TextureRegion[][] tRegions = Sprite.split(new Texture(Gdx.files.internal("data/mage.png")), width, height);
         frameRegions = new TextureRegion[tRegions.length * tRegions[0].length];
         int index = 0;
+//        for (TextureRegion[] region : regions) {
+//            for (TextureRegion atRegion : region) {
+//                frameRegions[index++] = atRegion;
+//            }
+//        }
         for (TextureRegion[] tRegion : tRegions) {
             for (TextureRegion aTRegion : tRegion) {
                 frameRegions[index++] = aTRegion;
@@ -100,6 +107,7 @@ public class Player extends WorldObject {
         sAnimation = new Animation(animSpeed, frameRegions[0], frameRegions[1], frameRegions[2], frameRegions[3]);
         eAnimation = new Animation(animSpeed, frameRegions[8], frameRegions[9], frameRegions[10], frameRegions[11]);
         wAnimation = new Animation(animSpeed, frameRegions[12], frameRegions[13], frameRegions[14], frameRegions[15]);
+        //wAnimation = new Animation(animSpeed, frameregion2[0], frameregion2[1], frameregion2[2], frameregion2[3]);
         nAnimation.setPlayMode(Animation.LOOP);
         sAnimation.setPlayMode(Animation.LOOP);
         eAnimation.setPlayMode(Animation.LOOP);
@@ -130,6 +138,7 @@ public class Player extends WorldObject {
 		}else if (currentAnim == eAnimation) {
 			projectile.body.applyLinearImpulse(speed, 0, projectile.pos.x, projectile.pos.y, true);
 		}
+		projectile.sound.play();
 		projectiles.add(projectile);
 		shotTime = TimeUtils.nanoTime();
 	}
@@ -210,4 +219,5 @@ public class Player extends WorldObject {
 		this.coin += coin;
 		System.out.println(this.coin);
 	}
+
 }

@@ -1,13 +1,15 @@
 package com.me.mygdxgame;
 
-import box2dLight.Light;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Projectile extends WorldObject {
 	public int width;
@@ -18,10 +20,12 @@ public class Projectile extends WorldObject {
 	public Texture texture;
     public boolean destroyOnContact;
     public boolean isDestroyed = false;
+    protected Sound sound;
 
     public Projectile(float x, float y, boolean isFlammable, boolean destroyOnContact) {
         super(new Texture(Gdx.files.internal("data/BigBooty.png")), Projectile.createBody(x, y), isFlammable);
         this.destroyOnContact = destroyOnContact;
+        sound = Gdx.audio.newSound(Gdx.files.internal("data/fireballnoise.mp3"));
         createBody(x, y);
 		vel = body.getLinearVelocity();
 		pos = body.getPosition();
