@@ -169,56 +169,71 @@ public class Player extends WorldObject {
         }
         projectiles.removeAll(itemsToRemove);
         float speed = 3f;
+        float xAxis = 0;
+        float yAxis = 0;
+        Vector2 linV;
         xDown = Gdx.input.isKeyPressed(Keys.X);
         if(!xDown) {
         	//*********************ALL WILL CHANGE FOR OUYA, THIS IS TEST STUFFS************************
 	        if (!isWasd) {
 	            if (Gdx.input.isKeyPressed(Keys.UP)) {
 	            	isUp = true;
-	                this.body.setLinearVelocity(new Vector2(this.body.getLinearVelocity().x, speed));
+	            	yAxis = 1;
 	                stateTime += Gdx.graphics.getDeltaTime();
 	            }
 	            if (Gdx.input.isKeyPressed(Keys.DOWN)) {
 	            	isUp = false;
-	                this.body.setLinearVelocity(new Vector2(this.body.getLinearVelocity().x, -speed));
+	            	yAxis = -1;
 	                stateTime += Gdx.graphics.getDeltaTime();
 	            }
 	            if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 	            	isRight = false;
-	                this.body.setLinearVelocity(new Vector2(-speed, this.body.getLinearVelocity().y));
+	            	xAxis = -1;
 	                stateTime += Gdx.graphics.getDeltaTime();
 	            }
 	            if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 	            	isRight = true;
-	                this.body.setLinearVelocity(new Vector2(speed, this.body.getLinearVelocity().y));
+	            	xAxis = 1;
 	                stateTime += Gdx.graphics.getDeltaTime();
 	            }
 	            if (!Gdx.input.isKeyPressed(Keys.UP)&&!Gdx.input.isKeyPressed(Keys.DOWN)&&!Gdx.input.isKeyPressed(Keys.LEFT)&&!Gdx.input.isKeyPressed(Keys.RIGHT)) {
-	                this.body.setLinearVelocity(0, 0);
+	            	xAxis = 0;
+	            	yAxis = 0;
 	                stateTime += Gdx.graphics.getDeltaTime();
 	            }
+	            linV = new Vector2(xAxis*speed, yAxis*speed);
+	            this.body.setLinearVelocity(linV);
 	            animate();
 	        }
 	        if (isWasd) {
-	            if (Gdx.input.isKeyPressed(Keys.W)) {
-	                currentAnim = nAnimation;
-	                this.body.setLinearVelocity(new Vector2(0, speed));
+	        	if (Gdx.input.isKeyPressed(Keys.W)) {
+	            	isUp = true;
+	            	yAxis = 1;
 	                stateTime += Gdx.graphics.getDeltaTime();
-	            } else if (Gdx.input.isKeyPressed(Keys.S)) {
-	                currentAnim = sAnimation;
-	                this.body.setLinearVelocity(new Vector2(0, -speed));
-	                stateTime += Gdx.graphics.getDeltaTime();
-	            } else if (Gdx.input.isKeyPressed(Keys.A)) {
-	                currentAnim = wAnimation;
-	                this.body.setLinearVelocity(new Vector2(-speed, 0));
-	                stateTime += Gdx.graphics.getDeltaTime();
-	            } else if (Gdx.input.isKeyPressed(Keys.D)) {
-	                this.body.setLinearVelocity(new Vector2(speed, 0));
-	                currentAnim = eAnimation;
-	                stateTime += Gdx.graphics.getDeltaTime();
-	            } else {
-	                this.body.setLinearVelocity(0, 0);
 	            }
+	            if (Gdx.input.isKeyPressed(Keys.S)) {
+	            	isUp = false;
+	            	yAxis = -1;
+	                stateTime += Gdx.graphics.getDeltaTime();
+	            }
+	            if (Gdx.input.isKeyPressed(Keys.A)) {
+	            	isRight = false;
+	            	xAxis = -1;
+	                stateTime += Gdx.graphics.getDeltaTime();
+	            }
+	            if (Gdx.input.isKeyPressed(Keys.D)) {
+	            	isRight = true;
+	            	xAxis = 1;
+	                stateTime += Gdx.graphics.getDeltaTime();
+	            }
+	            if (!Gdx.input.isKeyPressed(Keys.W)&&!Gdx.input.isKeyPressed(Keys.S)&&!Gdx.input.isKeyPressed(Keys.A)&&!Gdx.input.isKeyPressed(Keys.D)) {
+	            	xAxis = 0;
+	            	yAxis = 0;
+	                stateTime += Gdx.graphics.getDeltaTime();
+	            }
+	            linV = new Vector2(xAxis*speed, yAxis*speed);
+	            this.body.setLinearVelocity(linV);
+	            animate();
 	    //***********************END TEST STUFFS*******************************************
         }
         }
