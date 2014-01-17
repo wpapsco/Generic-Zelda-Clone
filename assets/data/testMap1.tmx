@@ -62,13 +62,13 @@
   </data>
  </layer>
  <objectgroup name="Object Interactions" width="30" height="20">
-  <object name="Chest 1" x="896" y="480" width="32" height="48">
+  <object name="Chest 1" x="896" y="480" width="32" height="56">
    <properties>
     <property name="add_coin" value="-20"/>
     <property name="display_text" value="Fuck! A theif!"/>
    </properties>
   </object>
-  <object name="Chest 2 Money" x="896" y="32" width="32" height="48">
+  <object name="Chest 2 Money" x="896" y="32" width="33" height="62">
    <properties>
     <property name="add_coin" value="50"/>
     <property name="call_order" value="1"/>
@@ -77,7 +77,7 @@
     <property name="enable_object" value="Chest 2 No Money"/>
    </properties>
   </object>
-  <object name="Chest 2 No Money" x="896" y="32" width="32" height="48">
+  <object name="Chest 2 No Money" x="897" y="33" width="32" height="60">
    <properties>
     <property name="call_order" value="0"/>
     <property name="display_text" value="Too bad there's no money here."/>
@@ -116,7 +116,7 @@
     <property name="change_map" value="data/testMap2.tmx"/>
    </properties>
   </object>
-  <object name="Chest3" x="33" y="560" width="31" height="50">
+  <object name="Chest3" x="34" y="542" width="31" height="65">
    <properties>
     <property name="add_coin" value="30"/>
     <property name="display_text" value="Ya got some coins, bud."/>

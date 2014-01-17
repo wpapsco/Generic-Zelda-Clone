@@ -29,6 +29,10 @@ public class Player extends WorldObject {
 	protected Animation sAnimation;
 	protected Animation eAnimation;
 	protected Animation wAnimation;
+	protected Animation nRest;
+	protected Animation sRest;
+	protected Animation eRest;
+	protected Animation wRest;
 	protected Animation currentAnim;
 	protected OrthographicCamera camera;
 	protected OrthographicCamera lightCamera;
@@ -42,9 +46,11 @@ public class Player extends WorldObject {
 	public ArrayList<Projectile> projectiles;
 	public long shotTime;
 	public int health;
+	public boolean isUp;
+	public boolean isRight;
 	
 	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd) {
-        super(Player.createBody(x, y, 8, 13), true);
+        super(Player.createBody(x, y, 16, 28), true);
 		this.camera = camera;
 		this.lightCamera = lightCamera;
         this.isWasd = isWasd;
@@ -52,6 +58,9 @@ public class Player extends WorldObject {
         coin = 100;
         hudCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         health = 2;
+        isUp = false;
+        isRight = true;
+        
         hud = new HUD(hudCam, health);
         
 	}
@@ -87,37 +96,39 @@ public class Player extends WorldObject {
     @Override
     public void create() {
         super.create();
-        width = 8;
-        height = 13;
-        TextureRegion[][] tRegions = Sprite.split(new Texture(Gdx.files.internal("data/mage.png")), width, height);
+        width = 16;
+        height = 28;
+        TextureRegion[][] tRegions = Sprite.split(new Texture(Gdx.files.internal("data/Bully_Sheet1.png")), width, height);
         frameRegions = new TextureRegion[tRegions.length * tRegions[0].length];
         int index = 0;
-//        for (TextureRegion[] region : regions) {
-//            for (TextureRegion atRegion : region) {
-//                frameRegions[index++] = atRegion;
-//            }
-//        }
         for (TextureRegion[] tRegion : tRegions) {
             for (TextureRegion aTRegion : tRegion) {
                 frameRegions[index++] = aTRegion;
             }
         }
         float animSpeed = .2f;
-        nAnimation = new Animation(animSpeed, frameRegions[4], frameRegions[5], frameRegions[6], frameRegions[7]);
+        nAnimation = new Animation(animSpeed, frameRegions[7], frameRegions[6], frameRegions[5], frameRegions[4]);
         sAnimation = new Animation(animSpeed, frameRegions[0], frameRegions[1], frameRegions[2], frameRegions[3]);
         eAnimation = new Animation(animSpeed, frameRegions[8], frameRegions[9], frameRegions[10], frameRegions[11]);
-        wAnimation = new Animation(animSpeed, frameRegions[12], frameRegions[13], frameRegions[14], frameRegions[15]);
-        //wAnimation = new Animation(animSpeed, frameregion2[0], frameregion2[1], frameregion2[2], frameregion2[3]);
+        wAnimation = new Animation(animSpeed, frameRegions[15], frameRegions[14], frameRegions[13], frameRegions[12]);
+        nRest = new Animation(animSpeed, frameRegions[24], frameRegions[25], frameRegions[26], frameRegions[27]);
+        sRest = new Animation(animSpeed, frameRegions[31], frameRegions[30], frameRegions[29], frameRegions[28]);
+        eRest = new Animation(animSpeed, frameRegions[16], frameRegions[17], frameRegions[18],frameRegions[19]);
+        wRest = new Animation(animSpeed, frameRegions[23], frameRegions[22], frameRegions[21], frameRegions[20]);
         nAnimation.setPlayMode(Animation.LOOP);
         sAnimation.setPlayMode(Animation.LOOP);
         eAnimation.setPlayMode(Animation.LOOP);
         wAnimation.setPlayMode(Animation.LOOP);
+        nRest.setPlayMode(Animation.LOOP);
+        sRest.setPlayMode(Animation.LOOP);
+        eRest.setPlayMode(Animation.LOOP);
+        wRest.setPlayMode(Animation.LOOP);
         currentAnim = nAnimation;
         stateTime = 0;
         projectiles = new ArrayList<Projectile>();
         xDown = false;
     }
-
+    
     @Override
 	public void draw(SpriteBatch spriteBatch) {
 		spriteBatch.draw(currentAnim.getKeyFrame(stateTime), this.getX(), this.getY());
@@ -129,14 +140,16 @@ public class Player extends WorldObject {
 	public void createProjectile() {
 		ParticleProjectile projectile = new ParticleProjectile(this.getX() + (width / 2), this.getY() + (height / 2), Values.fireWandPool);
         float speed = .2f;
-		if (currentAnim == nAnimation) {
+		if (Gdx.input.isKeyPressed(Keys.UP)) {
 			projectile.body.applyLinearImpulse(0, speed, projectile.pos.x, projectile.pos.y, true);
-		}else if (currentAnim == sAnimation) {
+		}else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
 			projectile.body.applyLinearImpulse(0, -speed, projectile.pos.x, projectile.pos.y, true);
-		}else if (currentAnim == wAnimation) {
+		}else if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 			projectile.body.applyLinearImpulse(-speed, 0, projectile.pos.x,  projectile.pos.y, true);
-		}else if (currentAnim == eAnimation) {
+		}else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 			projectile.body.applyLinearImpulse(speed, 0, projectile.pos.x, projectile.pos.y, true);
+		} else {
+			projectile.body.applyLinearImpulse(0, speed, projectile.pos.x, projectile.pos.y, true);
 		}
 		projectile.sound.play();
 		projectiles.add(projectile);
@@ -157,47 +170,57 @@ public class Player extends WorldObject {
         projectiles.removeAll(itemsToRemove);
         float speed = 3f;
         xDown = Gdx.input.isKeyPressed(Keys.X);
-        if (!isWasd) {
-            if (Gdx.input.isKeyPressed(Keys.UP)) {
-                currentAnim = nAnimation;
-                this.body.setLinearVelocity(new Vector2(0, speed));
-                stateTime += Gdx.graphics.getDeltaTime();
-            } else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-                currentAnim = sAnimation;
-                this.body.setLinearVelocity(new Vector2(0, -speed));
-                stateTime += Gdx.graphics.getDeltaTime();
-            } else if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-                currentAnim = wAnimation;
-                this.body.setLinearVelocity(new Vector2(-speed, 0));
-                stateTime += Gdx.graphics.getDeltaTime();
-            } else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-                this.body.setLinearVelocity(new Vector2(speed, 0));
-                currentAnim = eAnimation;
-                stateTime += Gdx.graphics.getDeltaTime();
-            } else {
-                this.body.setLinearVelocity(0, 0);
-            }
+        if(!xDown) {
+        	//*********************ALL WILL CHANGE FOR OUYA, THIS IS TEST STUFFS************************
+	        if (!isWasd) {
+	            if (Gdx.input.isKeyPressed(Keys.UP)) {
+	            	isUp = true;
+	                this.body.setLinearVelocity(new Vector2(this.body.getLinearVelocity().x, speed));
+	                stateTime += Gdx.graphics.getDeltaTime();
+	            }
+	            if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+	            	isUp = false;
+	                this.body.setLinearVelocity(new Vector2(this.body.getLinearVelocity().x, -speed));
+	                stateTime += Gdx.graphics.getDeltaTime();
+	            }
+	            if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+	            	isRight = false;
+	                this.body.setLinearVelocity(new Vector2(-speed, this.body.getLinearVelocity().y));
+	                stateTime += Gdx.graphics.getDeltaTime();
+	            }
+	            if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+	            	isRight = true;
+	                this.body.setLinearVelocity(new Vector2(speed, this.body.getLinearVelocity().y));
+	                stateTime += Gdx.graphics.getDeltaTime();
+	            }
+	            if (!Gdx.input.isKeyPressed(Keys.UP)&&!Gdx.input.isKeyPressed(Keys.DOWN)&&!Gdx.input.isKeyPressed(Keys.LEFT)&&!Gdx.input.isKeyPressed(Keys.RIGHT)) {
+	                this.body.setLinearVelocity(0, 0);
+	                stateTime += Gdx.graphics.getDeltaTime();
+	            }
+	            animate();
+	        }
+	        if (isWasd) {
+	            if (Gdx.input.isKeyPressed(Keys.W)) {
+	                currentAnim = nAnimation;
+	                this.body.setLinearVelocity(new Vector2(0, speed));
+	                stateTime += Gdx.graphics.getDeltaTime();
+	            } else if (Gdx.input.isKeyPressed(Keys.S)) {
+	                currentAnim = sAnimation;
+	                this.body.setLinearVelocity(new Vector2(0, -speed));
+	                stateTime += Gdx.graphics.getDeltaTime();
+	            } else if (Gdx.input.isKeyPressed(Keys.A)) {
+	                currentAnim = wAnimation;
+	                this.body.setLinearVelocity(new Vector2(-speed, 0));
+	                stateTime += Gdx.graphics.getDeltaTime();
+	            } else if (Gdx.input.isKeyPressed(Keys.D)) {
+	                this.body.setLinearVelocity(new Vector2(speed, 0));
+	                currentAnim = eAnimation;
+	                stateTime += Gdx.graphics.getDeltaTime();
+	            } else {
+	                this.body.setLinearVelocity(0, 0);
+	            }
+	    //***********************END TEST STUFFS*******************************************
         }
-        if (isWasd) {
-            if (Gdx.input.isKeyPressed(Keys.W)) {
-                currentAnim = nAnimation;
-                this.body.setLinearVelocity(new Vector2(0, speed));
-                stateTime += Gdx.graphics.getDeltaTime();
-            } else if (Gdx.input.isKeyPressed(Keys.S)) {
-                currentAnim = sAnimation;
-                this.body.setLinearVelocity(new Vector2(0, -speed));
-                stateTime += Gdx.graphics.getDeltaTime();
-            } else if (Gdx.input.isKeyPressed(Keys.A)) {
-                currentAnim = wAnimation;
-                this.body.setLinearVelocity(new Vector2(-speed, 0));
-                stateTime += Gdx.graphics.getDeltaTime();
-            } else if (Gdx.input.isKeyPressed(Keys.D)) {
-                this.body.setLinearVelocity(new Vector2(speed, 0));
-                currentAnim = eAnimation;
-                stateTime += Gdx.graphics.getDeltaTime();
-            } else {
-                this.body.setLinearVelocity(0, 0);
-            }
         }
         setX((this.body.getPosition().x * Values.BOX_PIXEL) - (width / 2));
         setY((this.body.getPosition().y * Values.BOX_PIXEL) - (height / 2));
@@ -205,6 +228,7 @@ public class Player extends WorldObject {
         camera.position.y = this.getY();
         lightCamera.position.x = this.getX() * Values.PIXEL_BOX;
         lightCamera.position.y = this.getY() * Values.PIXEL_BOX;
+        
     }
 
     public int getCoin() {
@@ -218,6 +242,31 @@ public class Player extends WorldObject {
 	public void addCoin(float coin) {
 		this.coin += coin;
 		System.out.println(this.coin);
+	}
+	
+	public void animate() {
+		if (!Gdx.input.isKeyPressed(Keys.UP)&&!Gdx.input.isKeyPressed(Keys.DOWN)&&!Gdx.input.isKeyPressed(Keys.LEFT)&&!Gdx.input.isKeyPressed(Keys.RIGHT)) {
+			//stateTime = 0;
+			if (isRight && !isUp) {
+            	currentAnim = eRest;
+            } else if (!isRight && !isUp) {
+            	currentAnim = wRest;
+            } else if (isRight && isUp) {
+            	currentAnim = nRest;
+            } else {
+            	currentAnim = sRest;
+            }
+		} else {
+			if (isRight && !isUp) {
+            	currentAnim = eAnimation;
+            } else if (!isRight && !isUp) {
+            	currentAnim = wAnimation;
+            } else if (isRight && isUp) {
+            	currentAnim = sAnimation;
+            } else {
+            	currentAnim = nAnimation;
+            }
+		}
 	}
 
 }

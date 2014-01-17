@@ -74,7 +74,7 @@ public class HUD extends Sprite {
 		
 		label.setText("Clams: " + coin);
 		if (dialogText != null) {
-			dialog = new Dialog("Chest3", style);
+			dialog = new Dialog("Dialog", style);
 			dialog.text(new Label(dialogText, new LabelStyle(new BitmapFont(), Color.WHITE)));
 			dialog.fadeDuration = 10;
 			dialog.setHeight(50);
