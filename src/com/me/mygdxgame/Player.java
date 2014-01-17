@@ -50,7 +50,7 @@ public class Player extends WorldObject {
 	public boolean isRight;
 	
 	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd) {
-        super(Player.createBody(x, y, 16, 28), true);
+        super(Player.createBody(x, y, 16, 28), false);
 		this.camera = camera;
 		this.lightCamera = lightCamera;
         this.isWasd = isWasd;
