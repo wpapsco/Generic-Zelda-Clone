@@ -440,4 +440,8 @@ public class GameScreen implements Screen, InputProcessor {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
 }
