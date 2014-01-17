@@ -220,6 +220,7 @@ public class Player extends WorldObject {
 	                this.body.setLinearVelocity(0, 0);
 	            }
 	    //***********************END TEST STUFFS*******************************************
+        //testing git! Woo this is totally a test!
         }
         }
         setX((this.body.getPosition().x * Values.BOX_PIXEL) - (width / 2));
