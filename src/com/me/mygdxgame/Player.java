@@ -50,7 +50,7 @@ public class Player extends WorldObject {
 	public boolean isRight;
 	
 	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd) {
-        super(Player.createBody(x, y, 16, 28), true);
+        super(Player.createBody(x, y, 16, 28, (short) -1), true);
 		this.camera = camera;
 		this.lightCamera = lightCamera;
         this.isWasd = isWasd;
@@ -64,7 +64,7 @@ public class Player extends WorldObject {
         
 	}
 
-	private static Body createBody(int x, int y, int tWidth, int tHeight) {
+	public static Body createBody(float x, float y, int tWidth, int tHeight, short gIndex) {
 		BodyDef def = new BodyDef();
 		def.fixedRotation = true;
 		def.position.set(x * Values.PIXEL_BOX, y * Values.PIXEL_BOX);
@@ -86,7 +86,7 @@ public class Player extends WorldObject {
         FixtureDef fixDef = new FixtureDef();
         fixDef.shape = shape;
         fixDef.density = 1f;
-        fixDef.filter.groupIndex = -1;
+        fixDef.filter.groupIndex = gIndex;
 		body.createFixture(fixDef);
 
         return body;

@@ -104,7 +104,9 @@ public class GameScreen implements Screen, InputProcessor {
 		light.attachToBody(players.get(0).body, 0, 0);
         //add(players.get(0));
         //add(players.get(1));
-		
+
+
+        sprites.add(new NudeDude(this, new Vector2(90, 100)));
 	}
 
     private void makeParticleEffects() {
