@@ -64,8 +64,8 @@ public class Projectile extends WorldObject {
     @Override
     public void update() {
         super.update();
-        setX((this.body.getPosition().x * Values.BOX_PIXEL) - (getWidth() / 2));
-        setY((this.body.getPosition().y * Values.BOX_PIXEL) - (getHeight() / 2));
+//        setX((this.body.getPosition().x * Values.BOX_PIXEL) - (getWidth() / 2));
+//        setY((this.body.getPosition().y * Values.BOX_PIXEL) - (getHeight() / 2));
     }
 
     public void destroy() {

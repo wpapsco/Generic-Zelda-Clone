@@ -315,9 +315,9 @@ public class GameScreen implements Screen, InputProcessor {
 		for (int j = 0; j < objects.getCount(); j++) {
 			for (int i = 0; i < objects.getCount(); i++) {
 				if (objects.get(i) instanceof RectangleMapObject && 
-					((RectangleMapObject) objects.get(i)).getRectangle().contains(player.getX(), player.getY())) {		
+					((RectangleMapObject) objects.get(i)).getRectangle().contains(player.getSprite().getX(), player.getSprite().getY())) {
 					RectangleMapObject rect = (RectangleMapObject) objects.get(i);
-					if (rect.getRectangle().overlaps(player.getBoundingRectangle()) && 
+					if (rect.getRectangle().overlaps(player.getSprite().getBoundingRectangle()) &&
 						rect.getProperties().get("enabled").equals("true")) {
 						int order = 0;
 						if (rect.getProperties().get("call_order") != null) {

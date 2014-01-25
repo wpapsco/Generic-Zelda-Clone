@@ -54,7 +54,6 @@ public class Player extends WorldObject {
 		this.camera = camera;
 		this.lightCamera = lightCamera;
         this.isWasd = isWasd;
-        this.setRegion(currentAnim.getKeyFrame(stateTime));
         coin = 100;
         hudCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         health = 2;
@@ -127,18 +126,22 @@ public class Player extends WorldObject {
         stateTime = 0;
         projectiles = new ArrayList<Projectile>();
         xDown = false;
+        sprite = new Sprite(currentAnim.getKeyFrame(stateTime));
+
+        sprite.setRegion(currentAnim.getKeyFrame(stateTime));
     }
     
     @Override
 	public void draw(SpriteBatch spriteBatch) {
-		spriteBatch.draw(currentAnim.getKeyFrame(stateTime), this.getX(), this.getY());
+        super.draw(spriteBatch);
+        sprite.setRegion(currentAnim.getKeyFrame(stateTime));
         for (int i = 0; i < projectiles.size(); i++) {
             projectiles.get(i).draw(spriteBatch);
         }
 	}
 	
 	public void createProjectile() {
-		ParticleProjectile projectile = new ParticleProjectile(this.getX() + (width / 2), this.getY() + (height / 2), Values.fireWandPool);
+		ParticleProjectile projectile = new ParticleProjectile(sprite.getX() + (width / 2), sprite.getY() + (height / 2), Values.fireWandPool);
         float speed = .2f;
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
 			projectile.body.applyLinearImpulse(0, speed, projectile.pos.x, projectile.pos.y, true);
@@ -223,12 +226,10 @@ public class Player extends WorldObject {
         //testing git! Woo this is totally a test!
         }
         }
-        setX((this.body.getPosition().x * Values.BOX_PIXEL) - (width / 2));
-        setY((this.body.getPosition().y * Values.BOX_PIXEL) - (height / 2));
-        camera.position.x = this.getX();
-        camera.position.y = this.getY();
-        lightCamera.position.x = this.getX() * Values.PIXEL_BOX;
-        lightCamera.position.y = this.getY() * Values.PIXEL_BOX;
+        camera.position.x = sprite.getX();
+        camera.position.y = sprite.getY();
+        lightCamera.position.x = sprite.getX() * Values.PIXEL_BOX;
+        lightCamera.position.y = sprite.getY() * Values.PIXEL_BOX;
         
     }
 

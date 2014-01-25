@@ -17,12 +17,16 @@ public abstract class NPC extends WorldObject {
 
     public abstract void idle();
 
+    public abstract void follow();
+
     @Override
     public void update() {
         super.update();
         for (Player player : screen.getPlayers()) {
             if (MathThing.getDistance(player.getPosition(), this.getPosition()) > idleDistance) {
                 idle();
+            } else {
+                follow();
             }
         }
     }
