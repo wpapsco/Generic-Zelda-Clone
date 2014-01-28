@@ -16,8 +16,8 @@ public abstract class Enemy extends NPC {
     @Override
     public void follow(Player player) {
         Vector2 newVel = new Vector2();
-        newVel.x = player.getPosition().x - this.getPosition().x;
-        newVel.y = player.getPosition().y - this.getPosition().y;
+        newVel.x = (player.getPosition().x + (player.sprite.getWidth() / 2)) - this.getPosition().x;
+        newVel.y = (player.getPosition().y + (player.sprite.getHeight() / 2)) - this.getPosition().y;
         newVel.nor();
         newVel.scl(speed);
         body.setLinearVelocity(newVel);
