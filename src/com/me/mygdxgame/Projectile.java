@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Projectile extends WorldObject {
@@ -21,6 +22,7 @@ public class Projectile extends WorldObject {
     public boolean destroyOnContact;
     public boolean isDestroyed = false;
     protected Sound sound;
+    protected static Fixture fixture;
 
     public Projectile(float x, float y, boolean isFlammable, boolean destroyOnContact) {
         super(new Texture(Gdx.files.internal("data/BigBooty.png")), Projectile.createBody(x, y), isFlammable);
@@ -48,7 +50,7 @@ public class Projectile extends WorldObject {
         fixtureDef.filter.groupIndex = -1;
 		
 		Body body = Values.world.createBody(def);
-		body.createFixture(fixtureDef);
+		fixture = body.createFixture(fixtureDef);
 		
 		circle.dispose();
 
@@ -66,6 +68,9 @@ public class Projectile extends WorldObject {
         super.update();
         setX((this.body.getPosition().x * Values.BOX_PIXEL) - (getWidth() / 2));
         setY((this.body.getPosition().y * Values.BOX_PIXEL) - (getHeight() / 2));
+        if (isDestroyed) {
+        	this.body.destroyFixture(fixture);
+        }
     }
 
     public void destroy() {

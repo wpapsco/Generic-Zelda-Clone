@@ -85,7 +85,7 @@ public class GameScreen implements Screen, InputProcessor {
 		players.add(new Player(
 				Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())), 
 				Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())), 
-				game.camera, game.lightCamera, false
+				game.camera, game.lightCamera, false, "data/Bully_Sheet.png"
         ));
         OrthographicCamera camera = new OrthographicCamera(game.camera.viewportWidth, game.camera.viewportHeight);
         camera.view.set(game.camera.view);
@@ -97,7 +97,7 @@ public class GameScreen implements Screen, InputProcessor {
 	        players.add(new Player(
 	                Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
 	                Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
-	                camera, lightCamera, true
+	                camera, lightCamera, true, "data/Base_Sheet.png"
 	        		));
         }
 

@@ -19,10 +19,11 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class Player extends WorldObject {
+public class Player extends WorldObject {//Character {
 	
 	private int coin;
     protected boolean isWasd;
+    //*********
 	protected TextureRegion[] frameRegions;
 	protected TextureRegion[] frameregion2;
 	protected Animation nAnimation;
@@ -34,13 +35,16 @@ public class Player extends WorldObject {
 	protected Animation eRest;
 	protected Animation wRest;
 	protected Animation currentAnim;
+    //************
 	protected OrthographicCamera camera;
 	protected OrthographicCamera lightCamera;
 	protected OrthographicCamera hudCam;
 	public HUD hud;
+	//**********
 	protected float stateTime;
 	public int width;
 	public int height;
+	//**********
 	public boolean xDown; //temp iskeydown X
 	public boolean zDown;
 	public ArrayList<Projectile> projectiles;
@@ -49,12 +53,13 @@ public class Player extends WorldObject {
 	public boolean isUp;
 	public boolean isRight;
 	
-	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd) {
-        super(Player.createBody(x, y, 16, 28), false);
+	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd, String texturePath) {
+        super(Player.createBody(x, y, 16, 28), false);//, null);
+//        setTexturePath(texturePath);
 		this.camera = camera;
 		this.lightCamera = lightCamera;
         this.isWasd = isWasd;
-        this.setRegion(currentAnim.getKeyFrame(stateTime));
+        //this.setRegion(currentAnim.getKeyFrame(stateTime));
         coin = 100;
         hudCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         health = 2;
@@ -96,9 +101,11 @@ public class Player extends WorldObject {
     @Override
     public void create() {
         super.create();
+        
+        //********************************
         width = 16;
         height = 28;
-        TextureRegion[][] tRegions = Sprite.split(new Texture(Gdx.files.internal("data/Bully_Sheet1.png")), width, height);
+        TextureRegion[][] tRegions = Sprite.split(new Texture(Gdx.files.internal("data/Bookworm_Sheet1.png")), width, height);
         frameRegions = new TextureRegion[tRegions.length * tRegions[0].length];
         int index = 0;
         for (TextureRegion[] tRegion : tRegions) {
@@ -125,6 +132,7 @@ public class Player extends WorldObject {
         wRest.setPlayMode(Animation.LOOP);
         currentAnim = nAnimation;
         stateTime = 0;
+        //*************************************8
         projectiles = new ArrayList<Projectile>();
         xDown = false;
     }

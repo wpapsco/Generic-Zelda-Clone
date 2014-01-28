@@ -42,6 +42,7 @@ public class HUD extends Sprite {
 		stage.setCamera(camera);
 		stage.setViewport(Gdx.graphics.getWidth() / GZCGame.scale, Gdx.graphics.getHeight() / GZCGame.scale);
 		table = new Table();
+		stage.addActor(table);
 		table.setFillParent(true);
 		table.top();
 		label = new Label("Clams: " + coin, new LabelStyle(new BitmapFont(), Color.WHITE));
@@ -52,7 +53,7 @@ public class HUD extends Sprite {
 		style.titleFontColor = Color.WHITE;
 		table.debugTable();
 		
-		stage.addActor(table);
+		
 		table.addActor(label);
 	}
 
@@ -74,7 +75,7 @@ public class HUD extends Sprite {
 		
 		label.setText("Clams: " + coin);
 		if (dialogText != null) {
-			dialog = new Dialog("D", style);
+			dialog = new Dialog("Dialog", style);
 			dialog.text(new Label(dialogText, new LabelStyle(new BitmapFont(), Color.WHITE)));
 			dialog.fadeDuration = 10;
 			dialog.setHeight(50);

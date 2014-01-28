@@ -1,12 +1,17 @@
 package com.me.mygdxgame;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 
 
 public class Character extends WorldObject {
 	
+	protected int width, height, stateTime;
+	protected String path;
 	protected TextureRegion[] frameRegions;
 	protected Animation nAnimation;
 	protected Animation sAnimation;
@@ -18,8 +23,32 @@ public class Character extends WorldObject {
 	protected Animation wRest;
 	protected Animation currentAnim;
 	
-	public Character(Body body, boolean isFlammable, String path) {
+	public boolean isUp;
+	public boolean isRight;
+	
+	
+	public Character(Body body, boolean isFlammable, String texturePath) {
 		super(body, isFlammable);
+		System.out.println("Hits");
+		this.path = texturePath;
+		//create();
+	}
+	
+	@Override
+	public void create() {
+		super.create();
+		
+		width = 16;
+        height = 28;
+        setTexturePath(path);
+		TextureRegion[][] tRegions = Sprite.split(new Texture(Gdx.files.internal(path)), width, height);
+        frameRegions = new TextureRegion[tRegions.length * tRegions[0].length];
+        int index = 0;
+        for (TextureRegion[] tRegion : tRegions) {
+            for (TextureRegion aTRegion : tRegion) {
+                frameRegions[index++] = aTRegion;
+            }
+        }
 		
 		float animSpeed = .2f;
 		
@@ -40,11 +69,17 @@ public class Character extends WorldObject {
         eRest.setPlayMode(Animation.LOOP);
         wRest.setPlayMode(Animation.LOOP);
         currentAnim = nAnimation;
-		
+        stateTime = 0;
+        isUp = false;
+        isRight = true;
 	}
 	
 	public Animation getAnimation() {
 		return currentAnim;
+	}
+	
+	public void setTexturePath(String texturePath) {
+		this.path = texturePath;
 	}
 }
 
