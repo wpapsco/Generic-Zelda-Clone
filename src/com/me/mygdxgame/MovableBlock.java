@@ -16,19 +16,23 @@ public class MovableBlock extends WorldObject {
     private PointLight flameLight;
 
 	public MovableBlock(TextureRegion region, Body body) {
-        super(body, true);
+        super(region, body, true);
 		this.body = body;
 		this.region = region;
-		this.setRegion(region);
         //this.setTexture(region.getTexture());
 	}
 
     @Override
 	public void draw(SpriteBatch spriteBatch) {
-		this.setX((body.getPosition().x * Values.BOX_PIXEL) - (region.getRegionWidth() / 2));
-		this.setY((body.getPosition().y * Values.BOX_PIXEL) - (region.getRegionHeight() / 2));
-        //effect.setPosition(body.getPosition().x * Values.BOX_PIXEL, body.getPosition().y * Values.BOX_PIXEL);
-		spriteBatch.draw(region, this.getX(), this.getY());
         super.draw(spriteBatch);
+//		this.setX((body.getPosition().x * Values.BOX_PIXEL) - (region.getRegionWidth() / 2));
+//		this.setY((body.getPosition().y * Values.BOX_PIXEL) - (region.getRegionHeight() / 2));
+        //effect.setPosition(body.getPosition().x * Values.BOX_PIXEL, body.getPosition().y * Values.BOX_PIXEL);
+//		spriteBatch.draw(region, this.getX(), this.getY());
 	}
+
+    @Override
+    public void create() {
+        super.create();
+    }
 }

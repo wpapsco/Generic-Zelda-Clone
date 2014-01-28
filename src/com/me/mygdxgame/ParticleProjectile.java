@@ -37,7 +37,7 @@ public class ParticleProjectile extends Projectile {
     @Override
     public void update() {
         super.update();
-        effect.setPosition(this.getX() + (getWidth() / 2), this.getY() + (getWidth() / 2));
+        effect.setPosition(sprite.getX() + (sprite.getWidth() / 2), sprite.getY() + (sprite.getWidth() / 2));
         effect.update(Gdx.graphics.getDeltaTime());
     }
 

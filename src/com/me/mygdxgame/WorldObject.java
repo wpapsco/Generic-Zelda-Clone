@@ -5,70 +5,44 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
 /**
  * Created by William on 1/10/14.
  */
-public abstract class WorldObject extends Sprite {
+public abstract class WorldObject {
     protected boolean isFlammable;
     protected boolean isFlaming;
     protected ParticleEffect flamingEffect;
     protected PointLight flameLight;
     protected Body body;
+    protected Sprite sprite;
 
     public WorldObject(Body body, boolean isFlammable) {
         this.isFlammable = isFlammable;
         this.body = body;
         create();
+        postCreate();
     }
 
     public WorldObject(Texture texture, Body body, boolean isFlammable) {
-        super(texture);
+        sprite = new Sprite(texture);
         this.body = body;
         this.isFlammable = isFlammable;
         create();
+        postCreate();
     }
 
-    @Override
-    public void draw(SpriteBatch spriteBatch) {
-        super.draw(spriteBatch);
-        if (isFlaming && isFlammable) {
-            flamingEffect.draw(spriteBatch);
-        }
+    public WorldObject(TextureRegion region, Body body, boolean isFlammable) {
+        sprite = new Sprite(region);
+        this.body = body;
+        this.isFlammable = isFlammable;
+        create();
+        postCreate();
     }
 
-    public void update() {
-        if (isFlammable) {
-            flamingEffect.setPosition(this.getX() + (getRegionWidth() / 2), this.getY() + (getRegionHeight() / 2));
-            flamingEffect.update(Gdx.graphics.getDeltaTime());
-        }
-    }
-
-    @Override
-    public void setRegion(TextureRegion region) {
-        super.setRegion(region);
-        for (ParticleEmitter emitter : flamingEffect.getEmitters()) {
-            emitter.getSpawnWidth().setHigh(getRegionWidth());
-            emitter.getSpawnHeight().setHigh(getRegionHeight());
-            flameLight.setDistance(getRegionWidth() * 4 * Values.PIXEL_BOX);
-        }
-        flamingEffect.start();
-    }
-
-    @Override
-    public void setTexture(Texture texture) {
-        super.setTexture(texture);
-        setRegionHeight(texture.getHeight());
-        setRegionWidth(texture.getWidth());
-    }
-
-    public void setFlaming(boolean flaming) {
-        this.isFlaming = flaming;
-        flameLight.setActive(true);
-    }
-
-    public void create() {
+    private void postCreate() {
         body.setUserData(this);
         if (isFlammable) {
 
@@ -78,10 +52,44 @@ public abstract class WorldObject extends Sprite {
 
             flamingEffect = Values.flamingThingsPool.obtain();
             for (ParticleEmitter emitter : flamingEffect.getEmitters()) {
-                emitter.getSpawnWidth().setHigh(getRegionWidth());
-                emitter.getSpawnHeight().setHigh(getRegionHeight());
+                emitter.getSpawnWidth().setHigh(sprite.getWidth());
+                emitter.getSpawnHeight().setHigh(sprite.getHeight());
             }
             flamingEffect.start();
         }
+    }
+
+    public void draw(SpriteBatch spriteBatch) {
+        sprite.draw(spriteBatch);
+        if (isFlaming && isFlammable) {
+            flamingEffect.draw(spriteBatch);
+        }
+    }
+
+    public void update() {
+        if (sprite != null) {
+            if (isFlammable) {
+                flamingEffect.setPosition(sprite.getX() + (sprite.getWidth() / 2), sprite.getY() + (sprite.getHeight() / 2));
+                flamingEffect.update(Gdx.graphics.getDeltaTime());
+            }
+            sprite.setPosition((body.getPosition().x * Values.BOX_PIXEL) - (sprite.getWidth() / 2), (body.getPosition().y * Values.BOX_PIXEL) - (sprite.getHeight() / 2));
+        }
+    }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public void setFlaming(boolean flaming) {
+        this.isFlaming = flaming;
+        flameLight.setActive(true);
+    }
+
+    public void create() {
+
+    }
+
+    public Vector2 getPosition() {
+        return new Vector2(sprite.getX(), sprite.getY());
     }
 }

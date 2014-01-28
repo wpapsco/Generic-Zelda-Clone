@@ -53,12 +53,21 @@ public class Player extends WorldObject {//Character {
 	public boolean isUp;
 	public boolean isRight;
 	
+<<<<<<< HEAD
 	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd, String texturePath) {
-        super(Player.createBody(x, y, 16, 28, (short) -1), true);
+        super(Player.createBody(x, y, 16, 28), false);//, null);
 //        setTexturePath(texturePath);
 		this.camera = camera;
 		this.lightCamera = lightCamera;
         this.isWasd = isWasd;
+        //this.setRegion(currentAnim.getKeyFrame(stateTime));
+=======
+	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd) {
+        super(Player.createBody(x, y, 16, 28, (short) -1), true);
+		this.camera = camera;
+		this.lightCamera = lightCamera;
+        this.isWasd = isWasd;
+>>>>>>> origin/Will's_Totally_Epic_Branch_of_Development
         coin = 100;
         hudCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         health = 2;
