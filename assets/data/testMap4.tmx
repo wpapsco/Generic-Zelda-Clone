@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="40" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="StartX" value="15"/>
+  <property name="StartY" value="38"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="testingTiles2" tilewidth="32" tileheight="32" spacing="2">
+  <image source="testingTiles2.png" width="136" height="66"/>
+ </tileset>
+ <layer name="floor" width="30" height="40">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt1bEKACAIAFFd/P9Pbg+DCC3MGx5Ey1kNqYhoMdas/XPTNtbRc9mi5+1HN70ZvHNnNE/vPPPNb+nSpP2uDVQ3/0e/dwEAQD0DqqcFWw==
+  </data>
+ </layer>
+ <layer name="walls" width="30" height="40">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt1tEKwCAIBVBp/f837zWGOvViNuYFoYfceXHVIKJRVLujufNR1lj6rK43qIum3Xa5HsT+4n9UfW5YbWuP19Vsz/6Iy33Ls3d1kTss6x6MzrOWdve60hyi59W6XuvE91W77bab605hneVy92rkLfTmXkp59kiu1ou4Uv3VtWbXXGk+t8520VS7FXUDBzsEKQ==
+  </data>
+ </layer>
+ <layer name="Characters" width="30" height="40">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20ND6AAAAAA4NcAEsAAAQ==
+  </data>
+ </layer>
+ <layer name="hiddenPassages" width="30" height="40">
+  <properties>
+   <property name="cast_shadow" value="true"/>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzTEKAAAIxLAD//9nF2dnkQQ6NwEAAID7avL9+YVNA2GwABk=
+  </data>
+ </layer>
+ <layer name="moveableBlocks" width="30" height="40">
+  <properties>
+   <property name="collide" value="true"/>
+   <property name="moveable" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt1jEKACAIhWEX6Zrd/xQtDS22RE+j/4OgSfFhkFktbtZVNdppo6TaryFnDXLWIGeNF3L2eXBfRs4Z79GDu6LfSjF71EM994+7BQCV8b/CzgAhSwFp
+  </data>
+ </layer>
+ <layer name="Lights" width="30" height="40">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20ND6AAAAAA4NcAEsAAAQ==
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="30" height="40">
+  <object x="2" y="1085" width="192" height="192">
+   <ellipse/>
+  </object>
+  <object x="197" y="1086" width="192" height="192">
+   <ellipse/>
+  </object>
+  <object x="571" y="1084" width="192" height="192">
+   <ellipse/>
+  </object>
+  <object x="764" y="1087" width="192" height="192">
+   <ellipse/>
+  </object>
+  <object x="383" y="1085" width="192" height="192">
+   <properties>
+    <property name="LightColor" value="0.557,0.999,0,1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="384" y="128" width="192" height="192">
+   <ellipse/>
+  </object>
+  <object x="896" y="448" width="32" height="32">
+   <properties>
+    <property name="display_text" value="wow i hate you"/>
+    <property name="interaction_type" value="block"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
