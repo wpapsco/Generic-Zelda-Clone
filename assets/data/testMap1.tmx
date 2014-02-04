@@ -62,64 +62,154 @@
   </data>
  </layer>
  <objectgroup name="Object Interactions" width="30" height="20">
-  <object name="Chest 1" x="896" y="480" width="32" height="56">
+  <object name="Chest 1" type="Interaction" x="896" y="480" width="32" height="64">
    <properties>
     <property name="add_coin" value="-20"/>
     <property name="display_text" value="Fuck! A theif!"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="interaction"/>
    </properties>
   </object>
-  <object name="Chest 2 Money" x="896" y="32" width="33" height="62">
+  <object name="Chest 2 Money" type="Interaction" x="896" y="32" width="33" height="62">
    <properties>
     <property name="add_coin" value="50"/>
     <property name="call_order" value="1"/>
     <property name="disable_object" value="Chest 2 Money"/>
     <property name="display_text" value="Cool! A chest! I found 50 coin!"/>
     <property name="enable_object" value="Chest 2 No Money"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="interaction"/>
    </properties>
   </object>
-  <object name="Chest 2 No Money" x="897" y="33" width="32" height="60">
+  <object name="Chest 2 No Money" type="Interaction" x="896" y="32" width="32" height="64">
    <properties>
     <property name="call_order" value="0"/>
     <property name="display_text" value="Too bad there's no money here."/>
     <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="interaction"/>
    </properties>
   </object>
-  <object name="BlocksLight" x="180" y="48" width="203" height="203">
+  <object x="-44" y="416" width="229" height="229">
    <properties>
-    <property name="LightColor" value="0, 0, 0, 1"/>
+    <property name="type" value="light"/>
    </properties>
    <ellipse/>
   </object>
-  <object x="333" y="382" width="229" height="229">
-   <ellipse/>
-  </object>
-  <object x="-52" y="429" width="229" height="229">
-   <ellipse/>
-  </object>
-  <object x="34" y="429" width="229" height="229">
-   <ellipse/>
-  </object>
-  <object x="-52" y="95" width="229" height="229">
-   <ellipse/>
-  </object>
-  <object x="462" y="44" width="229" height="229">
-   <ellipse/>
-  </object>
-  <object x="494" y="273" width="229" height="229">
-   <ellipse/>
-  </object>
-  <object x="762" y="305" width="229" height="229">
-   <ellipse/>
-  </object>
-  <object x="896" y="576" width="32" height="32">
+  <object type="Interaction" x="896" y="576" width="32" height="32">
    <properties>
     <property name="change_map" value="data/testMap2.tmx"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="interaction"/>
    </properties>
   </object>
   <object name="Chest3" x="34" y="542" width="31" height="65">
    <properties>
     <property name="add_coin" value="30"/>
     <property name="display_text" value="Ya got some coins, bud."/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="interaction"/>
+   </properties>
+  </object>
+  <object name="blockDetector" type="Interaction" x="416" y="256" width="32" height="32">
+   <properties>
+    <property name="disable_object" value="blockDetector"/>
+    <property name="display_text" value="fucking blocks!"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="interaction"/>
+   </properties>
+  </object>
+  <object name="door1" type="Door" x="416" y="480" width="32" height="32">
+   <properties>
+    <property name="closed" value="1"/>
+    <property name="opened" value="5"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object x="52" y="418" width="229" height="229">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="-55" y="145" width="229" height="229">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="170" y="35" width="229" height="229">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="217" y="366" width="229" height="229">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="442" y="365" width="229" height="229">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="451" y="35" width="229" height="229">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="752" y="5" width="229" height="229">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="703" y="380" width="229" height="229">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="384" y="480" width="48" height="32">
+   <properties>
+    <property name="interaction_type" value="player"/>
+    <property name="open_door" value="door1"/>
+    <property name="type" value="interaction"/>
+   </properties>
+  </object>
+  <object name="door2" type="Door" x="448" y="480" width="32" height="32">
+   <properties>
+    <property name="closed" value="4"/>
+    <property name="opened" value="5"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object x="384" y="480" width="48" height="32">
+   <properties>
+    <property name="display_text" value="you opened a door!"/>
+    <property name="interaction_type" value="player"/>
+    <property name="open_door" value="door2"/>
+    <property name="type" value="interaction"/>
+   </properties>
+  </object>
+  <object x="464" y="480" width="48" height="32">
+   <properties>
+    <property name="close_door" value="door1"/>
+    <property name="display_text" value="you closed a door!"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="interaction"/>
+   </properties>
+  </object>
+  <object x="464" y="480" width="48" height="32">
+   <properties>
+    <property name="close_door" value="door2"/>
+    <property name="display_text" value="you closed a door!"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="interaction"/>
    </properties>
   </object>
  </objectgroup>

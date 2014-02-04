@@ -20,13 +20,16 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -44,9 +47,11 @@ public class GameScreen implements Screen, InputProcessor {
 	protected TiledMap map;
 	protected ArrayList<Body> bodyWalls;
 	protected ArrayList<FlickeringLight> lights;
+    protected ArrayList<MapObject> interactions;
 	protected PointLight light;
 	protected MapObjects objects;
 	protected ArrayList<Player> players;
+    protected ArrayList<Door> doors;
 	protected HUD pHud;
 	public int pNum;
 	protected Music sound;
@@ -63,6 +68,8 @@ public class GameScreen implements Screen, InputProcessor {
 		sprites = new ArrayList<WorldObject>();
 		lights = new ArrayList<FlickeringLight>();
         players = new ArrayList<Player>();
+        interactions = new ArrayList<MapObject>();
+        doors = new ArrayList<Door>();
 		objects = new MapObjects();
 		TmxMapLoader loader = new TmxMapLoader();
 		map = loader.load(mapLocation);
@@ -102,9 +109,6 @@ public class GameScreen implements Screen, InputProcessor {
         }
 
 		light.attachToBody(players.get(0).body, 0, 0);
-        //add(players.get(0));
-        //add(players.get(1));
-
 
         sprites.add(new NudeDude(this, new Vector2(90, 100)));
 	}
@@ -152,11 +156,23 @@ public class GameScreen implements Screen, InputProcessor {
 			} else {
 				MapObjects objects = map.getLayers().get(i).getObjects();
 				for (int j = 0; j < objects.getCount(); j++) {
+                    if (objects.get(j).getProperties().get("type").equals("interaction")) {
+                        interactions.add(objects.get(j));
+                    }
+                    if (objects.get(j).getProperties().get("type").equals("door")) {
+                        Rectangle r = ((RectangleMapObject) objects.get(j)).getRectangle();
+                        TiledMapTile openTile = map.getTileSets().getTileSet(0).getTile(Integer.parseInt((String) objects.get(j).getProperties().get("opened")));
+                        TiledMapTile closedTile = map.getTileSets().getTileSet(0).getTile(Integer.parseInt((String) objects.get(j).getProperties().get("closed")));
+                        Door door = new Door(
+                                openTile.getTextureRegion(), closedTile.getTextureRegion(),
+                                false, new Vector2(r.x * Values.PIXEL_BOX, r.y * Values.PIXEL_BOX), new Vector2(r.getWidth() * Values.PIXEL_BOX, r.getHeight() * Values.PIXEL_BOX), objects.get(j).getName());
+                        doors.add(door);
+                    }
 					this.objects.add(objects.get(j));
 					if (objects.get(j).getProperties().get("enabled") == null) {
 						objects.get(j).getProperties().put("enabled", "true");
 					}
-					if (objects.get(j) instanceof EllipseMapObject) {
+					if (objects.get(j) instanceof EllipseMapObject && objects.get(j).getProperties().get("type").equals("light")) {
 						EllipseMapObject ellipse = (EllipseMapObject) objects.get(j);
 						float radius = (ellipse.getEllipse().height + ellipse.getEllipse().width) / 2;
 						float centerX = ellipse.getEllipse().x + (ellipse.getEllipse().width / 2);
@@ -202,7 +218,7 @@ public class GameScreen implements Screen, InputProcessor {
 		} else {
 			float boxWidth = (tileWidth - 1) * Values.PIXEL_BOX;
 			float boxHeight = (tileHeight - 1) * Values.PIXEL_BOX;
-			float percentTruncation = .05f;
+			float percentTruncation = .2f;
 			Vector2[] points = new Vector2[] {
 					//making a truncated square
 				    new Vector2(-(boxWidth / 2) + (boxWidth * percentTruncation), boxHeight / 2),     //top left
@@ -232,6 +248,9 @@ public class GameScreen implements Screen, InputProcessor {
         for (int i = 0; i < map.getLayers().getCount(); i++) {
             if (map.getLayers().get(i).getName().equals("Characters")) {
                 game.batch.begin();
+                for (Door door : doors) {
+                    door.draw(game.batch);
+                }
                 for (Player ply : players) {
                     ply.draw(game.batch);
                 }
@@ -271,6 +290,9 @@ public class GameScreen implements Screen, InputProcessor {
 		for (int i = 0; i < lights.size(); i++) {
 			lights.get(i).updateToFlicker();
 		}
+        for (Door door : doors) {
+            door.update();
+        }
         for (WorldObject object : sprites) {
             object.update();
         }
@@ -343,6 +365,27 @@ public class GameScreen implements Screen, InputProcessor {
 							if (rect.getProperties().get("change_map") != null) {
 								game.setScreen(new GameScreen(this.game, rect.getProperties().get("change_map").toString(), pNum));
 							}
+                            if (rect.getProperties().get("open_door") != null) {
+                                for (Door door : doors) {
+                                    if (door.name.equals(rect.getProperties().get("open_door"))) {
+                                        door.open();
+                                    }
+                                }
+                            }
+                            if (rect.getProperties().get("close_door") != null) {
+                                for (Door door : doors) {
+                                    if (door.name.equals(rect.getProperties().get("close_door"))) {
+                                        door.close();
+                                    }
+                                }
+                            }
+                            if (rect.getProperties().get("toggle_door") != null) {
+                                for (Door door : doors) {
+                                    if (door.name.equals(rect.getProperties().get("toggle_door"))) {
+                                        door.toggle();
+                                    }
+                                }
+                            }
 //**************************END PROPERTY PROCESSING**************************
 						}
 					}
