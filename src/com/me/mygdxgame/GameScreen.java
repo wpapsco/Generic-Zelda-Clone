@@ -2,6 +2,7 @@ package com.me.mygdxgame;
 
 import static box2dLight.RayHandler.useDiffuseLight;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import box2dLight.Light;
@@ -90,9 +91,9 @@ public class GameScreen implements Screen, InputProcessor {
 		light = new PointLight(Values.handler, 300, new Color(Float.parseFloat(vals[0]), Float.parseFloat(vals[1]), Float.parseFloat(vals[2]), Float.parseFloat(vals[3])), 200 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX);
 		light.setSoft(true);
 		players.add(new Player(
-				Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())), 
-				Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())), 
-				game.camera, game.lightCamera, false, "data/Bully_Sheet.png"
+                Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
+                Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
+                game.camera, game.lightCamera, false, "data/Bully_Sheet.png"
         ));
         OrthographicCamera camera = new OrthographicCamera(game.camera.viewportWidth, game.camera.viewportHeight);
         camera.view.set(game.camera.view);
@@ -102,13 +103,19 @@ public class GameScreen implements Screen, InputProcessor {
         
         if (pNum == 2) {
 	        players.add(new Player(
-	                Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
-	                Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
-	                camera, lightCamera, true, "data/Base_Sheet.png"
-	        		));
+                    Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
+                    Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
+                    camera, lightCamera, true, "data/Base_Sheet.png"
+            ));
+        }
+        ObjectLoader l;
+        try {
+            l = new ObjectLoader(map, new Class[]{Door.class, MapLight.class}, this);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-		light.attachToBody(players.get(0).body, 0, 0);
+        light.attachToBody(players.get(0).body, 0, 0);
 
         sprites.add(new NudeDude(this, new Vector2(90, 100)));
 	}
@@ -159,35 +166,10 @@ public class GameScreen implements Screen, InputProcessor {
                     if (objects.get(j).getProperties().get("type").equals("interaction")) {
                         interactions.add(objects.get(j));
                     }
-                    if (objects.get(j).getProperties().get("type").equals("door")) {
-                        Rectangle r = ((RectangleMapObject) objects.get(j)).getRectangle();
-                        TiledMapTile openTile = map.getTileSets().getTileSet(0).getTile(Integer.parseInt((String) objects.get(j).getProperties().get("opened")));
-                        TiledMapTile closedTile = map.getTileSets().getTileSet(0).getTile(Integer.parseInt((String) objects.get(j).getProperties().get("closed")));
-                        Door door = new Door(
-                                openTile.getTextureRegion(), closedTile.getTextureRegion(),
-                                false, new Vector2(r.x * Values.PIXEL_BOX, r.y * Values.PIXEL_BOX), new Vector2(r.getWidth() * Values.PIXEL_BOX, r.getHeight() * Values.PIXEL_BOX), objects.get(j).getName());
-                        doors.add(door);
-                    }
 					this.objects.add(objects.get(j));
 					if (objects.get(j).getProperties().get("enabled") == null) {
 						objects.get(j).getProperties().put("enabled", "true");
 					}
-					if (objects.get(j) instanceof EllipseMapObject && objects.get(j).getProperties().get("type").equals("light")) {
-						EllipseMapObject ellipse = (EllipseMapObject) objects.get(j);
-						float radius = (ellipse.getEllipse().height + ellipse.getEllipse().width) / 2;
-						float centerX = ellipse.getEllipse().x + (ellipse.getEllipse().width / 2);
-						float centerY = ellipse.getEllipse().y + (ellipse.getEllipse().height / 2);
-						
-						Color lightColor;
-						if (ellipse.getProperties().get("LightColor") != null) {
-							String[] colorVals = ellipse.getProperties().get("LightColor").toString().split(",");
-							lightColor = new Color(Float.parseFloat(colorVals[0]), Float.parseFloat(colorVals[1]), Float.parseFloat(colorVals[2]), Float.parseFloat(colorVals[3]));
-						} else {
-							lightColor = new Color(0, 0, 0, 1);
-						}
-                        lights.add(new FlickeringLight(Values.handler, 300, lightColor, radius * Values.PIXEL_BOX, centerX * Values.PIXEL_BOX, centerY * Values.PIXEL_BOX, 0, Float.MAX_VALUE));
-
-                    }
 				}
 			}
 		}
@@ -299,6 +281,7 @@ public class GameScreen implements Screen, InputProcessor {
         for (Body body : Values.bodiesToDelete) {
             Values.world.destroyBody(body);
         }
+        Values.bodiesToDelete.clear();
         for (Player player : players) {
             player.update();
         }
@@ -336,155 +319,167 @@ public class GameScreen implements Screen, InputProcessor {
     public void onInteraction(Player player) {
 		//oh god why what do not touch this
 		//holy shit what the fuck
-		for (int j = 0; j < objects.getCount(); j++) {
-			for (int i = 0; i < objects.getCount(); i++) {
-				if (objects.get(i) instanceof RectangleMapObject && 
-					((RectangleMapObject) objects.get(i)).getRectangle().contains(player.getSprite().getX(), player.getSprite().getY())) {
-					RectangleMapObject rect = (RectangleMapObject) objects.get(i);
-					if (rect.getRectangle().overlaps(player.getSprite().getBoundingRectangle()) &&
-						rect.getProperties().get("enabled").equals("true")) {
-						int order = 0;
-						if (rect.getProperties().get("call_order") != null) {
-							order = Integer.parseInt(rect.getProperties().get("call_order").toString());
-						}
-						if (order == j) {
-//**************************ADD PROPERTY PROCESSING HERE**************************
-							if (rect.getProperties().get("display_text") != null) {
-								System.out.println(rect.getProperties().get("display_text").toString());
-								player.hud.setDialog(rect.getProperties().get("display_text").toString());
-							}
-							if (rect.getProperties().get("enable_object") != null) {
-								objects.get(rect.getProperties().get("enable_object").toString()).getProperties().put("enabled", "true");
-							}
-							if (rect.getProperties().get("disable_object") != null) {
-								objects.get(rect.getProperties().get("disable_object").toString()).getProperties().put("enabled", "false");
-							}
-							if (rect.getProperties().get("add_coin") != null) {
-								player.addCoin(Integer.parseInt(rect.getProperties().get("add_coin").toString()));
-							}
-							if (rect.getProperties().get("change_map") != null) {
-								game.setScreen(new GameScreen(this.game, rect.getProperties().get("change_map").toString(), pNum));
-							}
-                            if (rect.getProperties().get("open_door") != null) {
-                                for (Door door : doors) {
-                                    if (door.name.equals(rect.getProperties().get("open_door"))) {
-                                        door.open();
-                                    }
-                                }
+        for (int i = 0; i < objects.getCount(); i++) {
+            if (objects.get(i) instanceof RectangleMapObject &&
+                ((RectangleMapObject) objects.get(i)).getRectangle().contains(player.getSprite().getX(), player.getSprite().getY())) {
+                RectangleMapObject rect = (RectangleMapObject) objects.get(i);
+                if (rect.getRectangle().overlaps(player.getSprite().getBoundingRectangle()) &&
+                    rect.getProperties().get("interaction_type").equals("player")) {
+                    doProperties(player, rect);
+                }
+            }
+        }
+    }
+
+    private void doProperties(MapObject object) {
+        for (Player player : players) {
+            doProperties(player, object);
+
+            //TODO: FIX THIS, CAN'T CALL TOGGLE DOOR MORE THAN ONCE!!
+        }
+    }
+
+    private void doProperties(Player player, MapObject object) {
+        for (int j = 0; j < objects.getCount(); j++) {
+            int order = 0;
+            if (object.getProperties().get("call_order") != null) {
+                order = Integer.parseInt(object.getProperties().get("call_order").toString());
+            }
+            if (order == j) {
+                if (object.getProperties().get("enabled").equals("true")) {
+                    if (object.getProperties().get("display_text") != null) {
+                        System.out.println(object.getProperties().get("display_text").toString());
+                        player.hud.setDialog(object.getProperties().get("display_text").toString());
+                    }
+                    if (object.getProperties().get("enable_object") != null) {
+                        objects.get(object.getProperties().get("enable_object").toString()).getProperties().put("enabled", "true");
+                    }
+                    if (object.getProperties().get("disable_object") != null) {
+                        objects.get(object.getProperties().get("disable_object").toString()).getProperties().put("enabled", "false");
+                    }
+                    if (object.getProperties().get("add_coin") != null) {
+                        player.addCoin(Integer.parseInt(object.getProperties().get("add_coin").toString()));
+                    }
+                    if (object.getProperties().get("change_map") != null) {
+                        game.setScreen(new GameScreen(this.game, object.getProperties().get("change_map").toString(), pNum));
+                    }
+                    if (object.getProperties().get("open_door") != null) {
+                        for (Door door : doors) {
+                            if (door.name.equals(object.getProperties().get("open_door"))) {
+                                door.open();
                             }
-                            if (rect.getProperties().get("close_door") != null) {
-                                for (Door door : doors) {
-                                    if (door.name.equals(rect.getProperties().get("close_door"))) {
-                                        door.close();
-                                    }
-                                }
+                        }
+                    }
+                    if (object.getProperties().get("close_door") != null) {
+                        for (Door door : doors) {
+                            if (door.name.equals(object.getProperties().get("close_door"))) {
+                                door.close();
                             }
-                            if (rect.getProperties().get("toggle_door") != null) {
-                                for (Door door : doors) {
-                                    if (door.name.equals(rect.getProperties().get("toggle_door"))) {
-                                        door.toggle();
-                                    }
-                                }
+                        }
+                    }
+                    if (object.getProperties().get("toggle_door") != null) {
+                        for (Door door : doors) {
+                            if (door.name.equals(object.getProperties().get("toggle_door"))) {
+                                door.toggle();
                             }
-//**************************END PROPERTY PROCESSING**************************
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	@Override
-	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-	}
+    @Override
+    public void resize(int width, int height) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void show() {
-		// TODO Auto-generated method stub
+    }
 
-	}
+    @Override
+    public void show() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
+    }
 
-	}
+    @Override
+    public void hide() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
+    }
 
-	}
+    @Override
+    public void pause() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
+    }
 
-	}
+    @Override
+    public void resume() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		renderer.dispose();
-	}
-	
-	public void add(WorldObject sprite) {
-		sprites.add(sprite);
-	}
+    }
 
-	@Override
-	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
-		if (keycode == Keys.SPACE) {
-			onInteraction(players.get(0));
-		}
-		return false;
-	}
+    @Override
+    public void dispose() {
+        // TODO Auto-generated method stub
+        renderer.dispose();
+    }
 
-	@Override
-	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public void add(WorldObject sprite) {
+        sprites.add(sprite);
+    }
 
-	@Override
-	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean keyDown(int keycode) {
+        // TODO Auto-generated method stub
+        if (keycode == Keys.SPACE) {
+            onInteraction(players.get(0));
+        }
+        return false;
+    }
 
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		lights.add(new FlickeringLight(Values.handler, 300, light, 1f, .01f));
-		return false;
-	}
+    @Override
+    public boolean keyUp(int keycode) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean keyTyped(char character) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        // TODO Auto-generated method stub
+        lights.add(new FlickeringLight(Values.handler, 300, light, 1f, .01f));
+        return false;
+    }
 
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
     public ArrayList<Player> getPlayers() {
         return players;

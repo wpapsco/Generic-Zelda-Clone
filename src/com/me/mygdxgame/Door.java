@@ -2,6 +2,7 @@ package com.me.mygdxgame;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -10,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 /**
  * Created by William on 2/3/14.
  */
-public class Door extends WorldObject {
+public class Door extends WorldObject implements LoadedMapObject {
     private TextureRegion openRegion;
     private TextureRegion closedRegion;
     private Vector2 position;
@@ -69,5 +70,11 @@ public class Door extends WorldObject {
     public void update() {
         super.update();
         this.sprite.setPosition((position.x - (size.x / 2)) * Values.BOX_PIXEL, (position.y - (size.y / 2)) * Values.BOX_PIXEL);
+    }
+
+    @Override
+    public LoadedMapObject init(MapObject object, Object context) {
+
+        return null;
     }
 }
