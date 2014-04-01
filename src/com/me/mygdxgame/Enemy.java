@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
  */
 public abstract class Enemy extends NPC {
     protected float speed;
+    protected float health = 100;
     public Enemy(Body body, boolean isFlammable, GameScreen screen, float idleDistance, float speed) {
         super(body, isFlammable, screen, idleDistance);
         this.speed = speed;
@@ -21,6 +22,13 @@ public abstract class Enemy extends NPC {
         newVel.nor();
         newVel.scl(speed);
         body.setLinearVelocity(newVel);
+    }
+
+    public void takeDamage(float damage) {
+        health-=damage;
+        if (health <= 0) {
+            this.destroy();
+        }
     }
 
     @Override

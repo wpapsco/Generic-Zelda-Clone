@@ -18,6 +18,7 @@ public abstract class WorldObject {
     protected PointLight flameLight;
     protected Body body;
     protected Sprite sprite;
+    public boolean destroyed = false;
 
     public WorldObject(Body body, boolean isFlammable) {
         this.isFlammable = isFlammable;
@@ -59,6 +60,14 @@ public abstract class WorldObject {
         }
     }
 
+    protected void destroy() {
+        if (!this.destroyed) {
+            Values.bodiesToDelete.add(this.body);
+            this.destroyed = true;
+            Values.handler.lightList.removeValue(this.flameLight, true);
+        }
+    }
+
     public void draw(SpriteBatch spriteBatch) {
         sprite.draw(spriteBatch);
         if (isFlaming && isFlammable) {
@@ -73,6 +82,9 @@ public abstract class WorldObject {
                 flamingEffect.update(Gdx.graphics.getDeltaTime());
             }
             sprite.setPosition((body.getPosition().x * Values.BOX_PIXEL) - (sprite.getWidth() / 2), (body.getPosition().y * Values.BOX_PIXEL) - (sprite.getHeight() / 2));
+        }
+        if (isFlaming == false && flameLight != null) {
+            Values.handler.lightList.removeValue(flameLight, true);
         }
     }
 

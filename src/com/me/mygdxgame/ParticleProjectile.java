@@ -47,6 +47,7 @@ public class ParticleProjectile extends Projectile {
         for (ParticleEmitter emitter : effect.getEmitters()) {
             emitter.setContinuous(false);
         }
-        Values.bodiesToDelete.add(this.body);
+        this.destroyed = true;
+        Values.handler.lightList.removeValue(this.light, false);
     }
 }

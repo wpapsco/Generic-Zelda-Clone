@@ -45,5 +45,19 @@ public class MapObjectFactory {
         return new MapLight(new PointLight(Values.handler, 300, lightColor, radius * Values.PIXEL_BOX, centerX * Values.PIXEL_BOX, centerY * Values.PIXEL_BOX));
     }
 
-
+    public Interaction Interaction(MapObject object, Object context) {
+        if (object instanceof RectangleMapObject) {
+            Interaction interaction = new Interaction(object.getProperties(), ((RectangleMapObject) object).getRectangle(), object.getName());
+            if (!interaction.properties.containsKey("enabled")) {
+                interaction.properties.put("enabled", "true");
+            }
+            if (!interaction.properties.containsKey("call_order")) {
+                interaction.properties.put("call_order", "0");
+            }
+            ((GameScreen) context).interactions.add(interaction);
+            return interaction;
+        } else {
+            return null;
+        }
+    }
 }

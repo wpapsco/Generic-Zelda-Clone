@@ -32,7 +32,7 @@
    <property name="moveable" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYBgcgH2gHYAFMJGojpkItaxUUgMCbCSqR9dHqhwyYCHRzlGAGwAAZywANA==
+   eJxjYBgF1AKsZOpjosBOZiBmI1MvufpGAXUBACuYABc=
   </data>
  </layer>
  <layer name="Characters" width="15" height="15">
@@ -49,91 +49,91 @@
   <object name="PurpleBlocksLight" x="-3" y="6" width="154" height="154">
    <properties>
     <property name="LightColor" value="1, 0, 1, 1"/>
-    <property name="type" value="light"/>
+    <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
   </object>
   <object name="PurpleBlocksLight" x="333" y="-4" width="154" height="154">
    <properties>
     <property name="LightColor" value="1, 0, 1, 1"/>
-    <property name="type" value="light"/>
+    <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
   </object>
   <object name="PurpleBlocksLight" x="332" y="221" width="154" height="154">
    <properties>
     <property name="LightColor" value="1, 0, 1, 1"/>
-    <property name="type" value="light"/>
+    <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
   </object>
   <object name="GreenBlocksLight" x="165" y="127" width="154" height="154">
    <properties>
     <property name="LightColor" value="0, 1, 0, 1"/>
-    <property name="type" value="light"/>
+    <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
   </object>
   <object name="PurpleBlocksLight" x="10" y="201" width="154" height="154">
    <properties>
     <property name="LightColor" value="1, 0, 1, 1"/>
-    <property name="type" value="light"/>
+    <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
   </object>
   <object name="BlueBlocksLight" x="248" y="60" width="154" height="154">
    <properties>
     <property name="LightColor" value="0, 0, 1, 1"/>
-    <property name="type" value="light"/>
+    <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
   </object>
   <object name="BlueBlocksLight" x="84" y="164" width="154" height="154">
    <properties>
     <property name="LightColor" value="0, 0, 1, 1"/>
-    <property name="type" value="light"/>
+    <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
   </object>
   <object name="BlueBlocksLight" x="249" y="185" width="154" height="154">
    <properties>
     <property name="LightColor" value="0, 0, 1, 1"/>
-    <property name="type" value="light"/>
+    <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
   </object>
   <object name="BlueBlocksLight" x="105" y="49" width="154" height="154">
    <properties>
     <property name="LightColor" value="0, 0, 1, 1"/>
-    <property name="type" value="light"/>
+    <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
   </object>
   <object name="HallLight" x="6" y="343" width="144" height="144">
    <properties>
     <property name="LightColor" value="0, 0, 0, 1"/>
-    <property name="type" value="light"/>
+    <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
   </object>
   <object name="HallLight" x="121" y="343" width="144" height="144">
    <properties>
     <property name="LightColor" value="0, 0, 0, 1"/>
-    <property name="type" value="light"/>
+    <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
   </object>
   <object name="HallLight" x="219" y="343" width="144" height="144">
    <properties>
     <property name="LightColor" value="0, 0, 0, 1"/>
-    <property name="type" value="light"/>
+    <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
   </object>
   <object name="HallLight" x="328" y="340" width="144" height="144">
    <properties>
     <property name="LightColor" value="0, 0, 0, 1"/>
-    <property name="type" value="light"/>
+    <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
   </object>
@@ -141,13 +141,14 @@
    <properties>
     <property name="closed" value="8"/>
     <property name="opened" value="1"/>
-    <property name="type" value="door"/>
+    <property name="type" value="Door"/>
    </properties>
   </object>
   <object x="160" y="416" width="32" height="32">
    <properties>
+    <property name="interaction_type" value="player"/>
     <property name="toggle_door" value="hall_door"/>
-    <property name="type" value="interaction"/>
+    <property name="type" value="Interaction"/>
    </properties>
   </object>
  </objectgroup>

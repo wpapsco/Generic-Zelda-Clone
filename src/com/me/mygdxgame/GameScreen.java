@@ -4,6 +4,7 @@ import static box2dLight.RayHandler.useDiffuseLight;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import box2dLight.Light;
 import box2dLight.PointLight;
@@ -48,7 +49,7 @@ public class GameScreen implements Screen, InputProcessor {
 	protected TiledMap map;
 	protected ArrayList<Body> bodyWalls;
 	protected ArrayList<FlickeringLight> lights;
-    protected ArrayList<MapObject> interactions;
+    protected ArrayList<Interaction> interactions;
 	protected PointLight light;
 	protected MapObjects objects;
 	protected ArrayList<Player> players;
@@ -69,14 +70,14 @@ public class GameScreen implements Screen, InputProcessor {
 		sprites = new ArrayList<WorldObject>();
 		lights = new ArrayList<FlickeringLight>();
         players = new ArrayList<Player>();
-        interactions = new ArrayList<MapObject>();
+        interactions = new ArrayList<Interaction>();
         doors = new ArrayList<Door>();
 		objects = new MapObjects();
 		TmxMapLoader loader = new TmxMapLoader();
 		map = loader.load(mapLocation);
 		renderer = new OrthogonalTiledMapRenderer(map, game.batch);
 		renderer.setView(game.camera);
-		createBox2dWorld(true);
+		createBox2dWorld();
 		String[] vals;
 		if (map.getProperties().get("LightColor") != null) {
 			vals = map.getProperties().get("LightColor").toString().split(",");
@@ -110,7 +111,7 @@ public class GameScreen implements Screen, InputProcessor {
         }
         ObjectLoader l;
         try {
-            l = new ObjectLoader(map, new Class[]{Door.class, MapLight.class}, this);
+            l = new ObjectLoader(map, new Class[]{Door.class, MapLight.class, Interaction.class}, this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -132,7 +133,7 @@ public class GameScreen implements Screen, InputProcessor {
         Values.flamingThingsPool = new ParticleEffectPool(flamingThingsEffect, 1, 10);
     }
 
-    private void createBox2dWorld(boolean test) {
+    private void createBox2dWorld() {
 		Values.world = new World(new Vector2(), true);
 		Values.handler = new RayHandler(Values.world);
         Light.setContactFilter((short) 0, (short) 0, (short) 3);
@@ -161,16 +162,7 @@ public class GameScreen implements Screen, InputProcessor {
 					}
 				}
 			} else {
-				MapObjects objects = map.getLayers().get(i).getObjects();
-				for (int j = 0; j < objects.getCount(); j++) {
-                    if (objects.get(j).getProperties().get("type").equals("interaction")) {
-                        interactions.add(objects.get(j));
-                    }
-					this.objects.add(objects.get(j));
-					if (objects.get(j).getProperties().get("enabled") == null) {
-						objects.get(j).getProperties().put("enabled", "true");
-					}
-				}
+				objects = map.getLayers().get(i).getObjects();
 			}
 		}
 	}
@@ -236,9 +228,14 @@ public class GameScreen implements Screen, InputProcessor {
                 for (Player ply : players) {
                     ply.draw(game.batch);
                 }
+                ArrayList<WorldObject> toRemove = new ArrayList<WorldObject>();
                 for (int j = 0; j < sprites.size(); j++) {
                     sprites.get(j).draw(game.batch);
+                    if(sprites.get(j).destroyed) {
+                        toRemove.add(sprites.get(j));
+                    }
                 }
+                sprites.removeAll(toRemove);
                 if(players.get(0).xDown && (TimeUtils.nanoTime() - players.get(0).shotTime > 500000000 && player.getCoin() > 0)) {
                     players.get(0).createProjectile();
                     player.addCoin(-10);
@@ -317,70 +314,56 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     public void onInteraction(Player player) {
-		//oh god why what do not touch this
-		//holy shit what the fuck
-        for (int i = 0; i < objects.getCount(); i++) {
-            if (objects.get(i) instanceof RectangleMapObject &&
-                ((RectangleMapObject) objects.get(i)).getRectangle().contains(player.getSprite().getX(), player.getSprite().getY())) {
-                RectangleMapObject rect = (RectangleMapObject) objects.get(i);
-                if (rect.getRectangle().overlaps(player.getSprite().getBoundingRectangle()) &&
-                    rect.getProperties().get("interaction_type").equals("player")) {
-                    doProperties(player, rect);
-                }
+        ArrayList<Interaction> objectsToInteract = new ArrayList<Interaction>();
+        for (Interaction i : interactions) {
+            if (i.rectangle.overlaps(player.getSprite().getBoundingRectangle()) &&
+                    i.properties.get("interaction_type").equals("player")) {
+                objectsToInteract.add(i);
             }
         }
+        doProperties(objectsToInteract, player);
     }
 
-    private void doProperties(MapObject object) {
-        for (Player player : players) {
-            doProperties(player, object);
-
-            //TODO: FIX THIS, CAN'T CALL TOGGLE DOOR MORE THAN ONCE!!
-        }
-    }
-
-    private void doProperties(Player player, MapObject object) {
-        for (int j = 0; j < objects.getCount(); j++) {
-            int order = 0;
-            if (object.getProperties().get("call_order") != null) {
-                order = Integer.parseInt(object.getProperties().get("call_order").toString());
-            }
-            if (order == j) {
-                if (object.getProperties().get("enabled").equals("true")) {
-                    if (object.getProperties().get("display_text") != null) {
-                        System.out.println(object.getProperties().get("display_text").toString());
-                        player.hud.setDialog(object.getProperties().get("display_text").toString());
-                    }
-                    if (object.getProperties().get("enable_object") != null) {
-                        objects.get(object.getProperties().get("enable_object").toString()).getProperties().put("enabled", "true");
-                    }
-                    if (object.getProperties().get("disable_object") != null) {
-                        objects.get(object.getProperties().get("disable_object").toString()).getProperties().put("enabled", "false");
-                    }
-                    if (object.getProperties().get("add_coin") != null) {
-                        player.addCoin(Integer.parseInt(object.getProperties().get("add_coin").toString()));
-                    }
-                    if (object.getProperties().get("change_map") != null) {
-                        game.setScreen(new GameScreen(this.game, object.getProperties().get("change_map").toString(), pNum));
-                    }
-                    if (object.getProperties().get("open_door") != null) {
-                        for (Door door : doors) {
-                            if (door.name.equals(object.getProperties().get("open_door"))) {
-                                door.open();
+    private void doProperties(ArrayList<Interaction> mapObjects, Player player) {
+        for (int i = 0; i < mapObjects.size(); i++) {
+            for (Interaction object : mapObjects) {
+                if (object.properties.get("call_order").equals(new Integer(i).toString())) {
+                    if (object.properties.get("enabled").equals("true")) {
+                        if (object.properties.get("display_text") != null) {
+                            System.out.println(object.properties.get("display_text").toString());
+                            player.hud.setDialog(object.properties.get("display_text").toString());
+                        }
+                        if (object.properties.get("enable_object") != null) {
+                            objects.get(object.properties.get("enable_object").toString()).getProperties().put("enabled", "true");
+                        }
+                        if (object.properties.get("disable_object") != null) {
+                            objects.get(object.properties.get("disable_object").toString()).getProperties().put("enabled", "false");
+                        }
+                        if (object.properties.get("add_coin") != null) {
+                            player.addCoin(Integer.parseInt(object.properties.get("add_coin").toString()));
+                        }
+                        if (object.properties.get("change_map") != null) {
+                            game.setScreen(new GameScreen(this.game, object.properties.get("change_map").toString(), pNum));
+                        }
+                        if (object.properties.get("open_door") != null) {
+                            for (Door door : doors) {
+                                if (door.name.equals(object.properties.get("open_door"))) {
+                                    door.open();
+                                }
                             }
                         }
-                    }
-                    if (object.getProperties().get("close_door") != null) {
-                        for (Door door : doors) {
-                            if (door.name.equals(object.getProperties().get("close_door"))) {
-                                door.close();
+                        if (object.properties.get("close_door") != null) {
+                            for (Door door : doors) {
+                                if (door.name.equals(object.properties.get("close_door"))) {
+                                    door.close();
+                                }
                             }
                         }
-                    }
-                    if (object.getProperties().get("toggle_door") != null) {
-                        for (Door door : doors) {
-                            if (door.name.equals(object.getProperties().get("toggle_door"))) {
-                                door.toggle();
+                        if (object.properties.get("toggle_door") != null) {
+                            for (Door door : doors) {
+                                if (door.name.equals(object.properties.get("toggle_door"))) {
+                                    door.toggle();
+                                }
                             }
                         }
                     }
@@ -453,7 +436,6 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         // TODO Auto-generated method stub
-        lights.add(new FlickeringLight(Values.handler, 300, light, 1f, .01f));
         return false;
     }
 

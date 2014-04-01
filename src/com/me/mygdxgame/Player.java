@@ -174,7 +174,7 @@ public class Player extends WorldObject {//Character {
         ArrayList<Projectile> itemsToRemove = new ArrayList<Projectile>();
         for (Projectile projectile : projectiles) {
             projectile.update();
-            if (projectile.isDestroyed) {
+            if (projectile.destroyed) {
                 itemsToRemove.add(projectile);
             }
         }

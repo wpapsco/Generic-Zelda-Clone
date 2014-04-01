@@ -29,16 +29,22 @@ public class GZCContactListener implements ContactListener {
             if (worldDataB.isFlaming && !worldDataA.isFlaming && worldDataA.isFlammable) {
                 worldDataA.setFlaming(true);
             }
-            /*if (worldDataA instanceof Projectile) {
-                if (((Projectile) worldDataA).destroyOnContact) {
-                    ((Projectile) worldDataA).destroy();
-                }
+        }
+        if (dataA instanceof Projectile) {
+            if (((Projectile) dataA).destroyOnContact) {
+                ((Projectile) dataA).destroy();
             }
-            if (worldDataB instanceof Projectile) {
-                if (((Projectile) worldDataB).destroyOnContact) {
-                    ((Projectile) worldDataB).destroy();
-                }
-            }*/
+            if (dataB instanceof Enemy) {
+                ((Enemy) dataB).takeDamage(10);
+            }
+        }
+        if (dataB instanceof Projectile) {
+            if (((Projectile) dataB).destroyOnContact) {
+                ((Projectile) dataB).destroy();
+            }
+            if (dataA instanceof Enemy) {
+                ((Enemy) dataA).takeDamage(10);
+            }
         }
     }
 
