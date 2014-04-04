@@ -46,6 +46,16 @@ public class GZCContactListener implements ContactListener {
                 ((Enemy) dataA).takeDamage(10);
             }
         }
+        if (dataA instanceof Enemy) {
+        	if (dataB instanceof Player) {
+        		((Player) dataB).takeDamage(.5f);
+        	}
+        }
+        if (dataB instanceof Enemy) {
+        	if (dataA instanceof Player) {
+        		((Player) dataA).takeDamage(.5f);
+        	}
+        }
     }
 
     @Override

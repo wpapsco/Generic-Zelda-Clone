@@ -23,8 +23,8 @@ public abstract class WorldObject {
     public WorldObject(Body body, boolean isFlammable) {
         this.isFlammable = isFlammable;
         this.body = body;
-        create();
-        postCreate();
+        //create();
+        //postCreate();
     }
 
     public WorldObject(Texture texture, Body body, boolean isFlammable) {
@@ -43,7 +43,7 @@ public abstract class WorldObject {
         postCreate();
     }
 
-    private void postCreate() {
+    protected void postCreate() {
         body.setUserData(this);
         if (isFlammable) {
 

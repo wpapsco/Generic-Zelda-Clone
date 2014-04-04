@@ -27,12 +27,14 @@ public class HUD extends Sprite {
 	protected WindowStyle style;
 	protected Texture heartTexture;
 	protected Texture deadHeartTexture;
-	public String dialogText;
+	protected Player playerd;
+	public String dialogText;	
 	public int coin;
 	public int hearts;
 	
-	public HUD(OrthographicCamera camera, int health) {
-		hearts = health;
+	public HUD(OrthographicCamera camera, Player player) {
+		this.playerd = player;
+		hearts = ((int) player.health);
 		coin = 0;
 		images = new ArrayList<Image>();
 		heartTexture = new Texture(Gdx.files.internal("data/heart.png"));
@@ -61,6 +63,8 @@ public class HUD extends Sprite {
 	public void draw(SpriteBatch spriteBatch) {
 		int x = 0;
 		Image image;
+		hearts = ((int) playerd.health);
+		System.out.println(hearts);
 		for(int i = 0; i < 3; i++) {
 			if (i < hearts) {
 				image = new Image(heartTexture);
@@ -96,6 +100,10 @@ public class HUD extends Sprite {
 	
 	public void setDialog(String string) {
 		dialogText = string;
+	}
+	
+	public void loseHeart() {
+		images.clear();
 	}
 	
 	

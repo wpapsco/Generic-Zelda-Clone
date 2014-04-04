@@ -10,7 +10,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class Character extends WorldObject {
 	
-	protected int width, height, stateTime;
+	protected int width, height; 
+	protected float stateTime;
 	protected String path;
 	protected TextureRegion[] frameRegions;
 	protected Animation nAnimation;
@@ -25,19 +26,20 @@ public class Character extends WorldObject {
 	
 	public boolean isUp;
 	public boolean isRight;
+	public boolean isRest;
 	
 	
 	public Character(Body body, boolean isFlammable, String texturePath) {
 		super(body, isFlammable);
-		System.out.println("Hits");
 		this.path = texturePath;
-		//create();
+		create();
+		postCreate();
 	}
 	
 	@Override
 	public void create() {
 		super.create();
-		
+		//path = "data/Bully_Sheet1.png";
 		width = 16;
         height = 28;
         setTexturePath(path);
@@ -72,6 +74,7 @@ public class Character extends WorldObject {
         stateTime = 0;
         isUp = false;
         isRight = true;
+        isRest = true;
 	}
 	
 	public Animation getAnimation() {
@@ -80,6 +83,31 @@ public class Character extends WorldObject {
 	
 	public void setTexturePath(String texturePath) {
 		this.path = texturePath;
+	}
+	
+	protected void animate() {
+		//System.out.println("Animating: "+isUp+","+isRight+","+isRest);
+		if (isRest == true) {
+			if (isRight && !isUp) {
+            	currentAnim = eRest;
+            } else if (!isRight && !isUp) {
+            	currentAnim = wRest;
+            } else if (isRight && isUp) {
+            	currentAnim = nRest;
+            } else {
+            	currentAnim = sRest;
+            }
+		} else {
+			if (isRight && !isUp) {
+            	currentAnim = eAnimation;
+            } else if (!isRight && !isUp) {
+            	currentAnim = wAnimation;
+            } else if (isRight && isUp) {
+            	currentAnim = sAnimation;
+            } else {
+            	currentAnim = nAnimation;
+            }
+		}
 	}
 }
 
