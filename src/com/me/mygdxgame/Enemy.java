@@ -22,6 +22,16 @@ public abstract class Enemy extends NPC {
         newVel.nor();
         newVel.scl(speed);
         body.setLinearVelocity(newVel);
+        if (newVel.x > 0) {
+        	isRight = true;
+        } else {
+        	isRight = false;
+        }
+        if (newVel.y > 0) {
+        	isUp = true;
+        } else {
+        	isUp = false;
+        }
     }
 
     public void takeDamage(float damage) {

@@ -19,53 +19,55 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class Player extends WorldObject {//Character {
+public class Player extends Character {
 	
 	private int coin;
     protected boolean isWasd;
     //*********
-	protected TextureRegion[] frameRegions;
-	protected TextureRegion[] frameregion2;
-	protected Animation nAnimation;
-	protected Animation sAnimation;
-	protected Animation eAnimation;
-	protected Animation wAnimation;
-	protected Animation nRest;
-	protected Animation sRest;
-	protected Animation eRest;
-	protected Animation wRest;
-	protected Animation currentAnim;
+//	protected TextureRegion[] frameRegions;
+//	protected TextureRegion[] frameregion2;
+//	protected Animation nAnimation;
+//	protected Animation sAnimation;
+//	protected Animation eAnimation;
+//	protected Animation wAnimation;
+//	protected Animation nRest;
+//	protected Animation sRest;
+//	protected Animation eRest;
+//	protected Animation wRest;
+//	protected Animation currentAnim;
     //************
 	protected OrthographicCamera camera;
 	protected OrthographicCamera lightCamera;
 	protected OrthographicCamera hudCam;
 	public HUD hud;
 	//**********
-	protected float stateTime;
-	public int width;
-	public int height;
+//	protected float stateTime;
+//	public int width;
+//	public int height;
 	//**********
 	public boolean xDown; //temp iskeydown X
 	public boolean zDown;
 	public ArrayList<Projectile> projectiles;
 	public long shotTime;
-	public int health;
-	public boolean isUp;
-	public boolean isRight;
+	public float health;
+	private float flameDamageTimer = 0;
+	protected int tempdir;
 	
 	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd, String texturePath) {
-        super(Player.createBody(x, y, 16, 28, (short) -1), true);
+        super(Player.createBody(x, y, 16, 28, (short) -1), true, "data/Bully_Sheet1.png");
 //        setTexturePath(texturePath);
 		this.camera = camera;
 		this.lightCamera = lightCamera;
         this.isWasd = isWasd;
         coin = 100;
         hudCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        health = 2;
+        health = 3;
         isUp = false;
         isRight = true;
         
-        hud = new HUD(hudCam, health);
+        tempdir = 0; //0=up,1=right,2=down,3=left
+        
+        hud = new HUD(hudCam, this);
         
 	}
 
@@ -102,35 +104,35 @@ public class Player extends WorldObject {//Character {
         super.create();
         
         //********************************
-        width = 16;
-        height = 28;
-        TextureRegion[][] tRegions = Sprite.split(new Texture(Gdx.files.internal("data/Bookworm_Sheet1.png")), width, height);
-        frameRegions = new TextureRegion[tRegions.length * tRegions[0].length];
-        int index = 0;
-        for (TextureRegion[] tRegion : tRegions) {
-            for (TextureRegion aTRegion : tRegion) {
-                frameRegions[index++] = aTRegion;
-            }
-        }
-        float animSpeed = .2f;
-        nAnimation = new Animation(animSpeed, frameRegions[7], frameRegions[6], frameRegions[5], frameRegions[4]);
-        sAnimation = new Animation(animSpeed, frameRegions[0], frameRegions[1], frameRegions[2], frameRegions[3]);
-        eAnimation = new Animation(animSpeed, frameRegions[8], frameRegions[9], frameRegions[10], frameRegions[11]);
-        wAnimation = new Animation(animSpeed, frameRegions[15], frameRegions[14], frameRegions[13], frameRegions[12]);
-        nRest = new Animation(animSpeed, frameRegions[24], frameRegions[25], frameRegions[26], frameRegions[27]);
-        sRest = new Animation(animSpeed, frameRegions[31], frameRegions[30], frameRegions[29], frameRegions[28]);
-        eRest = new Animation(animSpeed, frameRegions[16], frameRegions[17], frameRegions[18],frameRegions[19]);
-        wRest = new Animation(animSpeed, frameRegions[23], frameRegions[22], frameRegions[21], frameRegions[20]);
-        nAnimation.setPlayMode(Animation.LOOP);
-        sAnimation.setPlayMode(Animation.LOOP);
-        eAnimation.setPlayMode(Animation.LOOP);
-        wAnimation.setPlayMode(Animation.LOOP);
-        nRest.setPlayMode(Animation.LOOP);
-        sRest.setPlayMode(Animation.LOOP);
-        eRest.setPlayMode(Animation.LOOP);
-        wRest.setPlayMode(Animation.LOOP);
-        currentAnim = nAnimation;
-        stateTime = 0;
+//        width = 16;
+//        height = 28;
+//        TextureRegion[][] tRegions = Sprite.split(new Texture(Gdx.files.internal("data/Bookworm_Sheet1.png")), width, height);
+//        frameRegions = new TextureRegion[tRegions.length * tRegions[0].length];
+//        int index = 0;
+//        for (TextureRegion[] tRegion : tRegions) {
+//            for (TextureRegion aTRegion : tRegion) {
+//                frameRegions[index++] = aTRegion;
+//            }
+//        }
+//        float animSpeed = .2f;
+//        nAnimation = new Animation(animSpeed, frameRegions[7], frameRegions[6], frameRegions[5], frameRegions[4]);
+//        sAnimation = new Animation(animSpeed, frameRegions[0], frameRegions[1], frameRegions[2], frameRegions[3]);
+//        eAnimation = new Animation(animSpeed, frameRegions[8], frameRegions[9], frameRegions[10], frameRegions[11]);
+//        wAnimation = new Animation(animSpeed, frameRegions[15], frameRegions[14], frameRegions[13], frameRegions[12]);
+//        nRest = new Animation(animSpeed, frameRegions[24], frameRegions[25], frameRegions[26], frameRegions[27]);
+//        sRest = new Animation(animSpeed, frameRegions[31], frameRegions[30], frameRegions[29], frameRegions[28]);
+//        eRest = new Animation(animSpeed, frameRegions[16], frameRegions[17], frameRegions[18],frameRegions[19]);
+//        wRest = new Animation(animSpeed, frameRegions[23], frameRegions[22], frameRegions[21], frameRegions[20]);
+//        nAnimation.setPlayMode(Animation.LOOP);
+//        sAnimation.setPlayMode(Animation.LOOP);
+//        eAnimation.setPlayMode(Animation.LOOP);
+//        wAnimation.setPlayMode(Animation.LOOP);
+//        nRest.setPlayMode(Animation.LOOP);
+//        sRest.setPlayMode(Animation.LOOP);
+//        eRest.setPlayMode(Animation.LOOP);
+//        wRest.setPlayMode(Animation.LOOP);
+//        currentAnim = nAnimation;
+//        stateTime = 0;
         //*************************************8
         projectiles = new ArrayList<Projectile>();
         xDown = false;
@@ -151,13 +153,13 @@ public class Player extends WorldObject {//Character {
 	public void createProjectile() {
 		ParticleProjectile projectile = new ParticleProjectile(sprite.getX() + (width / 2), sprite.getY() + (height / 2), Values.fireWandPool);
         float speed = .2f;
-		if (Gdx.input.isKeyPressed(Keys.UP)) {
+		if (tempdir == 0) {
 			projectile.body.applyLinearImpulse(0, speed, projectile.pos.x, projectile.pos.y, true);
-		}else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+		}else if (tempdir == 2) {
 			projectile.body.applyLinearImpulse(0, -speed, projectile.pos.x, projectile.pos.y, true);
-		}else if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+		}else if (tempdir == 3) {
 			projectile.body.applyLinearImpulse(-speed, 0, projectile.pos.x,  projectile.pos.y, true);
-		}else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+		}else if (tempdir == 1) {
 			projectile.body.applyLinearImpulse(speed, 0, projectile.pos.x, projectile.pos.y, true);
 		} else {
 			projectile.body.applyLinearImpulse(0, speed, projectile.pos.x, projectile.pos.y, true);
@@ -177,6 +179,14 @@ public class Player extends WorldObject {//Character {
             if (projectile.destroyed) {
                 itemsToRemove.add(projectile);
             }
+            if (this.isFlaming) {
+                flameDamageTimer += Gdx.graphics.getDeltaTime();
+                this.takeDamage(.1f);
+            }
+            if (flameDamageTimer >= 5.0f) {
+                this.isFlaming = false;
+                flameDamageTimer = 0;
+            }
         }
         projectiles.removeAll(itemsToRemove);
         float speed = 3f;
@@ -191,21 +201,25 @@ public class Player extends WorldObject {//Character {
 	            	isUp = true;
 	            	yAxis = 1;
 	                stateTime += Gdx.graphics.getDeltaTime();
+	                tempdir = 0;
 	            }
 	            if (Gdx.input.isKeyPressed(Keys.DOWN)) {
 	            	isUp = false;
 	            	yAxis = -1;
 	                stateTime += Gdx.graphics.getDeltaTime();
+	                tempdir = 2;
 	            }
 	            if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 	            	isRight = false;
 	            	xAxis = -1;
 	                stateTime += Gdx.graphics.getDeltaTime();
+	                tempdir = 3;
 	            }
 	            if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 	            	isRight = true;
 	            	xAxis = 1;
 	                stateTime += Gdx.graphics.getDeltaTime();
+	                tempdir = 1;
 	            }
 	            if (!Gdx.input.isKeyPressed(Keys.UP)&&!Gdx.input.isKeyPressed(Keys.DOWN)&&!Gdx.input.isKeyPressed(Keys.LEFT)&&!Gdx.input.isKeyPressed(Keys.RIGHT)) {
 	            	xAxis = 0;
@@ -214,28 +228,31 @@ public class Player extends WorldObject {//Character {
 	            }
 	            linV = new Vector2(xAxis*speed, yAxis*speed);
 	            this.body.setLinearVelocity(linV);
-	            animate();
 	        }
 	        if (isWasd) {
 	        	if (Gdx.input.isKeyPressed(Keys.W)) {
 	            	isUp = true;
 	            	yAxis = 1;
 	                stateTime += Gdx.graphics.getDeltaTime();
+	                tempdir = 0;
 	            }
 	            if (Gdx.input.isKeyPressed(Keys.S)) {
 	            	isUp = false;
 	            	yAxis = -1;
 	                stateTime += Gdx.graphics.getDeltaTime();
+	                tempdir = 2;
 	            }
 	            if (Gdx.input.isKeyPressed(Keys.A)) {
 	            	isRight = false;
 	            	xAxis = -1;
 	                stateTime += Gdx.graphics.getDeltaTime();
+	                tempdir = 3;
 	            }
 	            if (Gdx.input.isKeyPressed(Keys.D)) {
 	            	isRight = true;
 	            	xAxis = 1;
 	                stateTime += Gdx.graphics.getDeltaTime();
+	                tempdir = 1;
 	            }
 	            if (!Gdx.input.isKeyPressed(Keys.W)&&!Gdx.input.isKeyPressed(Keys.S)&&!Gdx.input.isKeyPressed(Keys.A)&&!Gdx.input.isKeyPressed(Keys.D)) {
 	            	xAxis = 0;
@@ -244,11 +261,16 @@ public class Player extends WorldObject {//Character {
 	            }
 	            linV = new Vector2(xAxis*speed, yAxis*speed);
 	            this.body.setLinearVelocity(linV);
-	            animate();
 	    //***********************END TEST STUFFS*******************************************
         //testing git! Woo this is totally a test!
         }
         }
+        if (!Gdx.input.isKeyPressed(Keys.UP)&&!Gdx.input.isKeyPressed(Keys.DOWN)&&!Gdx.input.isKeyPressed(Keys.LEFT)&&!Gdx.input.isKeyPressed(Keys.RIGHT)) {
+			isRest = true;
+		} else {
+			isRest = false;
+		}
+        animate();
         camera.position.x = sprite.getX();
         camera.position.y = sprite.getY();
         lightCamera.position.x = sprite.getX() * Values.PIXEL_BOX;
@@ -269,29 +291,21 @@ public class Player extends WorldObject {//Character {
 		System.out.println(this.coin);
 	}
 	
-	public void animate() {
-		if (!Gdx.input.isKeyPressed(Keys.UP)&&!Gdx.input.isKeyPressed(Keys.DOWN)&&!Gdx.input.isKeyPressed(Keys.LEFT)&&!Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			//stateTime = 0;
-			if (isRight && !isUp) {
-            	currentAnim = eRest;
-            } else if (!isRight && !isUp) {
-            	currentAnim = wRest;
-            } else if (isRight && isUp) {
-            	currentAnim = nRest;
-            } else {
-            	currentAnim = sRest;
-            }
-		} else {
-			if (isRight && !isUp) {
-            	currentAnim = eAnimation;
-            } else if (!isRight && !isUp) {
-            	currentAnim = wAnimation;
-            } else if (isRight && isUp) {
-            	currentAnim = sAnimation;
-            } else {
-            	currentAnim = nAnimation;
-            }
-		}
-	}
+//	public void animate() {
+//		super.animate();
+//		if (!Gdx.input.isKeyPressed(Keys.UP)&&!Gdx.input.isKeyPressed(Keys.DOWN)&&!Gdx.input.isKeyPressed(Keys.LEFT)&&!Gdx.input.isKeyPressed(Keys.RIGHT)) {
+//			isRest = true;
+//		} else {
+//			isRest = false;
+//		}
+//	}
+	
+	public void takeDamage(float damage) {
+		System.out.println(health);
+        health-=damage;
+        if (health <= 0) {
+            this.destroy();
+        }
+    }
 
 }
