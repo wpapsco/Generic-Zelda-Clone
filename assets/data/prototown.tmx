@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="AmbientLight" value="1"/>
+  <property name="LightColor" value="0,0,0,0"/>
+  <property name="StartX" value="24"/>
+  <property name="StartY" value="33"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="testingTiles2" tilewidth="32" tileheight="32" spacing="2">
+  <image source="testingTiles2.png" width="136" height="66"/>
+ </tileset>
+ <tileset firstgid="9" name="towntileset" tilewidth="32" tileheight="32" spacing="2">
+  <image source="tileset34.png" width="611" height="203"/>
+ </tileset>
+ <layer name="floor" width="50" height="50">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJyNmlFu4zAQQ/W7i/UJ2m1O4LR7Ax0n9z/BNkAEsC+Paj+E2LKkGXI4dBp0jjHOx7h+jvn4XON8zK1xYu6Mdbl+3f/6HK9lzxoT+yauM68T+5hvrpm4NmzEZ/Fm4CAnxEF8DSvXG37jk9wkR9fhnGXsxEHuiT/jMkeeSw2Qc6vJOXoNGCNjn8BhezlnuWRscsE6/0SzVvfM2Wr+93O8FZ4yZ+OAvUA85PaKT559lXNbHRpeW0edWMzdOtMjr41natN6xThsftGec958k/jMR41Dq2PTGZ/tvMp447k513x+lmvzKuJmrZserHbNfyyXhqWtsfs1biVOw936r2nIfD3xNV5yv+mMOjlwXusraqH1y3f1My0SLz3O+pg1Pwq/ySG5vY9biUuubQ3xT7ne5cF87uvu74GPz/Een/fxG/cfGK/jmbOdX65xE17ZI5mvzXFQRxn3gvzYXwfOIBbr9fk41/K0GOSB9TFvoeYuwECuDzmTuBj/GjhaPsTW+ntXg5y/yJqMd9djas6093s86/Vtw2fOnfLM8Ftf5hlLV6aX5k30ngP35setp3ifmIijeexON+SFsXP+Mp65p+/xmfWAaYxrbrJ26Zj1MO80H0gcE/usnxqeXSzO03dy3uo2x3NujNG4aJo3XzWtko9cY/18xvyuFwxL5nBgjnssX8PXPCDPyXxTu3x/NO+a2PtTLlodMgbXGN/rOt/n6Z35vt71Xp5Hzs0rWn8kh6yL1ZQaa7kdo9f1Nr5y2Gpk/TGxNucabzs83+Gn92cuqReLv4Z9B2HuyaH1DfXetGFcrRzMV9JPyS05ueCeHm/Yzd+4zvo1sVFX1uPU/c5LWNP0r4xLDFa/5mmJxXRn3+fW9aWcy096XnKTvCQG84LMl75ArsnLMZ7jZH9wD/lMvCuHY3zNibmwH61fDJdhSk3w7PX8/ltievQ7xpp/wf363Y55Wo2apq3/7Z1k2l5/w65xDK8va9L00zTAGuR69vl3XmaaoHeZX5Fjy41ctX61njPd5D7OG46sTb5bmi+zZ5svGXbTk/mBxTQ8qR36U/YO9dw4avjsWXs+R68fvY5aShx8Rl5mnJexTFfWM3Ym69D6gppaZ+R3itTRumd8cm+8ksPGbfMHcmB9Rl1Yf1BzfGc1rZqnGI+WF/fynNv4Goe/DybnzJu/CZknkbvMzzjnOcRlcVIreZ8x6LvUHHu7eXx7r1huVofmiXzP0YMyV74v1hn39/kfxDefpKYsZ3v3sMdYx+R0/R3I7xBr5HeKF1n774HFfKf5j/FpNVtrzVdzfo6vsTMHw2782v8BUEusDfOjF+z2NK9t161vqYfE0fq2+ZHFmxit/3aeYbVgHuSJOKgXcs8eoR6JxXIzb+PenfcZHwsH96cW5niOYTXa8d18kHVlXzZ+Jvbx/0uazrnf4pu+dphsn+VhHkg+qSvjtmnYes/0w3PIZ/M95m2+seJan1s/77z4u14xXJmn5ZtnWH9wHf/fh7W0WjDPOXrOtrbpdqcD4zLPsv6Y4znfne7ncEy59j8KR+on
+  </data>
+ </layer>
+ <layer name="wallFix" width="50" height="50">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzjENACAMAEE2JCAGDfi3gwFYIGkhuZt+/FJ4Uc8eOLB6HuEX9358BgAAAAAAAAD4VcseOBD1XDfN3gSLoQFN
+  </data>
+ </layer>
+ <layer name="walls" width="50" height="50">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztmstOwzAQRb2oxA5Y8OgysIDAEljwktgjYMfjD0r5/w9gLNlisJJmrvFMHJQrXU2l0ManHia3UVrn3Bm5BWorOO5fn7sfnZBPC7tlFVk/wtnFoXGulGNJviXfFaz3jOO68Gf7uscY+Hf3RH4uWF8Yx2Phz/Y19mpfD0xFCMc2eYd512KBQiEcDfmI+dhgfVIhHBfkS+YriwUKhXC8kt/I78EfwHliTyK9iPQxwrEif4bXa/IXsKa4l8geNk7ex7nz6gFYj5ffS3QPkT62mrurUJE9RPrY+vqB7CPSx1O5Dg7xT4VjSChHzvy0EMqRMz8thHLkzE8LoRw589NC2tdBq4ysPa8aZ5ORtTmsMrI2h1VG1uawysiW13PNjFxzLkFmfM0cUZJ91OAYI4NpcIyRwTQ4xshgGhxjZDDN/3N0zv5FU5hXEkk50txa2z1eKUfjfufW2u7xSjnS3FrbPV4pR5pbc/KrpqQccZb67LoO9qrl963V/V2pFj0eOl7b3F0M/0nne2YOHc0cM4eG/hNHjmvjyFUfxyH5oFD1XrJz+mda9sPxUk45IkvJZ4rid7MVzJ+/ahVq1zpSvk110/t4r/rnlm4UOb4BKneG4A==
+  </data>
+ </layer>
+ <layer name="Characters" width="50" height="50">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20ON6AAAAAAAAAAAADg3wAnEAAB
+  </data>
+ </layer>
+ <layer name="doors" width="50" height="50">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt1DsKACEMBUCrPan3P4PNViKIH3DXzED6hEdeSgBATz69AFtEzzH6/cA8/QG06IY7yBG+y38CrKu7VLeOe94BAPiTAii9A5E=
+  </data>
+ </layer>
+ <layer name="Lights" width="50" height="50">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20ON6AAAAAAAAAAAADg3wAnEAAB
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="50" height="50">
+  <object x="754" y="3" width="94" height="118">
+   <properties>
+    <property name="change_map" value="data/dungeonTest1.tmx"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="sign" x="771" y="776" width="31" height="45">
+   <properties>
+    <property name="display_text" value="A boring house."/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

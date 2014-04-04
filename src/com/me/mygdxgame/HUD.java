@@ -64,6 +64,7 @@ public class HUD extends Sprite {
 		int x = 0;
 		Image image;
 		hearts = ((int) playerd.health);
+		System.out.println(hearts);
 		for(int i = 0; i < 3; i++) {
 			if (i < hearts) {
 				image = new Image(heartTexture);
@@ -99,6 +100,10 @@ public class HUD extends Sprite {
 	
 	public void setDialog(String string) {
 		dialogText = string;
+	}
+	
+	public void loseHeart() {
+		images.clear();
 	}
 	
 	

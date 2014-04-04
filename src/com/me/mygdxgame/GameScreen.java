@@ -281,6 +281,13 @@ public class GameScreen implements Screen, InputProcessor {
         Values.bodiesToDelete.clear();
         for (Player player : players) {
             player.update();
+            for (Interaction i : interactions) {
+            	ArrayList<Interaction> objectsToInteract = new ArrayList<Interaction>();
+            	if (i.properties.get("interaction_type").equals("player_auto") && i.rectangle.overlaps(player.getSprite().getBoundingRectangle())) {
+            		objectsToInteract.add(i);
+            	}
+            	doProperties(objectsToInteract, player);
+            }
         }
         Values.world.step(Gdx.graphics.getDeltaTime(), 10, 10);
         changeViewportAndRender();

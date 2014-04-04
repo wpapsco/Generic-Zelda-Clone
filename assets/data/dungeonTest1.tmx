@@ -32,7 +32,7 @@
    <property name="collide" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjZmBgYEbCMMCMBRMClKhjw6GOUoBuLq39gU8dMeEMAE4oAGE=
+   eJxjZmBgYEbCMMCMBRMClKhjw6GOGMCDRw7ZXB4izaSVf4kJZwBfaAB5
   </data>
  </layer>
  <layer name="wall detail" width="10" height="10">
@@ -82,7 +82,7 @@
    <property name="collide" value="false"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYEAFzFA8WAAxbiHWzYPNX9jcAwAUgAAZ
+   eJxjYEAFzFA8WACxbhlMbiYG4ApnABAwABM=
   </data>
  </layer>
  <layer name="doors" width="10" height="10">
@@ -90,7 +90,7 @@
    <property name="collide" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYEAFQlA8WAAxbiHWzYPNX9jcAwBzMACR
+   eJxjYEAFQlA8WACxbhlMbiYG4ApnAFlQAG0=
   </data>
  </layer>
  <layer name="hidden passages" width="10" height="10">
@@ -99,7 +99,7 @@
    <property name="collide" value="false"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYBjcgBmKCckTq26wAwAUgAAZ
+   eJxjYBjcgJnK6gY7AAAGuAAH
   </data>
  </layer>
  <layer name="Lights" width="10" height="10">
@@ -160,6 +160,13 @@
     <property name="closed" value="17"/>
     <property name="opened" value="16"/>
     <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object type="Interaction" x="130" y="258" width="61" height="38">
+   <properties>
+    <property name="change_map" value="data/prototown.tmx"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
    </properties>
   </object>
  </objectgroup>

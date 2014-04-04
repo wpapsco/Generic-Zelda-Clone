@@ -23,28 +23,12 @@ public class Player extends Character {
 	
 	private int coin;
     protected boolean isWasd;
-    //*********
-//	protected TextureRegion[] frameRegions;
-//	protected TextureRegion[] frameregion2;
-//	protected Animation nAnimation;
-//	protected Animation sAnimation;
-//	protected Animation eAnimation;
-//	protected Animation wAnimation;
-//	protected Animation nRest;
-//	protected Animation sRest;
-//	protected Animation eRest;
-//	protected Animation wRest;
-//	protected Animation currentAnim;
-    //************
+
 	protected OrthographicCamera camera;
 	protected OrthographicCamera lightCamera;
 	protected OrthographicCamera hudCam;
 	public HUD hud;
-	//**********
-//	protected float stateTime;
-//	public int width;
-//	public int height;
-	//**********
+
 	public boolean xDown; //temp iskeydown X
 	public boolean zDown;
 	public ArrayList<Projectile> projectiles;
@@ -102,38 +86,7 @@ public class Player extends Character {
     @Override
     public void create() {
         super.create();
-        
-        //********************************
-//        width = 16;
-//        height = 28;
-//        TextureRegion[][] tRegions = Sprite.split(new Texture(Gdx.files.internal("data/Bookworm_Sheet1.png")), width, height);
-//        frameRegions = new TextureRegion[tRegions.length * tRegions[0].length];
-//        int index = 0;
-//        for (TextureRegion[] tRegion : tRegions) {
-//            for (TextureRegion aTRegion : tRegion) {
-//                frameRegions[index++] = aTRegion;
-//            }
-//        }
-//        float animSpeed = .2f;
-//        nAnimation = new Animation(animSpeed, frameRegions[7], frameRegions[6], frameRegions[5], frameRegions[4]);
-//        sAnimation = new Animation(animSpeed, frameRegions[0], frameRegions[1], frameRegions[2], frameRegions[3]);
-//        eAnimation = new Animation(animSpeed, frameRegions[8], frameRegions[9], frameRegions[10], frameRegions[11]);
-//        wAnimation = new Animation(animSpeed, frameRegions[15], frameRegions[14], frameRegions[13], frameRegions[12]);
-//        nRest = new Animation(animSpeed, frameRegions[24], frameRegions[25], frameRegions[26], frameRegions[27]);
-//        sRest = new Animation(animSpeed, frameRegions[31], frameRegions[30], frameRegions[29], frameRegions[28]);
-//        eRest = new Animation(animSpeed, frameRegions[16], frameRegions[17], frameRegions[18],frameRegions[19]);
-//        wRest = new Animation(animSpeed, frameRegions[23], frameRegions[22], frameRegions[21], frameRegions[20]);
-//        nAnimation.setPlayMode(Animation.LOOP);
-//        sAnimation.setPlayMode(Animation.LOOP);
-//        eAnimation.setPlayMode(Animation.LOOP);
-//        wAnimation.setPlayMode(Animation.LOOP);
-//        nRest.setPlayMode(Animation.LOOP);
-//        sRest.setPlayMode(Animation.LOOP);
-//        eRest.setPlayMode(Animation.LOOP);
-//        wRest.setPlayMode(Animation.LOOP);
-//        currentAnim = nAnimation;
-//        stateTime = 0;
-        //*************************************8
+
         projectiles = new ArrayList<Projectile>();
         xDown = false;
         sprite = new Sprite(currentAnim.getKeyFrame(stateTime));
@@ -291,21 +244,19 @@ public class Player extends Character {
 		System.out.println(this.coin);
 	}
 	
-//	public void animate() {
-//		super.animate();
-//		if (!Gdx.input.isKeyPressed(Keys.UP)&&!Gdx.input.isKeyPressed(Keys.DOWN)&&!Gdx.input.isKeyPressed(Keys.LEFT)&&!Gdx.input.isKeyPressed(Keys.RIGHT)) {
-//			isRest = true;
-//		} else {
-//			isRest = false;
-//		}
-//	}
-	
 	public void takeDamage(float damage) {
 		System.out.println(health);
         health-=damage;
         if (health <= 0) {
+        	System.out.println("DED");
             this.destroy();
         }
+        hud.loseHeart();
     }
+	
+	@Override
+	public void destroy() {
+		
+	}
 
 }
