@@ -77,6 +77,7 @@ public class MapObjectFactory {
     public Enemy Enemy(MapObject object, Object context) {
         Enemy enemy = null;
         if (object.getProperties().get("enemy_type").equals("NudeDude")) {
+            System.out.println("woow you did it");
             Vector2 position = new Vector2(0, 0);
             position.x = ((RectangleMapObject) object).getRectangle().x;
             position.y = ((RectangleMapObject) object).getRectangle().y;

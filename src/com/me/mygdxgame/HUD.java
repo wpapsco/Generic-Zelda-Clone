@@ -63,8 +63,7 @@ public class HUD extends Sprite {
 	public void draw(SpriteBatch spriteBatch) {
 		int x = 0;
 		Image image;
-		hearts = ((int) playerd.health);
-		System.out.println(hearts);
+        hearts = ((int) playerd.health);
 		for(int i = 0; i < 3; i++) {
 			if (i < hearts) {
 				image = new Image(heartTexture);
