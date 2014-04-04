@@ -62,8 +62,8 @@ timeline0: 0.0
 - Scale - 
 lowMin: 1.0
 lowMax: 1.0
-highMin: 10.0
-highMax: 10.0
+highMin: 8.0
+highMax: 8.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -139,7 +139,7 @@ aligned: false
 additive: true
 behind: false
 - Image Path -
-particle.png
+C:\Users\William\workspace-new\generic-zelda-clone-android\assets\data\particle.png
 
 
 Blue Fire
@@ -204,8 +204,8 @@ timeline0: 0.0
 - Scale - 
 lowMin: 1.0
 lowMax: 1.0
-highMin: 10.0
-highMax: 10.0
+highMin: 8.0
+highMax: 8.0
 relative: false
 scalingCount: 1
 scaling0: 1.0

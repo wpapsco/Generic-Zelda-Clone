@@ -294,4 +294,8 @@ public class Player extends WorldObject {//Character {
 		}
 	}
 
+    public void die() {
+        //TODO: add dying!
+        System.out.println("you died somehow!");
+    }
 }

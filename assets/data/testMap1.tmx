@@ -16,7 +16,7 @@
    <property name="collide" value="false"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjZWBgYB3Fo3gUj+JRTBfMPgjcMIpH8UjAjANsPwAYYQu3
+   eJxjZWBgYB3Fo3gUjxjMNgjcMJIx+yBwwygexSMBMw6w/QAdzQu4
   </data>
  </layer>
  <layer name="new walls" width="30" height="20">
@@ -111,11 +111,12 @@
     <property name="type" value="Interaction"/>
    </properties>
   </object>
-  <object name="blockDetector" type="Interaction" x="416" y="256" width="32" height="32">
+  <object name="blockDetector" type="Interaction" x="432" y="272" width="16" height="16">
    <properties>
     <property name="disable_object" value="blockDetector"/>
     <property name="display_text" value="fucking blocks!"/>
     <property name="interaction_type" value="block"/>
+    <property name="open_door" value="blocks_door"/>
     <property name="type" value="Interaction"/>
    </properties>
   </object>
@@ -232,16 +233,24 @@
     <property name="type" value="Door"/>
    </properties>
   </object>
-  <object x="320" y="256" width="32" height="48">
+  <object x="252" y="293" width="32" height="48">
    <properties>
     <property name="interaction_type" value="player"/>
     <property name="open_door" value="blocks_door"/>
     <property name="type" value="Interaction"/>
    </properties>
   </object>
-  <object x="320" y="256" width="32" height="48">
+  <object x="213" y="293" width="32" height="48">
    <properties>
     <property name="interaction_type" value="player"/>
+    <property name="open_door" value="blocks_door2"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="blockDetector2" type="Interaction" x="432" y="272" width="16" height="16">
+   <properties>
+    <property name="disable_object" value="blockDetector2"/>
+    <property name="interaction_type" value="block"/>
     <property name="open_door" value="blocks_door2"/>
     <property name="type" value="Interaction"/>
    </properties>

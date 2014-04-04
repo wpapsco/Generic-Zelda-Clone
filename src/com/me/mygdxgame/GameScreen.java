@@ -54,6 +54,9 @@ public class GameScreen implements Screen, InputProcessor {
 	protected MapObjects objects;
 	protected ArrayList<Player> players;
     protected ArrayList<Door> doors;
+    protected ArrayList<Hole> holes;
+    protected ArrayList<MovableBlock> blocks;
+    protected ObjectLoader l;
 	protected HUD pHud;
 	public int pNum;
 	protected Music sound;
@@ -69,8 +72,10 @@ public class GameScreen implements Screen, InputProcessor {
 		bodyWalls = new ArrayList<Body>();
 		sprites = new ArrayList<WorldObject>();
 		lights = new ArrayList<FlickeringLight>();
+        blocks = new ArrayList<MovableBlock>();
         players = new ArrayList<Player>();
         interactions = new ArrayList<Interaction>();
+        holes = new ArrayList<Hole>();
         doors = new ArrayList<Door>();
 		objects = new MapObjects();
 		TmxMapLoader loader = new TmxMapLoader();
@@ -109,16 +114,13 @@ public class GameScreen implements Screen, InputProcessor {
                     camera, lightCamera, true, "data/Base_Sheet.png"
             ));
         }
-        ObjectLoader l;
         try {
-            l = new ObjectLoader(map, new Class[]{Door.class, MapLight.class, Interaction.class}, this);
+            l = new ObjectLoader(map, new Class[]{Door.class, MapLight.class, Interaction.class, Hole.class, Enemy.class}, this);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         light.attachToBody(players.get(0).body, 0, 0);
-
-        sprites.add(new NudeDude(this, new Vector2(90, 100)));
 	}
 
     private void makeParticleEffects() {
@@ -209,7 +211,9 @@ public class GameScreen implements Screen, InputProcessor {
             def.linearDamping = .7f;
 			fixDef.density = 1;
 			bod = Values.world.createBody(def);
-            add(new MovableBlock(region, bod));
+            MovableBlock block = new MovableBlock(region, bod);
+            add(block);
+            blocks.add(block);
 		}
 		
 		bod.createFixture(fixDef);
@@ -265,7 +269,13 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public void render(float delta) {
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        
+        for (Hole hole : holes) {
+            for (Player ply : players) {
+                if (ply.getSprite().getBoundingRectangle().overlaps(hole.rectangle)) {
+                    ply.die();
+                }
+            }
+        }
 		for (int i = 0; i < lights.size(); i++) {
 			lights.get(i).updateToFlicker();
 		}
@@ -274,6 +284,16 @@ public class GameScreen implements Screen, InputProcessor {
         }
         for (WorldObject object : sprites) {
             object.update();
+        }
+        for (MovableBlock block : blocks) {
+            ArrayList<Interaction> list = new ArrayList<Interaction>();
+            for (Interaction interaction : interactions) {
+                if (interaction.properties.get("interaction_type").equals("block") &&
+                        interaction.rectangle.overlaps(block.getSprite().getBoundingRectangle())) {
+                    list.add(interaction);
+                }
+            }
+            doProperties(list, players.get(0)); //CHANGE THIS
         }
         for (Body body : Values.bodiesToDelete) {
             Values.world.destroyBody(body);
@@ -339,11 +359,22 @@ public class GameScreen implements Screen, InputProcessor {
                         if (object.properties.get("disable_object") != null) {
                             objects.get(object.properties.get("disable_object").toString()).getProperties().put("enabled", "false");
                         }
+                        if (object.properties.get("change_light_color") != null) {
+                            String str = (String)object.properties.get("change_light_color");
+                            String[] args = str.split(",");
+                            for (LoadedMapObject loadedMapObject : l.objects.get(MapLight.class)) {
+                                MapLight mapLight = (MapLight) loadedMapObject;
+                                if (mapLight.name.equals(args[0])) {
+                                    mapLight.light.setColor(Float.parseFloat(args[1]), Float.parseFloat(args[2]), Float.parseFloat(args[3]), Float.parseFloat(args[4]));
+                                }
+                            }
+                        }
                         if (object.properties.get("add_coin") != null) {
                             player.addCoin(Integer.parseInt(object.properties.get("add_coin").toString()));
                         }
                         if (object.properties.get("change_map") != null) {
                             game.setScreen(new GameScreen(this.game, object.properties.get("change_map").toString(), pNum));
+                            //TODO: add position thing
                         }
                         if (object.properties.get("open_door") != null) {
                             for (Door door : doors) {

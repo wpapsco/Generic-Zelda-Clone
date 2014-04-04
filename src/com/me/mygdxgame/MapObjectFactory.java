@@ -42,7 +42,7 @@ public class MapObjectFactory {
         }
         //screen.lights.add(new FlickeringLight(Values.handler, 300, lightColor, radius * Values.PIXEL_BOX, centerX * Values.PIXEL_BOX, centerY * Values.PIXEL_BOX, 0, Float.MAX_VALUE));
 
-        return new MapLight(new PointLight(Values.handler, 300, lightColor, radius * Values.PIXEL_BOX, centerX * Values.PIXEL_BOX, centerY * Values.PIXEL_BOX));
+        return new MapLight(new PointLight(Values.handler, 300, lightColor, radius * Values.PIXEL_BOX, centerX * Values.PIXEL_BOX, centerY * Values.PIXEL_BOX), object.getName());
     }
 
     public Interaction Interaction(MapObject object, Object context) {
@@ -59,5 +59,30 @@ public class MapObjectFactory {
         } else {
             return null;
         }
+    }
+
+    public Hole Hole(MapObject object, Object context) {
+        RectangleMapObject rect;
+        GameScreen screen = (GameScreen) context;
+        if (!(object instanceof RectangleMapObject)) {
+            return null;
+        } else {
+            rect = (RectangleMapObject) object;
+        }
+        Hole hole = new Hole(rect.getRectangle());
+        screen.holes.add(hole);
+        return hole;
+    }
+
+    public Enemy Enemy(MapObject object, Object context) {
+        Enemy enemy = null;
+        if (object.getProperties().get("enemy_type").equals("NudeDude")) {
+            Vector2 position = new Vector2(0, 0);
+            position.x = ((RectangleMapObject) object).getRectangle().x;
+            position.y = ((RectangleMapObject) object).getRectangle().y;
+            enemy = new NudeDude((GameScreen) context, position);
+        }
+        ((GameScreen) context).add(enemy);
+        return enemy;
     }
 }

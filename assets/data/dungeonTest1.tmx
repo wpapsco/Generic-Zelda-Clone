@@ -2,7 +2,7 @@
 <map version="1.0" orientation="orthogonal" width="10" height="10" tilewidth="32" tileheight="32">
  <properties>
   <property name="AmbientLight" value="0"/>
-  <property name="LightColor" value="0,0,1,2"/>
+  <property name="LightColor" value="0,0,0,2"/>
   <property name="StartX" value="4"/>
   <property name="StartY" value="1"/>
   <property name="TileHeight" value="32"/>
@@ -24,7 +24,7 @@
    <property name="collide" value="false"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYKA+YCfApyWgh1247KCG3QAcCAAk
+   eJxjYKA+YCfApyWglV0cRNhBDbsBH0gALA==
   </data>
  </layer>
  <layer name="walls" width="10" height="10">
@@ -59,23 +59,6 @@
    eJxjYMAO+LCIceJQS28wWNwBA/jcg01OGI96ADDQAEY=
   </data>
  </layer>
- <layer name="movable blocks" width="10" height="10">
-  <properties>
-   <property name="collide" value="true"/>
-   <property name="moveable" value="true"/>
-  </properties>
-  <data encoding="base64" compression="zlib">
-   eJxjYBg8gJcENYTUchNp3mADADYoAEA=
-  </data>
- </layer>
- <layer name="Characters" width="10" height="10">
-  <properties>
-   <property name="collide" value="false"/>
-  </properties>
-  <data encoding="base64" compression="zlib">
-   eJxjYBgFgwkAAAGQAAE=
-  </data>
- </layer>
  <layer name="below door" width="10" height="10">
   <properties>
    <property name="cast_shadow" value="true"/>
@@ -91,6 +74,23 @@
   </properties>
   <data encoding="base64" compression="zlib">
    eJxjYEAFQlA8WAAxbiHWzYPNX9jcAwBzMACR
+  </data>
+ </layer>
+ <layer name="movable blocks" width="10" height="10">
+  <properties>
+   <property name="collide" value="true"/>
+   <property name="moveable" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBg8gJcENYTUchNp3mADADYoAEA=
+  </data>
+ </layer>
+ <layer name="Characters" width="10" height="10">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFgwkAAAGQAAE=
   </data>
  </layer>
  <layer name="hidden passages" width="10" height="10">
@@ -121,6 +121,7 @@
  <objectgroup name="Objects" width="10" height="10">
   <object x="224" y="64" width="96" height="96">
    <properties>
+    <property name="LightColor" value="1, .5, 0, 1"/>
     <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
@@ -131,29 +132,11 @@
     <property name="call_order" value="0"/>
     <property name="disable_object" value="chest_opener"/>
     <property name="display_text" value="Awsome! I found some clams!"/>
-    <property name="enabled" value="true"/>
+    <property name="enabled" value="false"/>
     <property name="interaction_type" value="player"/>
     <property name="open_door" value="chest"/>
     <property name="type" value="Interaction"/>
    </properties>
-  </object>
-  <object x="-2" y="161" width="96" height="96">
-   <properties>
-    <property name="type" value="MapLight"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object x="229" y="159" width="96" height="96">
-   <properties>
-    <property name="type" value="MapLight"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object x="0" y="63" width="96" height="96">
-   <properties>
-    <property name="type" value="MapLight"/>
-   </properties>
-   <ellipse/>
   </object>
   <object name="chest" x="256" y="32" width="32" height="32">
    <properties>
@@ -161,6 +144,41 @@
     <property name="opened" value="16"/>
     <property name="type" value="Door"/>
    </properties>
+  </object>
+  <object x="128" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="Hole"/>
+   </properties>
+  </object>
+  <object name="blockSwitch" x="160" y="128" width="32" height="32">
+   <properties>
+    <property name="disable_object" value="blockSwitch"/>
+    <property name="display_text" value="blocks! Hooray!!"/>
+    <property name="enable_object" value="chest_opener"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="221" y="162" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="1, .5, 0, 1"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="3" y="64" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="1, .5, 0, 1"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="0" y="162" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="1, .5, 0, 1"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
   </object>
  </objectgroup>
 </map>

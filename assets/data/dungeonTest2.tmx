@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="10" height="10" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="AmbientLight" value="0"/>
+  <property name="LightColor" value="0,0,0,2"/>
+  <property name="StartX" value="1"/>
+  <property name="StartY" value="1"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="Cavetileset" tilewidth="32" tileheight="32" spacing="2">
+  <image source="Cavetileset.png" width="200" height="200"/>
+ </tileset>
+ <layer name="Floor" width="10" height="10">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJx9jjEKAEAIw/QRxf//1FsEKfGGDkoamhGhl4QU3M5uRsDWxzc/Z2ROcuye87Tx2qHDQ1vTeu6f0Ab6URrPHgOJ
+  </data>
+ </layer>
+ <layer name="Floor Detail" width="10" height="10">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYCAe8JApNwqIBwAhoAAZ
+  </data>
+ </layer>
+ <layer name="Walls" width="10" height="10">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZmBgYEbCDGh8bHLoAF0fuWLEmodNDt1duNyJzY/4zCPWv9jsQBcjBgMAimQArw==
+  </data>
+ </layer>
+ <layer name="Wall Detail" width="10" height="10">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYIAAJijNzIAATAyjgNpAiIA8AA5IABo=
+  </data>
+ </layer>
+ <layer name="Moveable Things" width="10" height="10">
+  <properties>
+   <property name="collide" value="true"/>
+   <property name="moveable" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBhegI1IscEKAAoYAA0=
+  </data>
+ </layer>
+ <layer name="Characters" width="10" height="10">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFgwkAAAGQAAE=
+  </data>
+ </layer>
+ <layer name="Lights" width="10" height="10">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFgwkAAAGQAAE=
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="10" height="10">
+  <object x="128" y="0" width="32" height="32">
+   <properties>
+    <property name="change_map" value="data/dungeonTest1.tmx"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="open2" x="32" y="32" width="32" height="32">
+   <properties>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="block"/>
+    <property name="open_door" value="exit"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="open1" x="256" y="32" width="32" height="32">
+   <properties>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="block"/>
+    <property name="open_door" value="exit"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="exit" x="128" y="0" width="32" height="32">
+   <properties>
+    <property name="closed" value="18"/>
+    <property name="opened" value="8"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object x="256" y="32" width="32" height="32">
+   <properties>
+    <property name="change_light_color" value="rightLight, 1, 0, 0, 1"/>
+    <property name="enable_object" value="open2"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="32" y="32" width="32" height="32">
+   <properties>
+    <property name="change_light_color" value="leftLight, 1, 0, 0,1"/>
+    <property name="enable_object" value="open1"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="rightLight" x="224" y="0" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="0, 1, 0, 1"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object name="leftLight" x="0" y="0" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="0, 1, 0, 1"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+ </objectgroup>
+</map>

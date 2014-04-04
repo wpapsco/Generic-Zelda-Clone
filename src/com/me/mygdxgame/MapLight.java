@@ -9,8 +9,10 @@ import com.badlogic.gdx.maps.MapObject;
  */
 public class MapLight implements LoadedMapObject {
     PointLight light;
-    public MapLight(PointLight light) {
+    public String name;
+    public MapLight(PointLight light, String name) {
         this.light = light;
+        this.name = name;
     }
     @Override
     public LoadedMapObject init(MapObject object, Object context) {

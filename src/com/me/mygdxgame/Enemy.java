@@ -1,12 +1,13 @@
 package com.me.mygdxgame;
 
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
 /**
  * Created by William on 1/25/14.
  */
-public abstract class Enemy extends NPC {
+public abstract class Enemy extends NPC implements LoadedMapObject {
     protected float speed;
     protected float health = 100;
     public Enemy(Body body, boolean isFlammable, GameScreen screen, float idleDistance, float speed) {
@@ -34,5 +35,10 @@ public abstract class Enemy extends NPC {
     @Override
     public void idle() {
         body.setLinearVelocity(Vector2.Zero);
+    }
+
+    @Override
+    public LoadedMapObject init(MapObject object, Object context) {
+        return null;
     }
 }

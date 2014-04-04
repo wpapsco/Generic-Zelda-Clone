@@ -10,7 +10,7 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 
 public class ObjectLoader {
-	private Hashtable<Class<LoadedMapObject>, ArrayList<LoadedMapObject>> objects;
+	public Hashtable<Class<LoadedMapObject>, ArrayList<LoadedMapObject>> objects;
 	
 	public ObjectLoader(TiledMap map, Class<LoadedMapObject>[] classes, Object context) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		objects = new Hashtable<Class<LoadedMapObject>, ArrayList<LoadedMapObject>>();
