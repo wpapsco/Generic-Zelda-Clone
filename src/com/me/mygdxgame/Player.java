@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,10 +17,13 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
+import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class Player extends Character {
+public class Player extends Character implements InputProcessor {
 	
 	private int coin;
     protected boolean isWasd;
@@ -36,10 +40,12 @@ public class Player extends Character {
 	public float health;
 	private float flameDamageTimer = 0;
 	protected int tempdir;
+	private GameScreen screen;
+	private WeldJoint boxJoint;
 	
-	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd, String texturePath) {
+	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd, String texturePath, GameScreen screen) {
         super(Player.createBody(x, y, 16, 28, (short) -1), true, "data/Bully_Sheet1.png");
-//        setTexturePath(texturePath);
+        this.screen = screen;
 		this.camera = camera;
 		this.lightCamera = lightCamera;
         this.isWasd = isWasd;
@@ -174,6 +180,7 @@ public class Player extends Character {
 	                stateTime += Gdx.graphics.getDeltaTime();
 	                tempdir = 1;
 	            }
+	            
 	            if (!Gdx.input.isKeyPressed(Keys.UP)&&!Gdx.input.isKeyPressed(Keys.DOWN)&&!Gdx.input.isKeyPressed(Keys.LEFT)&&!Gdx.input.isKeyPressed(Keys.RIGHT)) {
 	            	xAxis = 0;
 	            	yAxis = 0;
@@ -263,4 +270,74 @@ public class Player extends Character {
         //TODO: add dying!
         System.out.println("you died somehow!");
     }
+
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		if (keycode == Keys.SPACE) {
+            screen.onInteraction(this);
+        }
+		if (keycode == Keys.C) {
+			for (MovableBlock block : screen.blocks) {
+				if (MathThing.getDistance(this.getPosition(), block.getPosition()) < 35 && this.boxJoint == null) {
+					System.out.println("you grabbed a block!");
+					WeldJointDef def = new WeldJointDef();
+					def.initialize(block.body, this.body, block.body.getWorldCenter());
+					block.body.setFixedRotation(false);
+					System.out.println("doooo" + block.body.getAngle());
+					boxJoint = (WeldJoint) Values.world.createJoint(def);
+					break;
+				} else if (this.boxJoint != null) {
+					boxJoint.getBodyA().setFixedRotation(true);
+					boxJoint.getBodyA().setTransform(boxJoint.getBodyA().getPosition(), 0.0f);
+					Values.world.destroyJoint(boxJoint);
+					boxJoint = null;
+					break;
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

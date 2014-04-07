@@ -1,5 +1,8 @@
 package com.me.mygdxgame;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
+
 import box2dLight.RayHandler;
 
 import com.badlogic.gdx.Game;
@@ -17,6 +20,7 @@ public class GZCGame extends Game {
 	public OrthographicCamera lightCamera;
 	public OrthographicCamera hudCamera;
 	public SpriteBatch batch;
+	public Hashtable<String, GameScreen> screens;
     public static float scale = 2f;
 
 	@Override

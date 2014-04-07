@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class MovableBlock extends WorldObject {
 
-	private Body body;
+	public Body body;
 	private TextureRegion region;
     private ParticleEffect effect;
     private boolean flaming = false;

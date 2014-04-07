@@ -48,7 +48,7 @@ public class UiTestScreen implements Screen {
 		table.add(playersButton);
 		table.row();
 		
-		generateLevelButtons(table, new String[]{"data/testMap1.tmx", "data/testMap2.tmx", "data/testMap3.tmx", "data/testMap4.tmx", "data/dungeonTest1.tmx", "data/dungeonTest2.tmx", "7", "8", "9", "10"}, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
+		generateLevelButtons(table, new String[]{"data/testMap1.tmx", "data/testMap2.tmx", "data/testMap3.tmx", "data/testMap4.tmx", "data/dungeonTest1.tmx", "data/dungeonTest2.tmx", "data/dungeonTest3.tmx", "8", "9", "10"}, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
 	}
 	
 	private void generateLevelButtons(Table table, String[] levels, String[] buttonTitles) {
@@ -64,7 +64,7 @@ public class UiTestScreen implements Screen {
 			buttons[i].addListener(new ContextualChangeListener(game, levels[i]) {
 				@Override                                 
 				public void changed(ChangeEvent event, Actor actor) {
-					game.setScreen(new GameScreen(game, (String) information, pNum)); 
+					game.setScreen(new GameScreen(game, (String) information, pNum, null));
 				}
 			});
 			table.add(buttons[i]);

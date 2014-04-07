@@ -12,6 +12,7 @@ import box2dLight.RayHandler;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -41,7 +42,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class GameScreen implements Screen, InputProcessor {
+public class GameScreen extends InputMultiplexer implements Screen {
 
 	protected GZCGame game;
 	protected ArrayList<WorldObject> sprites;
@@ -61,7 +62,7 @@ public class GameScreen implements Screen, InputProcessor {
 	public int pNum;
 	protected Music sound;
 	
-	public GameScreen(GZCGame game, String mapLocation, int playerNum) {
+	public GameScreen(GZCGame game, String mapLocation, int playerNum, Vector2 spawnPosition) {
 		sound = Gdx.audio.newMusic(Gdx.files.internal("data/fireballnoise.mp3"));
 		sound.setLooping(true);
 		sound.play();
@@ -96,11 +97,19 @@ public class GameScreen implements Screen, InputProcessor {
 		}
 		light = new PointLight(Values.handler, 300, new Color(Float.parseFloat(vals[0]), Float.parseFloat(vals[1]), Float.parseFloat(vals[2]), Float.parseFloat(vals[3])), 200 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX);
 		light.setSoft(true);
-		players.add(new Player(
-                Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
-                Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
-                game.camera, game.lightCamera, false, "data/Bully_Sheet.png"
-        ));
+        if (spawnPosition == null) {
+            players.add(new Player(
+                    Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
+                    Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
+                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this
+            ));
+        } else {
+            players.add(new Player(
+                    (int) spawnPosition.x * Integer.parseInt(map.getProperties().get("TileWidth").toString()),
+                    (int) spawnPosition.y * Integer.parseInt(map.getProperties().get("TileHeight").toString()),
+                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this
+            ));
+        }
         OrthographicCamera camera = new OrthographicCamera(game.camera.viewportWidth, game.camera.viewportHeight);
         camera.view.set(game.camera.view);
         OrthographicCamera lightCamera = new OrthographicCamera(game.lightCamera.viewportWidth, game.lightCamera.viewportHeight);
@@ -111,8 +120,11 @@ public class GameScreen implements Screen, InputProcessor {
 	        players.add(new Player(
                     Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
                     Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
-                    camera, lightCamera, true, "data/Base_Sheet.png"
+                    camera, lightCamera, true, "data/Base_Sheet.png", this
             ));
+        }
+        for (Player ply : players) {
+        	this.addProcessor(ply);
         }
         try {
             l = new ObjectLoader(map, new Class[]{Door.class, MapLight.class, Interaction.class, Hole.class, Enemy.class}, this);
@@ -154,11 +166,15 @@ public class GameScreen implements Screen, InputProcessor {
 				}
                 collide = layer.getProperties().get("collide") != null ? Boolean.parseBoolean(layer.getProperties().get("collide").toString()) : false;
                 movable = layer.getProperties().get("moveable") != null && Boolean.parseBoolean(layer.getProperties().get("moveable").toString());
-				if (shadow || collide) {
+				float friction = 5f;
+                if (layer.getProperties().containsKey("friction")) {
+                    friction = Float.parseFloat(layer.getProperties().get("friction").toString());
+                }
+                if (shadow || collide) {
 					for (int x = 0; x < layer.getWidth(); x++) {
 						for (int y = 0; y < layer.getHeight(); y++) {
 							if (layer.getCell(x, y) != null) {
-								createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), collide, movable, layer.getCell(x, y).getTile().getTextureRegion());
+								createWallCube(x, y, layer.getTileWidth(), layer.getTileHeight(), collide, movable, layer.getCell(x, y).getTile().getTextureRegion(), friction);
 							}
 						}
 					}
@@ -169,7 +185,7 @@ public class GameScreen implements Screen, InputProcessor {
 		}
 	}
 	
-	private void createWallCube(int x, int y, float tileWidth, float tileHeight, boolean collide, boolean moveable, TextureRegion region) {
+	private void createWallCube(int x, int y, float tileWidth, float tileHeight, boolean collide, boolean moveable, TextureRegion region, float friction) {
 		BodyDef def = new BodyDef();
 		def.position.x = ((x * tileWidth) + (tileWidth / 2)) * Values.PIXEL_BOX;
 		def.position.y = ((y * tileHeight) + (tileHeight / 2)) * Values.PIXEL_BOX; //THIS MIGHT CAUSE A PROBLEM (INVERTED Y)
@@ -192,9 +208,9 @@ public class GameScreen implements Screen, InputProcessor {
 			fixDef.density = 0;
 			bod = Values.world.createBody(def);
 		} else {
-			float boxWidth = (tileWidth - 1) * Values.PIXEL_BOX;
-			float boxHeight = (tileHeight - 1) * Values.PIXEL_BOX;
-			float percentTruncation = .2f;
+			float boxWidth = (tileWidth - 2) * Values.PIXEL_BOX;
+			float boxHeight = (tileHeight - 2) * Values.PIXEL_BOX;
+			float percentTruncation = .3f;
 			Vector2[] points = new Vector2[] {
 					//making a truncated square
 				    new Vector2(-(boxWidth / 2) + (boxWidth * percentTruncation), boxHeight / 2),     //top left
@@ -208,7 +224,9 @@ public class GameScreen implements Screen, InputProcessor {
 			};
 			shape.set(points);
 			def.type = BodyType.DynamicBody;
-            def.linearDamping = .7f;
+
+            def.linearDamping = friction;
+            System.out.println(friction);
 			fixDef.density = 1;
 			bod = Values.world.createBody(def);
             MovableBlock block = new MovableBlock(region, bod);
@@ -380,7 +398,15 @@ public class GameScreen implements Screen, InputProcessor {
                             player.addCoin(Integer.parseInt(object.properties.get("add_coin").toString()));
                         }
                         if (object.properties.get("change_map") != null) {
-                            game.setScreen(new GameScreen(this.game, object.properties.get("change_map").toString(), pNum));
+                            String[] args = object.properties.get("change_map").toString().split(",");
+                            if (args.length == 1) {
+                                game.setScreen(new GameScreen(this.game, object.properties.get("change_map").toString(), pNum, null));
+                            } else {
+                            	Vector2 spawnPos = new Vector2(Float.parseFloat(args[1]), Float.parseFloat(args[2]));
+                            	game.setScreen(new GameScreen(this.game, args[0], pNum, spawnPos));
+                            	System.out.println("tada");
+                            }
+
                             //TODO: add position thing
                         }
                         if (object.properties.get("open_door") != null) {
@@ -448,57 +474,6 @@ public class GameScreen implements Screen, InputProcessor {
 
     public void add(WorldObject sprite) {
         sprites.add(sprite);
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        // TODO Auto-generated method stub
-        if (keycode == Keys.SPACE) {
-            onInteraction(players.get(0));
-        }
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        // TODO Auto-generated method stub
-        return false;
     }
 
     public ArrayList<Player> getPlayers() {
