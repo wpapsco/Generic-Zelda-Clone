@@ -48,7 +48,7 @@ public class Player extends Character {
         health = 3;
         isUp = false;
         isRight = true;
-        
+        System.out.println(health);
         tempdir = 0; //0=up,1=right,2=down,3=left
         
         hud = new HUD(hudCam, this);
@@ -134,7 +134,7 @@ public class Player extends Character {
             }
             if (this.isFlaming) {
                 flameDamageTimer += Gdx.graphics.getDeltaTime();
-                this.takeDamage(.1f);
+                this.takeDamage(.1f, new Vector2(0,0));
             }
             if (flameDamageTimer >= 5.0f) {
                 this.isFlaming = false;
@@ -244,9 +244,9 @@ public class Player extends Character {
 		System.out.println(this.coin);
 	}
 	
-	public void takeDamage(float damage) {
-		System.out.println(health);
+	public void takeDamage(float damage, Vector2 pos) {
         health-=damage;
+        System.out.println(health);
         if (health <= 0) {
         	System.out.println("DED");
             this.destroy();

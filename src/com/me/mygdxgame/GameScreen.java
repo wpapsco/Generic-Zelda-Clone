@@ -230,7 +230,7 @@ public class GameScreen implements Screen, InputProcessor {
                     door.draw(game.batch);
                 }
                 for (Player ply : players) {
-                    ply.draw(game.batch);
+                    ply.draw(game.batch); 
                 }
                 ArrayList<WorldObject> toRemove = new ArrayList<WorldObject>();
                 for (int j = 0; j < sprites.size(); j++) {

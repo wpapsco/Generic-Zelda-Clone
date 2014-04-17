@@ -12,6 +12,7 @@ public class NudeDude extends Enemy {
     private float flameDamageTimer = 0;
     public NudeDude(GameScreen screen, Vector2 position) {
         super(Player.createBody(position.x, position.y, 10, 10, (short) 0), true, screen, 100, 1);
+        attackDam = 1;
     }
 
     @Override
@@ -33,7 +34,7 @@ public class NudeDude extends Enemy {
         super.update();
         if (this.isFlaming) {
             flameDamageTimer += Gdx.graphics.getDeltaTime();
-            this.takeDamage(1f);
+            this.takeDamage(1f, new Vector2(0,0));
         }
         if (flameDamageTimer >= 5.0f) {
             this.isFlaming = false;

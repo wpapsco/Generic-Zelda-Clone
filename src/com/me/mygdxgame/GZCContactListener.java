@@ -35,7 +35,7 @@ public class GZCContactListener implements ContactListener {
                 ((Projectile) dataA).destroy();
             }
             if (dataB instanceof Enemy) {
-                ((Enemy) dataB).takeDamage(10);
+                ((Enemy) dataB).takeDamage(10, (((Projectile) dataA).pos));
             }
         }
         if (dataB instanceof Projectile) {
@@ -43,17 +43,17 @@ public class GZCContactListener implements ContactListener {
                 ((Projectile) dataB).destroy();
             }
             if (dataA instanceof Enemy) {
-                ((Enemy) dataA).takeDamage(10);
+                ((Enemy) dataA).takeDamage(10, (((Projectile) dataB).pos));
             }
         }
         if (dataA instanceof Enemy) {
         	if (dataB instanceof Player) {
-        		((Player) dataB).takeDamage(.5f);
+        		((Player) dataB).takeDamage(((Enemy) dataA).attackDam, ((Enemy) dataA).getPosition());
         	}
         }
         if (dataB instanceof Enemy) {
         	if (dataA instanceof Player) {
-        		((Player) dataA).takeDamage(.5f);
+        		((Player) dataA).takeDamage(((Enemy) dataB).attackDam, ((Enemy) dataB).getPosition());
         	}
         }
     }

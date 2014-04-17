@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 public abstract class Enemy extends NPC implements LoadedMapObject {
     protected float speed;
     protected float health = 100;
+    protected float attackDam;
     public Enemy(Body body, boolean isFlammable, GameScreen screen, float idleDistance, float speed) {
         super(body, isFlammable, screen, idleDistance);
         this.speed = speed;
@@ -35,11 +36,12 @@ public abstract class Enemy extends NPC implements LoadedMapObject {
         }
     }
 
-    public void takeDamage(float damage) {
+    public void takeDamage(float damage, Vector2 pos) {
         health-=damage;
         if (health <= 0) {
             this.destroy();
         }
+//        this.body.applyLinearImpulse(new Vector2(0, .2f), pos, true);
     }
 
     @Override
