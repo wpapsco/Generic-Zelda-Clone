@@ -19,7 +19,7 @@ public class GZCContactListener implements ContactListener {
         Body bodyB = contact.getFixtureB().getBody();
         Object dataA = bodyA.getUserData();
         Object dataB = bodyB.getUserData();
-
+        
         if (dataA instanceof WorldObject && dataB instanceof  WorldObject) {
             WorldObject worldDataA = (WorldObject) dataA;
             WorldObject worldDataB = (WorldObject) dataB;
@@ -57,7 +57,7 @@ public class GZCContactListener implements ContactListener {
         	}
         }
     }
-
+    
     @Override
     public void endContact(Contact contact) {
 

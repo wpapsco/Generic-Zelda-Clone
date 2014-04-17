@@ -29,7 +29,11 @@ public class Door extends WorldObject implements LoadedMapObject {
         this.sprite.setRegion(closedRegion);
         isClosed = true;
         position.set(position.x + (size.x / 2), position.y + (size.y / 2));
-        if (startsOpen) {this.sprite.setRegion(openRegion); isClosed = false;}
+        if (startsOpen) {this.open();}
+    }
+    
+    public Door(Door door) {
+    	this(new TextureRegion(door.openRegion), new TextureRegion(door.closedRegion), !door.isClosed, new Vector2(door.position.x - (door.size.x / 2), door.position.y - (door.size.y / 2)), door.size, door.name);
     }
 
     private static Body makeBody(Vector2 position, Vector2 size) {

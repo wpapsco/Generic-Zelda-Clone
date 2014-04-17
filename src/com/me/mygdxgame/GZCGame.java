@@ -20,7 +20,7 @@ public class GZCGame extends Game {
 	public OrthographicCamera lightCamera;
 	public OrthographicCamera hudCamera;
 	public SpriteBatch batch;
-	public Hashtable<String, GameScreen> screens;
+	public Hashtable<String, ArrayList[]> things;
     public static float scale = 2f;
 
 	@Override
@@ -31,6 +31,7 @@ public class GZCGame extends Game {
 		camera.position.x += camera.viewportWidth / 2;
 		camera.position.y += camera.viewportHeight / 2;
 		camera.update();
+		things = new Hashtable<String, ArrayList[]>();
 		lightCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		lightCamera.zoom = 1f/30f;
 		lightCamera.update();
@@ -47,5 +48,23 @@ public class GZCGame extends Game {
 		super.dispose();
 		batch.dispose();
 		Values.handler.dispose();
+	}
+	
+	@Override
+	public void setScreen(Screen screen) {
+		// TODO Auto-generated method stub
+		if (screen instanceof GameScreen) {
+			
+		}
+		super.setScreen(screen);
+	}
+	
+	public void setScreen(GameScreen screenTo, GameScreen screenFrom) {
+		if (things.containsKey(screenTo.mapPath)) {
+			screenTo.interactions = things.get(screenTo.mapPath)[0];
+			screenTo.setDoors(things.get(screenTo.mapPath)[1]);
+		}
+		things.put(screenFrom.mapPath, new ArrayList[]{screenFrom.interactions, screenFrom.doors});
+		super.setScreen(screenTo);
 	}
 }

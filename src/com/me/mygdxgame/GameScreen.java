@@ -31,6 +31,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader.Parameters;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -59,10 +60,13 @@ public class GameScreen extends InputMultiplexer implements Screen {
     protected ArrayList<MovableBlock> blocks;
     protected ObjectLoader l;
 	protected HUD pHud;
+	public World world;
 	public int pNum;
+	public String mapPath;
 	protected Music sound;
 	
 	public GameScreen(GZCGame game, String mapLocation, int playerNum, Vector2 spawnPosition) {
+		mapPath = mapLocation;
 		sound = Gdx.audio.newMusic(Gdx.files.internal("data/fireballnoise.mp3"));
 		sound.setLooping(true);
 		sound.play();
@@ -148,7 +152,8 @@ public class GameScreen extends InputMultiplexer implements Screen {
     }
 
     private void createBox2dWorld() {
-		Values.world = new World(new Vector2(), true);
+    	this.world = new World(new Vector2(), true);
+		Values.world = this.world;
 		Values.handler = new RayHandler(Values.world);
         Light.setContactFilter((short) 0, (short) 0, (short) 3);
         useDiffuseLight(true);
@@ -226,7 +231,6 @@ public class GameScreen extends InputMultiplexer implements Screen {
 			def.type = BodyType.DynamicBody;
 
             def.linearDamping = friction;
-            System.out.println(friction);
 			fixDef.density = 1;
 			bod = Values.world.createBody(def);
             MovableBlock block = new MovableBlock(region, bod);
@@ -238,6 +242,16 @@ public class GameScreen extends InputMultiplexer implements Screen {
 		bodyWalls.add(bod);
 	}
 
+	public void setDoors(ArrayList<Door> doors) {
+		for (Door door : this.doors) {
+			door.destroy();
+		}
+		this.doors.clear();
+		for (Door door : doors) {
+			this.doors.add(new Door(door));
+		}
+	}
+	
     public void renderWorld(Player player) {
         game.batch.setProjectionMatrix(player.camera.combined);
         renderer.setView(player.camera);
@@ -374,61 +388,62 @@ public class GameScreen extends InputMultiplexer implements Screen {
             for (Interaction object : mapObjects) {
                 if (object.properties.get("call_order").equals(new Integer(i).toString())) {
                     if (object.properties.get("enabled").equals("true")) {
-                        if (object.properties.get("display_text") != null) {
-                            System.out.println(object.properties.get("display_text").toString());
-                            player.hud.setDialog(object.properties.get("display_text").toString());
-                        }
-                        if (object.properties.get("enable_object") != null) {
-                            objects.get(object.properties.get("enable_object").toString()).getProperties().put("enabled", "true");
-                        }
-                        if (object.properties.get("disable_object") != null) {
-                            objects.get(object.properties.get("disable_object").toString()).getProperties().put("enabled", "false");
-                        }
-                        if (object.properties.get("change_light_color") != null) {
-                            String str = (String)object.properties.get("change_light_color");
-                            String[] args = str.split(",");
-                            for (LoadedMapObject loadedMapObject : l.objects.get(MapLight.class)) {
-                                MapLight mapLight = (MapLight) loadedMapObject;
-                                if (mapLight.name.equals(args[0])) {
-                                    mapLight.light.setColor(Float.parseFloat(args[1]), Float.parseFloat(args[2]), Float.parseFloat(args[3]), Float.parseFloat(args[4]));
-                                }
-                            }
-                        }
-                        if (object.properties.get("add_coin") != null) {
-                            player.addCoin(Integer.parseInt(object.properties.get("add_coin").toString()));
-                        }
-                        if (object.properties.get("change_map") != null) {
-                            String[] args = object.properties.get("change_map").toString().split(",");
-                            if (args.length == 1) {
-                                game.setScreen(new GameScreen(this.game, object.properties.get("change_map").toString(), pNum, null));
-                            } else {
-                            	Vector2 spawnPos = new Vector2(Float.parseFloat(args[1]), Float.parseFloat(args[2]));
-                            	game.setScreen(new GameScreen(this.game, args[0], pNum, spawnPos));
-                            	System.out.println("tada");
-                            }
-
-                            //TODO: add position thing
-                        }
-                        if (object.properties.get("open_door") != null) {
-                            for (Door door : doors) {
-                                if (door.name.equals(object.properties.get("open_door"))) {
-                                    door.open();
-                                }
-                            }
-                        }
-                        if (object.properties.get("close_door") != null) {
-                            for (Door door : doors) {
-                                if (door.name.equals(object.properties.get("close_door"))) {
-                                    door.close();
-                                }
-                            }
-                        }
-                        if (object.properties.get("toggle_door") != null) {
-                            for (Door door : doors) {
-                                if (door.name.equals(object.properties.get("toggle_door"))) {
-                                    door.toggle();
-                                }
-                            }
+                    	if ((object.properties.get("add_keys") != null && player.addKeys(Integer.parseInt(object.properties.get("add_keys").toString()))) || !object.properties.containsKey("add_keys")) {
+                    		if (object.properties.get("display_text") != null) {
+	                            System.out.println("Display Text: " + object.properties.get("display_text").toString());
+	                            player.hud.setDialog(object.properties.get("display_text").toString());
+	                        }
+	                        if (object.properties.get("enable_object") != null) {
+	                            objects.get(object.properties.get("enable_object").toString()).getProperties().put("enabled", "true");
+	                        }
+	                        if (object.properties.get("disable_object") != null) {
+	                            objects.get(object.properties.get("disable_object").toString()).getProperties().put("enabled", "false");
+	                        }
+	                        if (object.properties.get("change_light_color") != null) {
+	                            String str = (String)object.properties.get("change_light_color");
+	                            String[] args = str.split(",");
+	                            for (LoadedMapObject loadedMapObject : l.objects.get(MapLight.class)) {
+	                                MapLight mapLight = (MapLight) loadedMapObject;
+	                                if (mapLight.name.equals(args[0])) {
+	                                    mapLight.light.setColor(Float.parseFloat(args[1]), Float.parseFloat(args[2]), Float.parseFloat(args[3]), Float.parseFloat(args[4]));
+	                                }
+	                            }
+	                        }
+	                        if (object.properties.get("add_coin") != null) {
+	                            player.addCoin(Integer.parseInt(object.properties.get("add_coin").toString()));
+	                        }
+	                        if (object.properties.get("change_map") != null) {
+	                            String[] args = object.properties.get("change_map").toString().split(",");
+	                            if (args.length == 1) {
+	                                game.setScreen(new GameScreen(this.game, object.properties.get("change_map").toString(), pNum, null), this);
+	                            } else {
+	                            	Vector2 spawnPos = new Vector2(Float.parseFloat(args[1]), Float.parseFloat(args[2]));
+	                            	game.setScreen(new GameScreen(this.game, args[0], pNum, spawnPos), this);
+	                            }
+	
+	                            //TODO: add position thing
+	                        }
+	                        if (object.properties.get("open_door") != null) {
+	                            for (Door door : doors) {
+	                                if (door.name.equals(object.properties.get("open_door"))) {
+	                                    door.open();
+	                                }
+	                            }
+	                        }
+	                        if (object.properties.get("close_door") != null) {
+	                            for (Door door : doors) {
+	                                if (door.name.equals(object.properties.get("close_door"))) {
+	                                    door.close();
+	                                }
+	                            }
+	                        }
+	                        if (object.properties.get("toggle_door") != null) {
+	                            for (Door door : doors) {
+	                                if (door.name.equals(object.properties.get("toggle_door"))) {
+	                                    door.toggle();
+	                                }
+	                            }
+	                        }
                         }
                     }
                 }

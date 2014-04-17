@@ -26,6 +26,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class Player extends Character implements InputProcessor {
 	
 	private int coin;
+	private int keys;
     protected boolean isWasd;
 
 	protected OrthographicCamera camera;
@@ -49,6 +50,7 @@ public class Player extends Character implements InputProcessor {
 		this.camera = camera;
 		this.lightCamera = lightCamera;
         this.isWasd = isWasd;
+        keys = 1;
         coin = 100;
         hudCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         health = 3;
@@ -138,14 +140,14 @@ public class Player extends Character implements InputProcessor {
             if (projectile.destroyed) {
                 itemsToRemove.add(projectile);
             }
-            if (this.isFlaming) {
-                flameDamageTimer += Gdx.graphics.getDeltaTime();
-                this.takeDamage(.1f);
-            }
-            if (flameDamageTimer >= 5.0f) {
-                this.isFlaming = false;
-                flameDamageTimer = 0;
-            }
+        }
+        if (this.isFlaming) {
+            flameDamageTimer += Gdx.graphics.getDeltaTime();
+            this.takeDamage(.005f);
+        }
+        if (flameDamageTimer >= 5.0f) {
+            this.isFlaming = false;
+            flameDamageTimer = 0;
         }
         projectiles.removeAll(itemsToRemove);
         float speed = 3f;
@@ -248,15 +250,23 @@ public class Player extends Character implements InputProcessor {
 	
 	public void addCoin(float coin) {
 		this.coin += coin;
-		System.out.println(this.coin);
+		System.out.println("Coin: " + this.coin);
+	}
+	
+	public boolean addKeys(int keys) {
+		if (this.keys + keys >= 0) {
+			this.keys += keys;
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public void takeDamage(float damage) {
-		System.out.println(health);
+		System.out.println("Health: " + health);
         health-=damage;
         if (health <= 0) {
-        	System.out.println("DED");
-            this.destroy();
+        	this.die();
         }
         hud.loseHeart();
     }
@@ -284,7 +294,6 @@ public class Player extends Character implements InputProcessor {
 					WeldJointDef def = new WeldJointDef();
 					def.initialize(block.body, this.body, block.body.getWorldCenter());
 					block.body.setFixedRotation(false);
-					System.out.println("doooo" + block.body.getAngle());
 					boxJoint = (WeldJoint) Values.world.createJoint(def);
 					break;
 				} else if (this.boxJoint != null) {
