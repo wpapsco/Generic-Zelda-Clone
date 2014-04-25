@@ -1,78 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" width="44" height="44" tilewidth="32" tileheight="32">
  <properties>
   <property name="AmbientLight" value="1"/>
   <property name="LightColor" value="0,0,0,0"/>
-  <property name="StartX" value="24"/>
-  <property name="StartY" value="33"/>
+  <property name="StartX" value="28"/>
+  <property name="StartY" value="35"/>
   <property name="TileHeight" value="32"/>
   <property name="TileWidth" value="32"/>
  </properties>
- <tileset firstgid="1" name="testingTiles2" tilewidth="32" tileheight="32" spacing="2">
-  <image source="testingTiles2.png" width="136" height="66"/>
+ <tileset firstgid="1" name="towntileset" tilewidth="32" tileheight="32" spacing="2">
+  <image source="towntileset.png" width="611" height="203"/>
  </tileset>
- <tileset firstgid="9" name="towntileset" tilewidth="32" tileheight="32" spacing="2">
-  <image source="tileset34.png" width="611" height="203"/>
+ <tileset firstgid="109" name="npcSheet" tilewidth="32" tileheight="32" spacing="2">
+  <image source="npcSheet.png" width="203" height="101"/>
  </tileset>
- <layer name="floor" width="50" height="50">
+ <layer name="floor" width="44" height="44">
   <properties>
    <property name="collide" value="false"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
- <layer name="wallFix" width="50" height="50">
+ <layer name="wallFix" width="44" height="44">
   <properties>
    <property name="collide" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztzjENACAMAEE2JCAGDfi3gwFYIGkhuZt+/FJ4Uc8eOLB6HuEX9358BgAAAAAAAAD4VcseOBD1XDfN3gSLoQFN
+   eJztzlEJACAQRMErYBgxgti/khVEhQOd+V/eRgC8ryU068F2XHuxric0AQAAAGBH+aQJkGECbT0BBw==
   </data>
  </layer>
- <layer name="walls" width="50" height="50">
+ <layer name="walls" width="44" height="44">
   <properties>
    <property name="collide" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztmstOwzAQRb2oxA5Y8OgysIDAEljwktgjYMfjD0r5/w9gLNlisJJmrvFMHJQrXU2l0ManHia3UVrn3Bm5BWorOO5fn7sfnZBPC7tlFVk/wtnFoXGulGNJviXfFaz3jOO68Gf7uscY+Hf3RH4uWF8Yx2Phz/Y19mpfD0xFCMc2eYd512KBQiEcDfmI+dhgfVIhHBfkS+YriwUKhXC8kt/I78EfwHliTyK9iPQxwrEif4bXa/IXsKa4l8geNk7ex7nz6gFYj5ffS3QPkT62mrurUJE9RPrY+vqB7CPSx1O5Dg7xT4VjSChHzvy0EMqRMz8thHLkzE8LoRw589NC2tdBq4ysPa8aZ5ORtTmsMrI2h1VG1uawysiW13PNjFxzLkFmfM0cUZJ91OAYI4NpcIyRwTQ4xshgGhxjZDDN/3N0zv5FU5hXEkk50txa2z1eKUfjfufW2u7xSjnS3FrbPV4pR5pbc/KrpqQccZb67LoO9qrl963V/V2pFj0eOl7b3F0M/0nne2YOHc0cM4eG/hNHjmvjyFUfxyH5oFD1XrJz+mda9sPxUk45IkvJZ4rid7MVzJ+/ahVq1zpSvk110/t4r/rnlm4UOb4BKneG4A==
+   eJztmL0KwjAQgDOpQ5WO6qDVUR2KCq4i6ubPG1RF3/8VvGCDQZq/NgkH3sFHOsTweRfPoxljLAMmEVbOFNiWjGqcMY5Ila/rGRnll/L7c4YPH9P3Fs9N8xsjr7++T+AVIL8psARWHtc1+0ZesSdpkF+eiz1w8LgeJd9dxR7THTH5xo4Qvi2gLdFB7tsHBhJD5L4zYC6xQO57As7ApeTq4CPukuoOhfAtgFv5fAceDr6iNqqahO4PGwdXHrw2uppg62dFuapqgs1XhKouWH1VQb6fMPUlbL6mvoTN19SXsPma+hI2XxG2/xe2Mx2W/mA702HxtZ3psPjaznRYfG1nOiy+cuh+oxh9dUG+YYN8w8a/+XaBnqc1lbwSxb68ga/uc3WQ61Xn3S/5ki/5kq+ON1Lpo/I=
   </data>
  </layer>
- <layer name="Characters" width="50" height="50">
+ <layer name="doors" width="44" height="44">
   <properties>
    <property name="collide" value="false"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T20ON6AAAAAAAAAAAADg3wAnEAAB
+   eJzt1EENAAAIAkCD2j+HBfzj3F0CNgZVAAB80ekArPQCXOOX4DYbBQAgaQAbSQFx
   </data>
  </layer>
- <layer name="doors" width="50" height="50">
-  <properties>
-   <property name="collide" value="true"/>
-  </properties>
-  <data encoding="base64" compression="zlib">
-   eJzt1DsKACEMBUCrPan3P4PNViKIH3DXzED6hEdeSgBATz69AFtEzzH6/cA8/QG06IY7yBG+y38CrKu7VLeOe94BAPiTAii9A5E=
-  </data>
- </layer>
- <layer name="Lights" width="50" height="50">
+ <layer name="Characters" width="44" height="44">
   <properties>
    <property name="collide" value="false"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T20ON6AAAAAAAAAAAADg3wAnEAAB
+   eJztwQEBAAAAgJD+r+4ICgAAAAAAAABqHkAAAQ==
   </data>
  </layer>
- <objectgroup name="Objects" width="50" height="50">
-  <object x="754" y="3" width="94" height="118">
+ <layer name="Lights" width="44" height="44">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgJD+r+4ICgAAAAAAAABqHkAAAQ==
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="44" height="44">
+  <object name="to dungeon" x="928" y="224" width="64" height="32">
    <properties>
-    <property name="change_map" value="data/dungeonTest1.tmx"/>
+    <property name="change_map" value="data/dungeonTest1.tmx, 6, 13"/>
     <property name="interaction_type" value="player_auto"/>
     <property name="type" value="Interaction"/>
    </properties>
   </object>
-  <object name="sign" x="771" y="776" width="31" height="45">
+  <object name="to timmy's house" x="480" y="448" width="32" height="32">
    <properties>
-    <property name="display_text" value="A boring house."/>
+    <property name="change_map" value="data/timmyHouse"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="928" y="512" width="32" height="32">
+   <properties>
+    <property name="display_text" value="Hello? Anyone home? Hmm? I guess no one's home."/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="to quest giver" x="896" y="896" width="32" height="32">
+   <properties>
+    <property name="change_map" value="data/questHouse"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="480" y="736" width="32" height="32">
+   <properties>
+    <property name="display_text" value="It's locked!"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="928" y="928" width="32" height="48">
+   <properties>
+    <property name="display_text" value="Herbert's House"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="957" y="1119" width="26" height="38">
+   <properties>
+    <property name="display_text" value="Looks like you're here for a reason. Maybe Herbert can help you figure out why you're here?"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="520" y="520" width="26" height="32">
+   <properties>
+    <property name="display_text" value="I hope Timmy's okay. He hasn't come out to play for awhile."/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="896" y="1216" width="64" height="192">
+   <properties>
+    <property name="collide" value="true"/>
+   </properties>
+  </object>
+  <object x="896" y="1184" width="64" height="32">
+   <properties>
+    <property name="display_text" value="We're here for a reason. We shouldn't leave till we've helped the village out."/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
    </properties>
   </object>
  </objectgroup>

@@ -64,6 +64,8 @@ public class GameScreen extends InputMultiplexer implements Screen {
 	public int pNum;
 	public String mapPath;
 	protected Music sound;
+	private ArrayList<BossLocation> bossLocations;
+	private Boss boss;
 	
 	public GameScreen(GZCGame game, String mapLocation, int playerNum, Vector2 spawnPosition) {
 		mapPath = mapLocation;
@@ -74,6 +76,7 @@ public class GameScreen extends InputMultiplexer implements Screen {
 		pNum = playerNum;
 		this.game = game;
         makeParticleEffects();
+        bossLocations = new ArrayList<BossLocation>();
 		bodyWalls = new ArrayList<Body>();
 		sprites = new ArrayList<WorldObject>();
 		lights = new ArrayList<FlickeringLight>();
@@ -131,7 +134,7 @@ public class GameScreen extends InputMultiplexer implements Screen {
         	this.addProcessor(ply);
         }
         try {
-            l = new ObjectLoader(map, new Class[]{Door.class, MapLight.class, Interaction.class, Hole.class, Enemy.class}, this);
+            l = new ObjectLoader(map, new Class[]{Door.class, MapLight.class, Interaction.class, Hole.class, Enemy.class, BossLocation.class}, this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -155,7 +158,11 @@ public class GameScreen extends InputMultiplexer implements Screen {
     	this.world = new World(new Vector2(), true);
 		Values.world = this.world;
 		Values.handler = new RayHandler(Values.world);
-        Light.setContactFilter((short) 0, (short) 0, (short) 3);
+		if (map.getProperties().get("Shadows") == null || map.getProperties().get("Shadows").toString().equals("false")) {
+			Light.setContactFilter((short) 0, (short) 0, (short) 3);
+		} else {
+			Light.setContactFilter((short) 1, (short) 1, (short) 1);
+		}
         useDiffuseLight(true);
         Values.world.setContactListener(new GZCContactListener(this));
 		for (int i = 0; i < map.getLayers().getCount(); i++) {
@@ -272,10 +279,6 @@ public class GameScreen extends InputMultiplexer implements Screen {
                     }
                 }
                 sprites.removeAll(toRemove);
-                if(players.get(0).xDown && (TimeUtils.nanoTime() - players.get(0).shotTime > 500000000 && player.getCoin() > 0)) {
-                    players.get(0).createProjectile();
-                    player.addCoin(-10);
-                }
                 game.batch.end();
                 renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get(i));
             } else {
@@ -329,6 +332,7 @@ public class GameScreen extends InputMultiplexer implements Screen {
         }
         for (Body body : Values.bodiesToDelete) {
             Values.world.destroyBody(body);
+            System.out.println(Values.bodiesToDelete.size());
         }
         Values.bodiesToDelete.clear();
         for (Player player : players) {
@@ -449,6 +453,16 @@ public class GameScreen extends InputMultiplexer implements Screen {
                 }
             }
         }
+    }
+    
+    public void addBossLocation(BossLocation location) {
+    	if (bossLocations.size() == 0) {
+    		boss = new Boss(location, this);
+    		this.add(boss);
+    	} else {
+    		boss.locations.add(location);
+    	}
+    	bossLocations.add(location);
     }
 
     @Override

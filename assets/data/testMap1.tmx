@@ -175,8 +175,10 @@
    </properties>
    <ellipse/>
   </object>
-  <object x="384" y="480" width="48" height="32">
+  <object name="door_opener1" x="384" y="480" width="48" height="32">
    <properties>
+    <property name="call_order" value="1"/>
+    <property name="enabled" value="false"/>
     <property name="interaction_type" value="player"/>
     <property name="open_door" value="door1"/>
     <property name="type" value="Interaction"/>
@@ -189,9 +191,12 @@
     <property name="type" value="Door"/>
    </properties>
   </object>
-  <object x="384" y="480" width="48" height="32">
+  <object name="door_opener2" x="384" y="480" width="48" height="32">
    <properties>
+    <property name="add_keys" value="-1"/>
+    <property name="call_order" value="0"/>
     <property name="display_text" value="you opened a door!"/>
+    <property name="enable_object" value="door_opener1"/>
     <property name="interaction_type" value="player"/>
     <property name="open_door" value="door2"/>
     <property name="type" value="Interaction"/>
@@ -252,6 +257,13 @@
     <property name="disable_object" value="blockDetector2"/>
     <property name="interaction_type" value="block"/>
     <property name="open_door" value="blocks_door2"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object type="Interaction" x="143" y="570" width="32" height="32">
+   <properties>
+    <property name="change_map" value="data/testMap2.tmx"/>
+    <property name="interaction_type" value="player"/>
     <property name="type" value="Interaction"/>
    </properties>
   </object>

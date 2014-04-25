@@ -296,13 +296,13 @@ public class Player extends Character implements InputProcessor {
 					block.body.setFixedRotation(false);
 					boxJoint = (WeldJoint) Values.world.createJoint(def);
 					break;
-				} else if (this.boxJoint != null) {
-					boxJoint.getBodyA().setFixedRotation(true);
-					boxJoint.getBodyA().setTransform(boxJoint.getBodyA().getPosition(), 0.0f);
-					Values.world.destroyJoint(boxJoint);
-					boxJoint = null;
-					break;
 				}
+			}
+		}
+		if (keycode == Keys.X) {
+			if (this.getCoin() >= 10) {
+				createProjectile();
+				this.addCoin(-10);
 			}
 		}
 		return false;
@@ -311,6 +311,14 @@ public class Player extends Character implements InputProcessor {
 	@Override
 	public boolean keyUp(int keycode) {
 		// TODO Auto-generated method stub
+		if (keycode == Keys.C) {
+			if (this.boxJoint != null) {
+				boxJoint.getBodyA().setFixedRotation(true);
+				boxJoint.getBodyA().setTransform(boxJoint.getBodyA().getPosition(), 0.0f);
+				Values.world.destroyJoint(boxJoint);
+				boxJoint = null;
+			}
+		}
 		return false;
 	}
 

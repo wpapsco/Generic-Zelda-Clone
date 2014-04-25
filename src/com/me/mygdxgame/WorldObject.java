@@ -46,8 +46,8 @@ public abstract class WorldObject {
     protected void postCreate() {
         body.setUserData(this);
         if (isFlammable) {
-
-            flameLight = new PointLight(Values.handler, 200, Values.fireColor, 30 * Values.PIXEL_BOX, body.getPosition().x * Values.BOX_PIXEL, body.getPosition().y * Values.BOX_PIXEL);
+        	
+            flameLight = new PointLight(Values.handler, 200, Values.fireColor, sprite.getWidth() * 3 * Values.PIXEL_BOX, body.getPosition().x * Values.BOX_PIXEL, body.getPosition().y * Values.BOX_PIXEL);
             flameLight.attachToBody(this.body, 0, 0);
             flameLight.setActive(false);
 
@@ -58,6 +58,10 @@ public abstract class WorldObject {
             }
             flamingEffect.start();
         }
+    }
+    
+    public float getLightDistance() {
+    	return flameLight.getDistance() * Values.BOX_PIXEL;
     }
 
     protected void destroy() {

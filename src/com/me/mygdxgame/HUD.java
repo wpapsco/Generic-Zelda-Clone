@@ -57,13 +57,15 @@ public class HUD extends Sprite {
 		
 		
 		table.addActor(label);
+		
+		updateHearts();
 	}
 
-	@Override
-	public void draw(SpriteBatch spriteBatch) {
+	public void updateHearts() {
 		int x = 0;
 		Image image;
         hearts = ((int) playerd.health);
+        //images.clear();
 		for(int i = 0; i < 3; i++) {
 			if (i < hearts) {
 				image = new Image(heartTexture);
@@ -75,7 +77,10 @@ public class HUD extends Sprite {
 			table.addActor(images.get(i));
 			x += 15;
 		}
-		
+	}
+	
+	@Override
+	public void draw(SpriteBatch spriteBatch) {
 		label.setText("Clams: " + coin);
 		if (dialogText != null) {
 			dialog = new Dialog("Dialog", style);
@@ -103,6 +108,7 @@ public class HUD extends Sprite {
 	
 	public void loseHeart() {
 		images.clear();
+		this.updateHearts();
 	}
 	
 	

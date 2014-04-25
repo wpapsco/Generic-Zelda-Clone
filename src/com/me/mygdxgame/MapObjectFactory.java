@@ -77,7 +77,6 @@ public class MapObjectFactory {
     public Enemy Enemy(MapObject object, Object context) {
         Enemy enemy = null;
         if (object.getProperties().get("enemy_type").equals("NudeDude")) {
-            System.out.println("woow you did it");
             Vector2 position = new Vector2(0, 0);
             position.x = ((RectangleMapObject) object).getRectangle().x;
             position.y = ((RectangleMapObject) object).getRectangle().y;
@@ -85,5 +84,15 @@ public class MapObjectFactory {
         }
         ((GameScreen) context).add(enemy);
         return enemy;
+    }
+    
+    public BossLocation BossLocation(MapObject object, Object context) {
+    	BossLocation location = new BossLocation(object, context);
+    	if (context instanceof GameScreen) {
+    		GameScreen screen = (GameScreen) context;
+    		screen.addBossLocation(location);
+    	}
+		return location;
+    	
     }
 }

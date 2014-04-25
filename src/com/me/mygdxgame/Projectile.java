@@ -28,7 +28,6 @@ public class Projectile extends WorldObject {
         super(new Texture(Gdx.files.internal("data/BigBooty.png")), Projectile.createBody(x, y), isFlammable);
         this.destroyOnContact = destroyOnContact;
         sound = Gdx.audio.newSound(Gdx.files.internal("data/fireballnoise.mp3"));
-        createBody(x, y);
 		vel = body.getLinearVelocity();
 		pos = body.getPosition();
     }
@@ -52,7 +51,7 @@ public class Projectile extends WorldObject {
 		Body body = Values.world.createBody(def);
 		fixture = body.createFixture(fixtureDef);
 		
-		circle.dispose();
+		//circle.dispose();
 
         return body;
 	}

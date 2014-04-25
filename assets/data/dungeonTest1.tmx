@@ -24,7 +24,7 @@
    <property name="collide" value="false"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYKA+YCfApyWglV0cRNhBDbsBH0gALA==
+   eJxjYKA+YCfApyWgh1247KCG3QAcCAAk
   </data>
  </layer>
  <layer name="walls" width="10" height="10">
@@ -79,6 +79,7 @@
  <layer name="movable blocks" width="10" height="10">
   <properties>
    <property name="collide" value="true"/>
+   <property name="friction" value="5"/>
    <property name="moveable" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
@@ -145,11 +146,6 @@
     <property name="type" value="Door"/>
    </properties>
   </object>
-  <object x="128" y="224" width="32" height="32">
-   <properties>
-    <property name="type" value="Hole"/>
-   </properties>
-  </object>
   <object name="blockSwitch" x="160" y="128" width="32" height="32">
    <properties>
     <property name="disable_object" value="blockSwitch"/>
@@ -179,6 +175,12 @@
     <property name="type" value="MapLight"/>
    </properties>
    <ellipse/>
+  </object>
+  <object gid="8" x="99" y="102">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

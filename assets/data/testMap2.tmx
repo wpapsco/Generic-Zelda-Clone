@@ -2,6 +2,7 @@
 <map version="1.0" orientation="orthogonal" width="15" height="15" tilewidth="32" tileheight="32">
  <properties>
   <property name="LightColor" value="0, 0, 0, .3"/>
+  <property name="Shadows" value="true"/>
   <property name="StartX" value="1.5"/>
   <property name="StartY" value="1.5"/>
   <property name="TileHeight" value="32"/>
@@ -148,6 +149,25 @@
    <properties>
     <property name="interaction_type" value="player"/>
     <property name="toggle_door" value="hall_door"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="map_changer" x="416" y="32" width="32" height="32">
+   <properties>
+    <property name="call_order" value="1"/>
+    <property name="change_map" value="data/testMap1.tmx"/>
+    <property name="disable_object" value="map_changer"/>
+    <property name="enable_object" value="object2"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="object2" x="416" y="32" width="32" height="32">
+   <properties>
+    <property name="call_order" value="0"/>
+    <property name="display_text" value="You only change maps once!"/>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
     <property name="type" value="Interaction"/>
    </properties>
   </object>
