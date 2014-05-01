@@ -2,6 +2,7 @@ package com.me.mygdxgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -48,7 +49,7 @@ public class UiTestScreen implements Screen {
 		table.add(playersButton);
 		table.row();
 		
-		generateLevelButtons(table, new String[]{"data/prototown.tmx", "data/testMap2.tmx", "data/testMap3.tmx", "data/testMap4.tmx", "data/dungeonTest1.tmx", "data/dungeonTest2.tmx", "data/dungeonTest3.tmx", "data/darkDungeonRoom4.tmx", "data/dungeonTest4.tmx", "10"}, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
+		generateLevelButtons(table, new String[]{"data/testMap1.tmx", "data/testMap2.tmx", "data/testMap3.tmx", "data/testMap4.tmx", "data/dungeonTest1.tmx", "data/dungeonTest2.tmx", "data/dungeonTest3.tmx", "data/darkDungeonRoom4.tmx", "data/dungeonTest4.tmx", "10"}, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
 	}
 	
 	private void generateLevelButtons(Table table, String[] levels, String[] buttonTitles) {
@@ -64,7 +65,7 @@ public class UiTestScreen implements Screen {
 			buttons[i].addListener(new ContextualChangeListener(game, levels[i]) {
 				@Override                                 
 				public void changed(ChangeEvent event, Actor actor) {
-					game.setScreen(new GameScreen(game, (String) information, pNum, null));
+					game.setScreen(new GameScreen(game, (String) information, pNum, null, null));
 				}
 			});
 			table.add(buttons[i]);
@@ -76,7 +77,7 @@ public class UiTestScreen implements Screen {
 	public void render(float delta) {     
 		// TODO Auto-generated method stub
 		stage.act();                      
-		stage.draw();                     
+		stage.draw();
 		Table.drawDebug(stage);           
 	}                                     
 

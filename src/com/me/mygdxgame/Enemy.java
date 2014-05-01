@@ -44,7 +44,7 @@ public abstract class Enemy extends NPC implements LoadedMapObject {
 
     @Override
     public void idle() {
-        body.setLinearVelocity(Vector2.Zero);
+    	
     }
 
     @Override

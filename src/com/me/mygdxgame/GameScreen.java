@@ -63,15 +63,12 @@ public class GameScreen extends InputMultiplexer implements Screen {
 	public World world;
 	public int pNum;
 	public String mapPath;
-	protected Music sound;
 	private ArrayList<BossLocation> bossLocations;
+	private Music mapMusic;
 	private Boss boss;
 	
-	public GameScreen(GZCGame game, String mapLocation, int playerNum, Vector2 spawnPosition) {
+	public GameScreen(GZCGame game, String mapLocation, int playerNum, Vector2 spawnPosition, ArrayList<Player> _players) {
 		mapPath = mapLocation;
-		sound = Gdx.audio.newMusic(Gdx.files.internal("data/fireballnoise.mp3"));
-		sound.setLooping(true);
-		sound.play();
 		Gdx.input.setInputProcessor(this);
 		pNum = playerNum;
 		this.game = game;
@@ -104,19 +101,42 @@ public class GameScreen extends InputMultiplexer implements Screen {
 		}
 		light = new PointLight(Values.handler, 300, new Color(Float.parseFloat(vals[0]), Float.parseFloat(vals[1]), Float.parseFloat(vals[2]), Float.parseFloat(vals[3])), 200 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX, 320 * Values.PIXEL_BOX);
 		light.setSoft(true);
-        if (spawnPosition == null) {
-            players.add(new Player(
-                    Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
-                    Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
-                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this
-            ));
-        } else {
-            players.add(new Player(
-                    (int) spawnPosition.x * Integer.parseInt(map.getProperties().get("TileWidth").toString()),
-                    (int) spawnPosition.y * Integer.parseInt(map.getProperties().get("TileHeight").toString()),
-                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this
-            ));
-        }
+		
+		if (_players == null) {
+	        if (spawnPosition == null) {
+	            players.add(new Player(
+	                    Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
+	                    Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
+	                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this
+	            ));
+	        } else {
+	            players.add(new Player(
+	                    (int) spawnPosition.x * Integer.parseInt(map.getProperties().get("TileWidth").toString()),
+	                    (int) spawnPosition.y * Integer.parseInt(map.getProperties().get("TileHeight").toString()),
+	                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this
+	            ));
+	        }
+		} else {
+			for (Player ply : _players) {
+				if (spawnPosition == null) {
+		            players.add(new Player(
+		                    Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
+		                    Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
+		                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this
+		            ));
+		        } else {
+		            players.add(new Player(
+		                    (int) spawnPosition.x * Integer.parseInt(map.getProperties().get("TileWidth").toString()),
+		                    (int) spawnPosition.y * Integer.parseInt(map.getProperties().get("TileHeight").toString()),
+		                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this
+		            ));
+		        }
+				players.get(players.size() - 1).setCoin(ply.getCoin());
+	            players.get(players.size() - 1).setKeys(ply.getKeys());
+			}
+		}
+        
+        
         OrthographicCamera camera = new OrthographicCamera(game.camera.viewportWidth, game.camera.viewportHeight);
         camera.view.set(game.camera.view);
         OrthographicCamera lightCamera = new OrthographicCamera(game.lightCamera.viewportWidth, game.lightCamera.viewportHeight);
@@ -162,6 +182,12 @@ public class GameScreen extends InputMultiplexer implements Screen {
 			Light.setContactFilter((short) 0, (short) 0, (short) 3);
 		} else {
 			Light.setContactFilter((short) 1, (short) 1, (short) 1);
+		}
+		if (map.getProperties().containsKey("music")) {
+			mapMusic = Gdx.audio.newMusic(Gdx.files.internal(map.getProperties().get("music").toString()));
+			mapMusic.setLooping(true);
+			mapMusic.setVolume(.5f);
+			mapMusic.play();
 		}
         useDiffuseLight(true);
         Values.world.setContactListener(new GZCContactListener(this));
@@ -419,10 +445,10 @@ public class GameScreen extends InputMultiplexer implements Screen {
 	                        if (object.properties.get("change_map") != null) {
 	                            String[] args = object.properties.get("change_map").toString().split(",");
 	                            if (args.length == 1) {
-	                                game.setScreen(new GameScreen(this.game, object.properties.get("change_map").toString(), pNum, null), this);
+	                                game.setScreen(new GameScreen(this.game, object.properties.get("change_map").toString(), pNum, null, players), this);
 	                            } else {
 	                            	Vector2 spawnPos = new Vector2(Float.parseFloat(args[1]), Float.parseFloat(args[2]));
-	                            	game.setScreen(new GameScreen(this.game, args[0], pNum, spawnPos), this);
+	                            	game.setScreen(new GameScreen(this.game, args[0], pNum, spawnPos, players), this);
 	                            }
 	
 	                            //TODO: add position thing

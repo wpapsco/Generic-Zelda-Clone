@@ -43,6 +43,9 @@ public class Player extends Character implements InputProcessor {
 	protected int tempdir;
 	private GameScreen screen;
 	private WeldJoint boxJoint;
+	private Sound fireballSound;
+	private Sound letGoSound;
+	private Sound grabSound;
 	
 	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd, String texturePath, GameScreen screen) {
         super(Player.createBody(x, y, 16, 28, (short) -1), true, "data/Bully_Sheet1.png");
@@ -50,12 +53,15 @@ public class Player extends Character implements InputProcessor {
 		this.camera = camera;
 		this.lightCamera = lightCamera;
         this.isWasd = isWasd;
-        keys = 1;
+        keys = 0;
         coin = 100;
         hudCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         health = 3;
         isUp = false;
         isRight = true;
+        fireballSound = Gdx.audio.newSound(Gdx.files.internal("data/fireball.wav"));
+        grabSound = Gdx.audio.newSound(Gdx.files.internal("data/grabBlock.wav"));
+        letGoSound = Gdx.audio.newSound(Gdx.files.internal("data/letgoBlock.wav"));
         
         tempdir = 0; //0=up,1=right,2=down,3=left
         
@@ -125,7 +131,6 @@ public class Player extends Character implements InputProcessor {
 		} else {
 			projectile.body.applyLinearImpulse(0, speed, projectile.pos.x, projectile.pos.y, true);
 		}
-		projectile.sound.play();
 		projectiles.add(projectile);
 		shotTime = TimeUtils.nanoTime();
 	}
@@ -239,6 +244,10 @@ public class Player extends Character implements InputProcessor {
         lightCamera.position.y = sprite.getY() * Values.PIXEL_BOX;
         
     }
+    
+    public void setPosition(Vector2 position) {
+    	this.body.setTransform(position.cpy().scl(Values.PIXEL_BOX), body.getAngle());
+    }
 
     public int getCoin() {
 		return coin;
@@ -290,6 +299,7 @@ public class Player extends Character implements InputProcessor {
 		if (keycode == Keys.C) {
 			for (MovableBlock block : screen.blocks) {
 				if (MathThing.getDistance(this.getPosition(), block.getPosition()) < 35 && this.boxJoint == null) {
+					grabSound.play();
 					System.out.println("you grabbed a block!");
 					WeldJointDef def = new WeldJointDef();
 					def.initialize(block.body, this.body, block.body.getWorldCenter());
@@ -301,6 +311,9 @@ public class Player extends Character implements InputProcessor {
 		}
 		if (keycode == Keys.X) {
 			if (this.getCoin() >= 10) {
+				//float pitch = (float) ((Math.random() * 1.5f) + .5f);
+				float pitch = 1f;
+				fireballSound.play(1f, pitch, 0f);
 				createProjectile();
 				this.addCoin(-10);
 			}
@@ -313,6 +326,7 @@ public class Player extends Character implements InputProcessor {
 		// TODO Auto-generated method stub
 		if (keycode == Keys.C) {
 			if (this.boxJoint != null) {
+				letGoSound.play();
 				boxJoint.getBodyA().setFixedRotation(true);
 				boxJoint.getBodyA().setTransform(boxJoint.getBodyA().getPosition(), 0.0f);
 				Values.world.destroyJoint(boxJoint);
@@ -356,5 +370,14 @@ public class Player extends Character implements InputProcessor {
 	public boolean scrolled(int amount) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public int getKeys() {
+		// TODO Auto-generated method stub
+		return this.keys;
+	}
+
+	public void setKeys(int keys) {
+		this.keys = keys;
 	}
 }

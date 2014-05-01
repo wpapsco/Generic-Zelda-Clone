@@ -21,13 +21,11 @@ public class Projectile extends WorldObject {
 	public Texture texture;
     public boolean destroyOnContact;
     public boolean isDestroyed = false;
-    protected Sound sound;
     protected static Fixture fixture;
 
     public Projectile(float x, float y, boolean isFlammable, boolean destroyOnContact) {
         super(new Texture(Gdx.files.internal("data/BigBooty.png")), Projectile.createBody(x, y), isFlammable);
         this.destroyOnContact = destroyOnContact;
-        sound = Gdx.audio.newSound(Gdx.files.internal("data/fireballnoise.mp3"));
 		vel = body.getLinearVelocity();
 		pos = body.getPosition();
     }
