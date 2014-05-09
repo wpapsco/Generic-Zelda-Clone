@@ -129,5 +129,23 @@
    </properties>
    <ellipse/>
   </object>
+  <object gid="8" x="30" y="133">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="8" x="257" y="134">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="8" x="162" y="253">
+   <properties>
+    <property name="enemy_type" value="BatGuy"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

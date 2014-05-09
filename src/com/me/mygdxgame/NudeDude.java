@@ -13,7 +13,8 @@ public class NudeDude extends Enemy {
     private float wanderTimer = 0f;
     private float wanderTime = 2f;
     public NudeDude(GameScreen screen, Vector2 position) {
-        super(Player.createBody(position.x, position.y, 10, 10, (short) 0), true, screen, 100, 1);
+        super(Player.createBody(position.x, position.y, 10, 10, (short) 0), true, screen, 100, 1, "data/Orc_Sheet1.png");
+        attackDam = 1;
     }
 
     @Override
@@ -62,7 +63,7 @@ public class NudeDude extends Enemy {
         super.update();
         if (this.isFlaming) {
             flameDamageTimer += Gdx.graphics.getDeltaTime();
-            this.takeDamage(1f);
+            this.takeDamage(1f, new Vector2(0,0));
         }
         if (flameDamageTimer >= 5.0f) {
             this.isFlaming = false;

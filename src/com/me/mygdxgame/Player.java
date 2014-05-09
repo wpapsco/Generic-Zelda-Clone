@@ -42,6 +42,7 @@ public class Player extends Character implements InputProcessor, ControllerListe
 
 	public boolean xDown; //temp iskeydown X
 	public boolean zDown;
+	
 	public ArrayList<Projectile> projectiles;
 	public long shotTime;
 	public float health;
@@ -54,7 +55,15 @@ public class Player extends Character implements InputProcessor, ControllerListe
 	private Sound grabSound;
 	private Controller controller;
 	
-	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd, String texturePath, GameScreen screen, Controller controller) {
+	
+	protected String attackTexturePath; //28x42
+	protected TextureRegion[] attackRegions;
+	protected Animation nAttack;
+	protected Animation sAttack;
+	protected Animation eAttack;
+	protected Animation wAttack;
+	
+public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd, String texturePath, GameScreen screen, Controller controller) {
         super(Player.createBody(x, y, 16, 28, (short) -1), true, "data/Bully_Sheet1.png");
         Controllers.addListener(this);
         this.controller = controller;
@@ -71,10 +80,13 @@ public class Player extends Character implements InputProcessor, ControllerListe
         fireballSound = Gdx.audio.newSound(Gdx.files.internal("data/fireball.wav"));
         grabSound = Gdx.audio.newSound(Gdx.files.internal("data/grabBlock.wav"));
         letGoSound = Gdx.audio.newSound(Gdx.files.internal("data/letgoBlock.wav"));
-        
         tempdir = 0; //0=up,1=right,2=down,3=left
-        
         hud = new HUD(hudCam, this);
+        if (currentAnim == nAttack || currentAnim == wAttack || currentAnim == sAttack || currentAnim == eAttack) {
+        	if (currentAnim.isAnimationFinished(stateTime)) {
+        		isAttacking = false;
+        	}
+        }
         
 	}
 
@@ -109,7 +121,8 @@ public class Player extends Character implements InputProcessor, ControllerListe
     @Override
     public void create() {
         super.create();
-
+        attackTexturePath = "data/BullyAttack.png";
+        loadAttackAnim(attackTexturePath, .2f);
         projectiles = new ArrayList<Projectile>();
         xDown = false;
         sprite = new Sprite(currentAnim.getKeyFrame(stateTime));
@@ -121,6 +134,7 @@ public class Player extends Character implements InputProcessor, ControllerListe
 	public void draw(SpriteBatch spriteBatch) {
         super.draw(spriteBatch);
         sprite.setRegion(currentAnim.getKeyFrame(stateTime));
+        sprite.setScale(currentAnim.getKeyFrame(stateTime).getRegionWidth()*Values.PIXEL_BOX*2, currentAnim.getKeyFrame(stateTime).getRegionWidth()*Values.PIXEL_BOX*2);
         for (int i = 0; i < projectiles.size(); i++) {
             projectiles.get(i).draw(spriteBatch);
         }
@@ -157,7 +171,7 @@ public class Player extends Character implements InputProcessor, ControllerListe
         }
         if (this.isFlaming) {
             flameDamageTimer += Gdx.graphics.getDeltaTime();
-            this.takeDamage(.005f);
+                this.takeDamage(.005f, new Vector2(0,0));
         }
         if (flameDamageTimer >= 5.0f) {
             this.isFlaming = false;
@@ -168,6 +182,12 @@ public class Player extends Character implements InputProcessor, ControllerListe
         float xAxis = 0;
         float yAxis = 0;
         Vector2 linV;
+        if (isAttacking == true) {
+        	meleeAttack();
+        }
+        if (currentAnim != nAttack || currentAnim != wAttack || currentAnim != sAttack || currentAnim != eAttack) {
+        	isAttacking = false;
+        }
         xDown = Gdx.input.isKeyPressed(Keys.X);
 //        if(!xDown) {
 //        	//*********************ALL WILL CHANGE FOR OUYA, THIS IS TEST STUFFS************************
@@ -259,6 +279,7 @@ public class Player extends Character implements InputProcessor, ControllerListe
         if (xAxis < -.15) {
         	isRight = false;
         	tempdir = 3;
+        	//use isAttacking = true for attack
         }
         if (yAxis > .15) {
         	isUp = true;
@@ -269,6 +290,12 @@ public class Player extends Character implements InputProcessor, ControllerListe
         	tempdir = 2;
         }
         
+	            if (!isAttacking) {
+	            	linV = new Vector2(xAxis*speed, yAxis*speed);
+	            } else {
+	            	linV = new Vector2(0,0);
+	            }
+	            System.out.println(linV);
         isRest = false;
         if (Math.abs(yAxis) + Math.abs(xAxis) <= .15) {
         	isRest = true;
@@ -286,6 +313,39 @@ public class Player extends Character implements InputProcessor, ControllerListe
     
     public void setPosition(Vector2 position) {
     	this.body.setTransform(position.cpy().scl(Values.PIXEL_BOX), body.getAngle());
+    }
+
+    public void loadAttackAnim(String path, float animSpeed) {
+		TextureRegion[][] tRegions2 = Sprite.split(new Texture(Gdx.files.internal(attackTexturePath)), 28, 42);
+        attackRegions = new TextureRegion[tRegions2.length * tRegions2[0].length];
+        int index2 = 0;
+        for (TextureRegion[] tRegion2 : tRegions2) {
+            for (TextureRegion aTRegion2 : tRegion2) {
+                attackRegions[index2++] = aTRegion2;
+            }
+        }
+        sAttack = new Animation(animSpeed, attackRegions[8], attackRegions[9], attackRegions[10], attackRegions[11]);
+        nAttack = new Animation(animSpeed, attackRegions[4], attackRegions[5], attackRegions[6], attackRegions[7]);
+        eAttack = new Animation(animSpeed, attackRegions[0], attackRegions[1], attackRegions[2], attackRegions[3]);
+        wAttack = new Animation(animSpeed, attackRegions[12], attackRegions[13], attackRegions[14], attackRegions[15]);
+        nAttack.setPlayMode(Animation.LOOP);
+        sAttack.setPlayMode(Animation.LOOP);
+        eAttack.setPlayMode(Animation.LOOP);
+        wAttack.setPlayMode(Animation.LOOP);
+        
+	}
+    
+    public void meleeAttack() {
+    	if (isRight && !isUp) {
+        	currentAnim = eAttack;
+        } else if (!isRight && !isUp) {
+        	currentAnim = wAttack;
+        } else if (isRight && isUp) {
+        	currentAnim = nAttack;
+        } else {
+        	currentAnim = sAttack;
+        }
+    	stateTime += Gdx.graphics.getDeltaTime();
     }
 
     public int getCoin() {
@@ -310,9 +370,10 @@ public class Player extends Character implements InputProcessor, ControllerListe
 		}
 	}
 	
-	public void takeDamage(float damage) {
+	public void takeDamage(float damage, Vector2 pos) {
 		System.out.println("Health: " + health);
         health-=damage;
+        System.out.println(health);
         if (health <= 0) {
         	this.die();
         }

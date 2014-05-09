@@ -302,7 +302,7 @@ public class GameScreen extends InputMultiplexer implements Screen {
                 	spawner.draw(game.batch);
                 }
                 for (Player ply : players) {
-                    ply.draw(game.batch);
+                    ply.draw(game.batch); 
                 }
                 if (boss != null) {
                 	boss.draw(game.batch);
@@ -377,7 +377,6 @@ public class GameScreen extends InputMultiplexer implements Screen {
         }
         for (Body body : Values.bodiesToDelete) {
             Values.world.destroyBody(body);
-            System.out.println(Values.bodiesToDelete.size());
         }
         Values.bodiesToDelete.clear();
         for (Player player : players) {

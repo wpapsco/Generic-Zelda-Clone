@@ -19,7 +19,7 @@ public class GZCContactListener implements ContactListener {
         Body bodyB = contact.getFixtureB().getBody();
         Object dataA = bodyA.getUserData();
         Object dataB = bodyB.getUserData();
-        
+
         if (dataA instanceof WorldObject && dataB instanceof  WorldObject) {
             WorldObject worldDataA = (WorldObject) dataA;
             WorldObject worldDataB = (WorldObject) dataB;
@@ -35,7 +35,7 @@ public class GZCContactListener implements ContactListener {
                 ((Projectile) dataA).destroy();
             }
             if (dataB instanceof Enemy) {
-                ((Enemy) dataB).takeDamage(10);
+                ((Enemy) dataB).takeDamage(10, (((Projectile) dataA).pos));
             }
         }
         if (dataB instanceof Projectile) {
@@ -43,21 +43,29 @@ public class GZCContactListener implements ContactListener {
                 ((Projectile) dataB).destroy();
             }
             if (dataA instanceof Enemy) {
-                ((Enemy) dataA).takeDamage(10);
+                ((Enemy) dataA).takeDamage(10, (((Projectile) dataB).pos));
             }
         }
         if (dataA instanceof Enemy) {
         	if (dataB instanceof Player) {
-        		((Player) dataB).takeDamage(.5f);
+        		if (!((Player) dataB).isAttacking) {
+        			((Player) dataB).takeDamage(((Enemy) dataA).attackDam, ((Enemy) dataA).getPosition());
+        		} else {
+        			((Enemy) dataA).takeDamage(100, ((Player) dataA).getPosition());
+        		}
         	}
         }
         if (dataB instanceof Enemy) {
         	if (dataA instanceof Player) {
-        		((Player) dataA).takeDamage(.5f);
+        		if (!((Player) dataA).isAttacking) {
+        			((Player) dataA).takeDamage(((Enemy) dataB).attackDam, ((Enemy) dataB).getPosition());
+        		} else {
+        			((Enemy) dataB).takeDamage(100, ((Player) dataA).getPosition());
+        		}
         	}
         }
     }
-    
+
     @Override
     public void endContact(Contact contact) {
 
