@@ -9,8 +9,8 @@ public abstract class NPC extends Character {
     private GameScreen screen;
     private float idleDistance;
 
-    public NPC(Body body, boolean isFlammable, GameScreen screen, float idleDistance) {
-        super(body, isFlammable, "data/Orc_Sheet1.png");
+    public NPC(Body body, boolean isFlammable, GameScreen screen, float idleDistance, String path) {
+        super(body, isFlammable, path);
         this.screen = screen;
         this.idleDistance = idleDistance;
     }

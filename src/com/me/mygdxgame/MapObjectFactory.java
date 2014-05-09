@@ -77,11 +77,18 @@ public class MapObjectFactory {
     public Enemy Enemy(MapObject object, Object context) {
         Enemy enemy = null;
         if (object.getProperties().get("enemy_type").equals("NudeDude")) {
-            System.out.println("woow you did it");
+            System.out.println("NudeDude loaded");
             Vector2 position = new Vector2(0, 0);
             position.x = ((RectangleMapObject) object).getRectangle().x;
             position.y = ((RectangleMapObject) object).getRectangle().y;
             enemy = new NudeDude((GameScreen) context, position);
+        }
+        if (object.getProperties().get("enemy_type").equals("BatGuy")) {
+            System.out.println("BatGuy loaded");
+            Vector2 position = new Vector2(0, 0);
+            position.x = ((RectangleMapObject) object).getRectangle().x;
+            position.y = ((RectangleMapObject) object).getRectangle().y;
+            enemy = new BatGuy((GameScreen) context, position);
         }
         ((GameScreen) context).add(enemy);
         return enemy;

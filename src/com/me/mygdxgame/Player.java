@@ -31,11 +31,19 @@ public class Player extends Character {
 
 	public boolean xDown; //temp iskeydown X
 	public boolean zDown;
+	
 	public ArrayList<Projectile> projectiles;
 	public long shotTime;
 	public float health;
 	private float flameDamageTimer = 0;
 	protected int tempdir;
+	
+	protected String attackTexturePath; //28x42
+	protected TextureRegion[] attackRegions;
+	protected Animation nAttack;
+	protected Animation sAttack;
+	protected Animation eAttack;
+	protected Animation wAttack;
 	
 	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd, String texturePath) {
         super(Player.createBody(x, y, 16, 28, (short) -1), true, "data/Bully_Sheet1.png");
@@ -50,8 +58,12 @@ public class Player extends Character {
         isRight = true;
         System.out.println(health);
         tempdir = 0; //0=up,1=right,2=down,3=left
-        
         hud = new HUD(hudCam, this);
+        if (currentAnim == nAttack || currentAnim == wAttack || currentAnim == sAttack || currentAnim == eAttack) {
+        	if (currentAnim.isAnimationFinished(stateTime)) {
+        		isAttacking = false;
+        	}
+        }
         
 	}
 
@@ -86,7 +98,8 @@ public class Player extends Character {
     @Override
     public void create() {
         super.create();
-
+        attackTexturePath = "data/BullyAttack.png";
+        loadAttackAnim(attackTexturePath, .2f);
         projectiles = new ArrayList<Projectile>();
         xDown = false;
         sprite = new Sprite(currentAnim.getKeyFrame(stateTime));
@@ -98,6 +111,7 @@ public class Player extends Character {
 	public void draw(SpriteBatch spriteBatch) {
         super.draw(spriteBatch);
         sprite.setRegion(currentAnim.getKeyFrame(stateTime));
+        sprite.setScale(currentAnim.getKeyFrame(stateTime).getRegionWidth()*Values.PIXEL_BOX*2, currentAnim.getKeyFrame(stateTime).getRegionWidth()*Values.PIXEL_BOX*2);
         for (int i = 0; i < projectiles.size(); i++) {
             projectiles.get(i).draw(spriteBatch);
         }
@@ -146,6 +160,12 @@ public class Player extends Character {
         float xAxis = 0;
         float yAxis = 0;
         Vector2 linV;
+        if (isAttacking == true) {
+        	meleeAttack();
+        }
+        if (currentAnim != nAttack || currentAnim != wAttack || currentAnim != sAttack || currentAnim != eAttack) {
+        	isAttacking = false;
+        }
         xDown = Gdx.input.isKeyPressed(Keys.X);
         if(!xDown) {
         	//*********************ALL WILL CHANGE FOR OUYA, THIS IS TEST STUFFS************************
@@ -173,6 +193,9 @@ public class Player extends Character {
 	            	xAxis = 1;
 	                stateTime += Gdx.graphics.getDeltaTime();
 	                tempdir = 1;
+	            }
+	            if (Gdx.input.isKeyPressed(Keys.Z)) {
+	            	isAttacking = true;
 	            }
 	            if (!Gdx.input.isKeyPressed(Keys.UP)&&!Gdx.input.isKeyPressed(Keys.DOWN)&&!Gdx.input.isKeyPressed(Keys.LEFT)&&!Gdx.input.isKeyPressed(Keys.RIGHT)) {
 	            	xAxis = 0;
@@ -212,7 +235,12 @@ public class Player extends Character {
 	            	yAxis = 0;
 	                stateTime += Gdx.graphics.getDeltaTime();
 	            }
-	            linV = new Vector2(xAxis*speed, yAxis*speed);
+	            if (!isAttacking) {
+	            	linV = new Vector2(xAxis*speed, yAxis*speed);
+	            } else {
+	            	linV = new Vector2(0,0);
+	            }
+	            System.out.println(linV);
 	            this.body.setLinearVelocity(linV);
 	    //***********************END TEST STUFFS*******************************************
         //testing git! Woo this is totally a test!
@@ -229,6 +257,39 @@ public class Player extends Character {
         lightCamera.position.x = sprite.getX() * Values.PIXEL_BOX;
         lightCamera.position.y = sprite.getY() * Values.PIXEL_BOX;
         
+    }
+    
+    public void loadAttackAnim(String path, float animSpeed) {
+		TextureRegion[][] tRegions2 = Sprite.split(new Texture(Gdx.files.internal(attackTexturePath)), 28, 42);
+        attackRegions = new TextureRegion[tRegions2.length * tRegions2[0].length];
+        int index2 = 0;
+        for (TextureRegion[] tRegion2 : tRegions2) {
+            for (TextureRegion aTRegion2 : tRegion2) {
+                attackRegions[index2++] = aTRegion2;
+            }
+        }
+        sAttack = new Animation(animSpeed, attackRegions[8], attackRegions[9], attackRegions[10], attackRegions[11]);
+        nAttack = new Animation(animSpeed, attackRegions[4], attackRegions[5], attackRegions[6], attackRegions[7]);
+        eAttack = new Animation(animSpeed, attackRegions[0], attackRegions[1], attackRegions[2], attackRegions[3]);
+        wAttack = new Animation(animSpeed, attackRegions[12], attackRegions[13], attackRegions[14], attackRegions[15]);
+        nAttack.setPlayMode(Animation.LOOP);
+        sAttack.setPlayMode(Animation.LOOP);
+        eAttack.setPlayMode(Animation.LOOP);
+        wAttack.setPlayMode(Animation.LOOP);
+        
+	}
+    
+    public void meleeAttack() {
+    	if (isRight && !isUp) {
+        	currentAnim = eAttack;
+        } else if (!isRight && !isUp) {
+        	currentAnim = wAttack;
+        } else if (isRight && isUp) {
+        	currentAnim = nAttack;
+        } else {
+        	currentAnim = sAttack;
+        }
+    	stateTime += Gdx.graphics.getDeltaTime();
     }
 
     public int getCoin() {

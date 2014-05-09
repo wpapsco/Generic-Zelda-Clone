@@ -23,6 +23,9 @@ public class Character extends WorldObject {
 	protected Animation eRest;
 	protected Animation wRest;
 	protected Animation currentAnim;
+	protected boolean hasAttackAnim;
+	public boolean isAttacking;
+	
 	
 	public boolean isUp;
 	public boolean isRight;
@@ -75,7 +78,9 @@ public class Character extends WorldObject {
         isUp = false;
         isRight = true;
         isRest = true;
+        
 	}
+	
 	
 	public Animation getAnimation() {
 		return currentAnim;
@@ -87,26 +92,28 @@ public class Character extends WorldObject {
 	
 	protected void animate() {
 		//System.out.println("Animating: "+isUp+","+isRight+","+isRest);
-		if (isRest == true) {
-			if (isRight && !isUp) {
-            	currentAnim = eRest;
-            } else if (!isRight && !isUp) {
-            	currentAnim = wRest;
-            } else if (isRight && isUp) {
-            	currentAnim = nRest;
-            } else {
-            	currentAnim = sRest;
-            }
-		} else {
-			if (isRight && !isUp) {
-            	currentAnim = eAnimation;
-            } else if (!isRight && !isUp) {
-            	currentAnim = wAnimation;
-            } else if (isRight && isUp) {
-            	currentAnim = sAnimation;
-            } else {
-            	currentAnim = nAnimation;
-            }
+		if (isAttacking != true) {
+			if (isRest == true) {
+				if (isRight && !isUp) {
+	            	currentAnim = eRest;
+	            } else if (!isRight && !isUp) {
+	            	currentAnim = wRest;
+	            } else if (isRight && isUp) {
+	            	currentAnim = nRest;
+	            } else {
+	            	currentAnim = sRest;
+	            }
+			} else {
+				if (isRight && !isUp) {
+	            	currentAnim = eAnimation;
+	            } else if (!isRight && !isUp) {
+	            	currentAnim = wAnimation;
+	            } else if (isRight && isUp) {
+	            	currentAnim = sAnimation;
+	            } else {
+	            	currentAnim = nAnimation;
+	            }
+			}
 		}
 	}
 }

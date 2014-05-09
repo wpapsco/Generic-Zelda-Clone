@@ -48,12 +48,20 @@ public class GZCContactListener implements ContactListener {
         }
         if (dataA instanceof Enemy) {
         	if (dataB instanceof Player) {
-        		((Player) dataB).takeDamage(((Enemy) dataA).attackDam, ((Enemy) dataA).getPosition());
+        		if (!((Player) dataB).isAttacking) {
+        			((Player) dataB).takeDamage(((Enemy) dataA).attackDam, ((Enemy) dataA).getPosition());
+        		} else {
+        			((Enemy) dataA).takeDamage(100, ((Player) dataA).getPosition());
+        		}
         	}
         }
         if (dataB instanceof Enemy) {
         	if (dataA instanceof Player) {
-        		((Player) dataA).takeDamage(((Enemy) dataB).attackDam, ((Enemy) dataB).getPosition());
+        		if (!((Player) dataA).isAttacking) {
+        			((Player) dataA).takeDamage(((Enemy) dataB).attackDam, ((Enemy) dataB).getPosition());
+        		} else {
+        			((Enemy) dataB).takeDamage(100, ((Player) dataA).getPosition());
+        		}
         	}
         }
     }

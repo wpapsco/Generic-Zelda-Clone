@@ -11,8 +11,8 @@ public abstract class Enemy extends NPC implements LoadedMapObject {
     protected float speed;
     protected float health = 100;
     protected float attackDam;
-    public Enemy(Body body, boolean isFlammable, GameScreen screen, float idleDistance, float speed) {
-        super(body, isFlammable, screen, idleDistance);
+    public Enemy(Body body, boolean isFlammable, GameScreen screen, float idleDistance, float speed, String path) {
+        super(body, isFlammable, screen, idleDistance, path);
         this.speed = speed;
     }
 
