@@ -6,6 +6,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.controllers.mappings.Ouya;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -13,6 +18,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -23,7 +29,7 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class Player extends Character implements InputProcessor {
+public class Player extends Character implements InputProcessor, ControllerListener {
 	
 	private int coin;
 	private int keys;
@@ -46,9 +52,12 @@ public class Player extends Character implements InputProcessor {
 	private Sound fireballSound;
 	private Sound letGoSound;
 	private Sound grabSound;
+	private Controller controller;
 	
-	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd, String texturePath, GameScreen screen) {
+	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd, String texturePath, GameScreen screen, Controller controller) {
         super(Player.createBody(x, y, 16, 28, (short) -1), true, "data/Bully_Sheet1.png");
+        Controllers.addListener(this);
+        this.controller = controller;
         this.screen = screen;
 		this.camera = camera;
 		this.lightCamera = lightCamera;
@@ -160,83 +169,113 @@ public class Player extends Character implements InputProcessor {
         float yAxis = 0;
         Vector2 linV;
         xDown = Gdx.input.isKeyPressed(Keys.X);
-        if(!xDown) {
-        	//*********************ALL WILL CHANGE FOR OUYA, THIS IS TEST STUFFS************************
-	        if (!isWasd) {
-	            if (Gdx.input.isKeyPressed(Keys.UP)) {
-	            	isUp = true;
-	            	yAxis = 1;
-	                stateTime += Gdx.graphics.getDeltaTime();
-	                tempdir = 0;
-	            }
-	            if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-	            	isUp = false;
-	            	yAxis = -1;
-	                stateTime += Gdx.graphics.getDeltaTime();
-	                tempdir = 2;
-	            }
-	            if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-	            	isRight = false;
-	            	xAxis = -1;
-	                stateTime += Gdx.graphics.getDeltaTime();
-	                tempdir = 3;
-	            }
-	            if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-	            	isRight = true;
-	            	xAxis = 1;
-	                stateTime += Gdx.graphics.getDeltaTime();
-	                tempdir = 1;
-	            }
-	            
-	            if (!Gdx.input.isKeyPressed(Keys.UP)&&!Gdx.input.isKeyPressed(Keys.DOWN)&&!Gdx.input.isKeyPressed(Keys.LEFT)&&!Gdx.input.isKeyPressed(Keys.RIGHT)) {
-	            	xAxis = 0;
-	            	yAxis = 0;
-	                stateTime += Gdx.graphics.getDeltaTime();
-	            }
-	            linV = new Vector2(xAxis*speed, yAxis*speed);
-	            this.body.setLinearVelocity(linV);
-	        }
-	        if (isWasd) {
-	        	if (Gdx.input.isKeyPressed(Keys.W)) {
-	            	isUp = true;
-	            	yAxis = 1;
-	                stateTime += Gdx.graphics.getDeltaTime();
-	                tempdir = 0;
-	            }
-	            if (Gdx.input.isKeyPressed(Keys.S)) {
-	            	isUp = false;
-	            	yAxis = -1;
-	                stateTime += Gdx.graphics.getDeltaTime();
-	                tempdir = 2;
-	            }
-	            if (Gdx.input.isKeyPressed(Keys.A)) {
-	            	isRight = false;
-	            	xAxis = -1;
-	                stateTime += Gdx.graphics.getDeltaTime();
-	                tempdir = 3;
-	            }
-	            if (Gdx.input.isKeyPressed(Keys.D)) {
-	            	isRight = true;
-	            	xAxis = 1;
-	                stateTime += Gdx.graphics.getDeltaTime();
-	                tempdir = 1;
-	            }
-	            if (!Gdx.input.isKeyPressed(Keys.W)&&!Gdx.input.isKeyPressed(Keys.S)&&!Gdx.input.isKeyPressed(Keys.A)&&!Gdx.input.isKeyPressed(Keys.D)) {
-	            	xAxis = 0;
-	            	yAxis = 0;
-	                stateTime += Gdx.graphics.getDeltaTime();
-	            }
-	            linV = new Vector2(xAxis*speed, yAxis*speed);
-	            this.body.setLinearVelocity(linV);
-	    //***********************END TEST STUFFS*******************************************
-        //testing git! Woo this is totally a test!
+//        if(!xDown) {
+//        	//*********************ALL WILL CHANGE FOR OUYA, THIS IS TEST STUFFS************************
+//	        if (!isWasd) {
+//	            if (Gdx.input.isKeyPressed(Keys.UP)) {
+//	            	isUp = true;
+//	            	yAxis = 1;
+//	                stateTime += Gdx.graphics.getDeltaTime();
+//	                tempdir = 0;
+//	            }
+//	            if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+//	            	isUp = false;
+//	            	yAxis = -1;
+//	                stateTime += Gdx.graphics.getDeltaTime();
+//	                tempdir = 2;
+//	            }
+//	            if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+//	            	isRight = false;
+//	            	xAxis = -1;
+//	                stateTime += Gdx.graphics.getDeltaTime();
+//	                tempdir = 3;
+//	            }
+//	            if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+//	            	isRight = true;
+//	            	xAxis = 1;
+//	                stateTime += Gdx.graphics.getDeltaTime();
+//	                tempdir = 1;
+//	            }
+//	            
+//	            if (!Gdx.input.isKeyPressed(Keys.UP)&&!Gdx.input.isKeyPressed(Keys.DOWN)&&!Gdx.input.isKeyPressed(Keys.LEFT)&&!Gdx.input.isKeyPressed(Keys.RIGHT)) {
+//	            	xAxis = 0;
+//	            	yAxis = 0;
+//	                stateTime += Gdx.graphics.getDeltaTime();
+//	            }
+//	            linV = new Vector2(xAxis*speed, yAxis*speed);
+//	            this.body.setLinearVelocity(linV);
+//	        }
+//	        if (isWasd) {
+//	        	if (Gdx.input.isKeyPressed(Keys.W)) {
+//	            	isUp = true;
+//	            	yAxis = 1;
+//	                stateTime += Gdx.graphics.getDeltaTime();
+//	                tempdir = 0;
+//	            }
+//	            if (Gdx.input.isKeyPressed(Keys.S)) {
+//	            	isUp = false;
+//	            	yAxis = -1;
+//	                stateTime += Gdx.graphics.getDeltaTime();
+//	                tempdir = 2;
+//	            }
+//	            if (Gdx.input.isKeyPressed(Keys.A)) {
+//	            	isRight = false;
+//	            	xAxis = -1;
+//	                stateTime += Gdx.graphics.getDeltaTime();
+//	                tempdir = 3;
+//	            }
+//	            if (Gdx.input.isKeyPressed(Keys.D)) {
+//	            	isRight = true;
+//	            	xAxis = 1;
+//	                stateTime += Gdx.graphics.getDeltaTime();
+//	                tempdir = 1;
+//	            }
+//	            if (!Gdx.input.isKeyPressed(Keys.W)&&!Gdx.input.isKeyPressed(Keys.S)&&!Gdx.input.isKeyPressed(Keys.A)&&!Gdx.input.isKeyPressed(Keys.D)) {
+//	            	xAxis = 0;
+//	            	yAxis = 0;
+//	                stateTime += Gdx.graphics.getDeltaTime();
+//	            }
+//	            linV = new Vector2(xAxis*speed, yAxis*speed);
+//	            this.body.setLinearVelocity(linV);
+//	    //***********************END TEST STUFFS*******************************************
+//        //testing git! Woo this is totally a test!
+//        }
+//        }
+//        if (!Gdx.input.isKeyPressed(Keys.UP)&&!Gdx.input.isKeyPressed(Keys.DOWN)&&!Gdx.input.isKeyPressed(Keys.LEFT)&&!Gdx.input.isKeyPressed(Keys.RIGHT)) {
+//			isRest = true;
+//		} else {
+//			isRest = false;
+//		}
+        xAxis = controller.getAxis(Ouya.AXIS_LEFT_X);
+        yAxis = controller.getAxis(Ouya.AXIS_LEFT_Y);
+        yAxis = -yAxis;
+        linV = new Vector2(xAxis*speed, yAxis*speed);
+        this.body.setLinearVelocity(linV);
+        
+        if (xAxis > .15) {
+        	isRight = true;
+        	tempdir = 1;
         }
+        if (xAxis < -.15) {
+        	isRight = false;
+        	tempdir = 3;
         }
-        if (!Gdx.input.isKeyPressed(Keys.UP)&&!Gdx.input.isKeyPressed(Keys.DOWN)&&!Gdx.input.isKeyPressed(Keys.LEFT)&&!Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			isRest = true;
-		} else {
-			isRest = false;
-		}
+        if (yAxis > .15) {
+        	isUp = true;
+        	tempdir = 0;
+        }
+        if (yAxis < -.15) {
+        	isUp = false;
+        	tempdir = 2;
+        }
+        
+        isRest = false;
+        if (Math.abs(yAxis) + Math.abs(xAxis) <= .15) {
+        	isRest = true;
+        }
+        stateTime+=Gdx.graphics.getDeltaTime();
+        System.out.println(Math.abs(yAxis) + Math.abs(xAxis));
+        
         animate();
         camera.position.x = sprite.getX();
         camera.position.y = sprite.getY();
@@ -379,5 +418,95 @@ public class Player extends Character implements InputProcessor {
 
 	public void setKeys(int keys) {
 		this.keys = keys;
+	}
+
+	@Override
+	public boolean accelerometerMoved(Controller arg0, int arg1, Vector3 arg2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean axisMoved(Controller arg0, int arg1, float arg2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean buttonDown(Controller arg0, int arg1) {
+		// TODO Auto-generated method stub
+		if (arg0 == controller) {
+			if (arg1 == Ouya.BUTTON_O) {
+	            screen.onInteraction(this);
+	        }
+			if (arg1 == Ouya.BUTTON_A) {
+				for (MovableBlock block : screen.blocks) {
+					if (MathThing.getDistance(this.getPosition(), block.getPosition()) < 35 && this.boxJoint == null) {
+						grabSound.play();
+						System.out.println("you grabbed a block!");
+						WeldJointDef def = new WeldJointDef();
+						def.initialize(block.body, this.body, block.body.getWorldCenter());
+						block.body.setFixedRotation(false);
+						boxJoint = (WeldJoint) Values.world.createJoint(def);
+						break;
+					}
+				}
+			}
+			if (arg1 == Ouya.BUTTON_U) {
+				if (this.getCoin() >= 10) {
+					//float pitch = (float) ((Math.random() * 1.5f) + .5f);
+					float pitch = 1f;
+					fireballSound.play(1f, pitch, 0f);
+					createProjectile();
+					this.addCoin(-10);
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean buttonUp(Controller arg0, int arg1) {
+		// TODO Auto-generated method stub
+		if (arg1 == Ouya.BUTTON_A) {
+			if (this.boxJoint != null) {
+				letGoSound.play();
+				boxJoint.getBodyA().setFixedRotation(true);
+				boxJoint.getBodyA().setTransform(boxJoint.getBodyA().getPosition(), 0.0f);
+				Values.world.destroyJoint(boxJoint);
+				boxJoint = null;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void connected(Controller arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void disconnected(Controller arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean povMoved(Controller arg0, int arg1, PovDirection arg2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean xSliderMoved(Controller arg0, int arg1, boolean arg2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean ySliderMoved(Controller arg0, int arg1, boolean arg2) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

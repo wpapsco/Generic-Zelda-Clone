@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="10" height="10" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="AmbientLight" value=".2"/>
+  <property name="BossRoom" value="true"/>
+  <property name="LightColor" value="0,0,0,0"/>
+  <property name="Shadows" value="true"/>
+  <property name="StartX" value="4"/>
+  <property name="StartY" value="1"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="Cavetileset" tilewidth="32" tileheight="32" spacing="2">
+  <image source="Cavetileset.png" width="200" height="200"/>
+ </tileset>
+ <layer name="ground" width="10" height="10">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJwTZWBgEB3FgwYDAHryCDU=
+  </data>
+ </layer>
+ <layer name="walls" width="10" height="10">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZmBgYCYSEwKj6vCrIwYDAFbIAG0=
+  </data>
+ </layer>
+ <layer name="blocks" width="10" height="10">
+  <properties>
+   <property name="collide" value="true"/>
+   <property name="moveable" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBh8gJtIsYECtHQLABpQACI=
+  </data>
+ </layer>
+ <layer name="Characters" width="10" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFgwkAAAGQAAE=
+  </data>
+ </layer>
+ <layer name="Lights" width="10" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFgwkAAAGQAAE=
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="10" height="10">
+  <object gid="2" x="160" y="16">
+   <properties>
+    <property name="direction" value="180"/>
+    <property name="type" value="BossLocation"/>
+   </properties>
+  </object>
+  <object gid="2" x="304" y="160">
+   <properties>
+    <property name="direction" value="90"/>
+    <property name="type" value="BossLocation"/>
+   </properties>
+  </object>
+  <object gid="2" x="160" y="304">
+   <properties>
+    <property name="direction" value="0"/>
+    <property name="type" value="BossLocation"/>
+   </properties>
+  </object>
+  <object gid="2" x="16" y="160">
+   <properties>
+    <property name="direction" value="270"/>
+    <property name="type" value="BossLocation"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

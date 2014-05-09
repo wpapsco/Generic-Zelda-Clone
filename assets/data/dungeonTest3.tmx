@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="10" height="10" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="AmbientLight" value="0"/>
+  <property name="LightColor" value="0,0,0,2"/>
+  <property name="StartX" value="1"/>
+  <property name="StartY" value="1"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="Cavetileset" tilewidth="32" tileheight="32" spacing="2">
+  <image source="Cavetileset.png" width="200" height="200"/>
+ </tileset>
+ <layer name="Floor" width="10" height="10">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYCQSi0Exspg4Eo0uJ4Ykj8wmFYsjYXxmiqHR2NyPy2x0P+DzCyGzSfGrOJpaAE+mAwA=
+  </data>
+ </layer>
+ <layer name="Walls" width="10" height="10">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZmBgYCYSEwKj6vCrIwYDAFbIAG0=
+  </data>
+ </layer>
+ <layer name="Characters" width="10" height="10">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFgwkAAAGQAAE=
+  </data>
+ </layer>
+ <layer name="Lights" width="10" height="10">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFgwkAAAGQAAE=
+  </data>
+ </layer>
+ <objectgroup name="Object Layer 1" width="10" height="10">
+  <object gid="8" x="53" y="167">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="8" x="66" y="91">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="8" x="218" y="136">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="8" x="141" y="159">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="8" x="183" y="71">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="8" x="247" y="180">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="8" x="109" y="197">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

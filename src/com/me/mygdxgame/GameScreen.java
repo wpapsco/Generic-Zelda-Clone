@@ -16,6 +16,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -58,6 +59,7 @@ public class GameScreen extends InputMultiplexer implements Screen {
     protected ArrayList<Door> doors;
     protected ArrayList<Hole> holes;
     protected ArrayList<MovableBlock> blocks;
+    protected ArrayList<Spawner> spawners;
     protected ObjectLoader l;
 	protected HUD pHud;
 	public World world;
@@ -82,6 +84,7 @@ public class GameScreen extends InputMultiplexer implements Screen {
         interactions = new ArrayList<Interaction>();
         holes = new ArrayList<Hole>();
         doors = new ArrayList<Door>();
+        spawners = new ArrayList<Spawner>();
 		objects = new MapObjects();
 		TmxMapLoader loader = new TmxMapLoader();
 		map = loader.load(mapLocation);
@@ -89,10 +92,11 @@ public class GameScreen extends InputMultiplexer implements Screen {
 		renderer.setView(game.camera);
 		createBox2dWorld();
 		String[] vals;
+		System.out.println("test2");
 		if (map.getProperties().get("LightColor") != null) {
 			vals = map.getProperties().get("LightColor").toString().split(",");
 		} else {
-			vals = new String[]{"0", "0", "0", "1"};
+			vals = new String[]{"1", "1", "1", "1"};
 		}
 		if (map.getProperties().get("AmbientLight") != null) {
 			Values.handler.setAmbientLight(Float.parseFloat(map.getProperties().get("AmbientLight").toString()));
@@ -107,13 +111,13 @@ public class GameScreen extends InputMultiplexer implements Screen {
 	            players.add(new Player(
 	                    Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
 	                    Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
-	                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this
+	                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this, Controllers.getControllers().first()
 	            ));
 	        } else {
 	            players.add(new Player(
 	                    (int) spawnPosition.x * Integer.parseInt(map.getProperties().get("TileWidth").toString()),
 	                    (int) spawnPosition.y * Integer.parseInt(map.getProperties().get("TileHeight").toString()),
-	                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this
+	                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this, Controllers.getControllers().first()
 	            ));
 	        }
 		} else {
@@ -122,13 +126,13 @@ public class GameScreen extends InputMultiplexer implements Screen {
 		            players.add(new Player(
 		                    Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
 		                    Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
-		                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this
+		                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this, Controllers.getControllers().first()
 		            ));
 		        } else {
 		            players.add(new Player(
 		                    (int) spawnPosition.x * Integer.parseInt(map.getProperties().get("TileWidth").toString()),
 		                    (int) spawnPosition.y * Integer.parseInt(map.getProperties().get("TileHeight").toString()),
-		                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this
+		                    game.camera, game.lightCamera, false, "data/Bully_Sheet.png", this, Controllers.getControllers().first()
 		            ));
 		        }
 				players.get(players.size() - 1).setCoin(ply.getCoin());
@@ -147,14 +151,14 @@ public class GameScreen extends InputMultiplexer implements Screen {
 	        players.add(new Player(
                     Math.round(Float.parseFloat(map.getProperties().get("StartX").toString()) * Integer.parseInt(map.getProperties().get("TileWidth").toString())),
                     Math.round(Float.parseFloat(map.getProperties().get("StartY").toString()) * Integer.parseInt(map.getProperties().get("TileHeight").toString())),
-                    camera, lightCamera, true, "data/Base_Sheet.png", this
+                    camera, lightCamera, true, "data/Base_Sheet.png", this, null
             ));
         }
         for (Player ply : players) {
         	this.addProcessor(ply);
         }
         try {
-            l = new ObjectLoader(map, new Class[]{Door.class, MapLight.class, Interaction.class, Hole.class, Enemy.class, BossLocation.class}, this);
+            l = new ObjectLoader(map, new Class[]{Spawner.class, Door.class, MapLight.class, Interaction.class, Hole.class, Enemy.class, BossLocation.class}, this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -294,8 +298,14 @@ public class GameScreen extends InputMultiplexer implements Screen {
                 for (Door door : doors) {
                     door.draw(game.batch);
                 }
+                for (Spawner spawner : spawners) {
+                	spawner.draw(game.batch);
+                }
                 for (Player ply : players) {
                     ply.draw(game.batch);
+                }
+                if (boss != null) {
+                	boss.draw(game.batch);
                 }
                 ArrayList<WorldObject> toRemove = new ArrayList<WorldObject>();
                 for (int j = 0; j < sprites.size(); j++) {
@@ -320,6 +330,7 @@ public class GameScreen extends InputMultiplexer implements Screen {
                 player.hud.draw(game.batch);
                 game.batch.end();
             }
+            
             if (map.getLayers().get(i).getName().equals("Lights")) {
                 Values.handler.setCombinedMatrix(player.lightCamera.combined, player.lightCamera.position.x, player.lightCamera.position.y, player.lightCamera.viewportWidth, player.lightCamera.viewportHeight);
                 Values.handler.render();
@@ -332,7 +343,9 @@ public class GameScreen extends InputMultiplexer implements Screen {
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         for (Hole hole : holes) {
             for (Player ply : players) {
-                if (ply.getSprite().getBoundingRectangle().overlaps(hole.rectangle)) {
+            	Rectangle r = new Rectangle(ply.getSprite().getBoundingRectangle());
+            	r.height-=15;
+                if (r.overlaps(hole.rectangle)) {
                     ply.die();
                 }
             }
@@ -343,8 +356,14 @@ public class GameScreen extends InputMultiplexer implements Screen {
         for (Door door : doors) {
             door.update();
         }
+        for (Spawner spawner : spawners) {
+        	spawner.update();
+        }
         for (WorldObject object : sprites) {
             object.update();
+        }
+        if (boss != null) {
+        	boss.update();
         }
         for (MovableBlock block : blocks) {
             ArrayList<Interaction> list = new ArrayList<Interaction>();
@@ -434,8 +453,10 @@ public class GameScreen extends InputMultiplexer implements Screen {
 	                            String[] args = str.split(",");
 	                            for (LoadedMapObject loadedMapObject : l.objects.get(MapLight.class)) {
 	                                MapLight mapLight = (MapLight) loadedMapObject;
-	                                if (mapLight.name.equals(args[0])) {
-	                                    mapLight.light.setColor(Float.parseFloat(args[1]), Float.parseFloat(args[2]), Float.parseFloat(args[3]), Float.parseFloat(args[4]));
+	                                if (mapLight.name != null) {
+		                                if (mapLight.name.equals(args[0])) {
+		                                    mapLight.light.setColor(Float.parseFloat(args[1]), Float.parseFloat(args[2]), Float.parseFloat(args[3]), Float.parseFloat(args[4]));
+		                                }
 	                                }
 	                            }
 	                        }
@@ -446,8 +467,10 @@ public class GameScreen extends InputMultiplexer implements Screen {
 	                            String[] args = object.properties.get("change_map").toString().split(",");
 	                            if (args.length == 1) {
 	                                game.setScreen(new GameScreen(this.game, object.properties.get("change_map").toString(), pNum, null, players), this);
+	                                Controllers.removeListener(player);
 	                            } else {
 	                            	Vector2 spawnPos = new Vector2(Float.parseFloat(args[1]), Float.parseFloat(args[2]));
+	                            	Controllers.removeListener(player);
 	                            	game.setScreen(new GameScreen(this.game, args[0], pNum, spawnPos, players), this);
 	                            }
 	
@@ -484,7 +507,7 @@ public class GameScreen extends InputMultiplexer implements Screen {
     public void addBossLocation(BossLocation location) {
     	if (bossLocations.size() == 0) {
     		boss = new Boss(location, this);
-    		this.add(boss);
+    		//this.add(boss);
     	} else {
     		boss.locations.add(location);
     	}

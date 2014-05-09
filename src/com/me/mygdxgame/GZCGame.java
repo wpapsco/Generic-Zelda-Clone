@@ -37,8 +37,8 @@ public class GZCGame extends Game {
 		lightCamera.update();
 		//hudCamera = new OrthographicCamera()
 		batch = new SpriteBatch();
-		//startScreen = new GameScreen(this);
-		startScreen = new UiTestScreen(this);
+		startScreen = new StartScreen(this); //new UiTestScreen(this);
+		
 		this.setScreen(startScreen);
 	}
 	

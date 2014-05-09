@@ -14,6 +14,16 @@ import com.badlogic.gdx.math.Vector2;
  * Created by William on 3/31/14.
  */
 public class MapObjectFactory {
+	
+	public Spawner Spawner(MapObject object, Object context) {
+		GameScreen screen = (GameScreen) context;
+		Rectangle r = ((RectangleMapObject) object).getRectangle();
+		float interval = Float.parseFloat(object.getProperties().get("interval").toString());
+		Spawner spawner = new Spawner(screen, new Vector2(r.x+16, r.y+16), interval, object.getProperties().get("enemy_type").toString(), screen.map.getTileSets().getTile(Integer.parseInt(object.getProperties().get("gid").toString())).getTextureRegion());
+		screen.spawners.add(spawner);
+		return spawner;
+	}
+	
     public Door Door(MapObject object, Object context) {
         GameScreen screen = (GameScreen) context;
         Rectangle r = ((RectangleMapObject) object).getRectangle();
@@ -81,6 +91,12 @@ public class MapObjectFactory {
             position.x = ((RectangleMapObject) object).getRectangle().x;
             position.y = ((RectangleMapObject) object).getRectangle().y;
             enemy = new NudeDude((GameScreen) context, position);
+        }
+        if (object.getProperties().get("enemy_type").equals("Bat")) {
+        	Vector2 position = new Vector2(0, 0);
+            position.x = ((RectangleMapObject) object).getRectangle().x;
+            position.y = ((RectangleMapObject) object).getRectangle().y;
+        	enemy = new Bat((GameScreen) context, position);
         }
         ((GameScreen) context).add(enemy);
         return enemy;

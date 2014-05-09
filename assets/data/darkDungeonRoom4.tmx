@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="28" height="28" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="AmbientLight" value="0"/>
+  <property name="LightColor" value="225,125,0,0.6"/>
+  <property name="StartX" value="7"/>
+  <property name="StartY" value="7"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="Cavetileset" tilewidth="32" tileheight="32" spacing="2">
+  <image source="Cavetileset.png" width="200" height="200"/>
+ </tileset>
+ <layer name="floor" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwwENAAAMw6DOv+lbuABIWDVVVdXHA9VuAxE=
+  </data>
+ </layer>
+ <layer name="walls" width="28" height="28">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZmBgYB7Fo3iIYUrBqH2j9pHiLkrto4bbyNFPSIwcO+ltH77wJNY+asYfNj617UP3D63TJ6lg1L6BtW8Uj+LBgAEZ+AaL
+  </data>
+ </layer>
+ <layer name="below doors" width="28" height="28">
+  <properties>
+   <property name="cast_shadow" value="true"/>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7Al+PeMhX1wtAqaAACNuQ4APLAbZAAE
+  </data>
+ </layer>
+ <layer name="doors" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzjEBAAAIA6BlsH9YK+zTAxKQAACNuQ4APLBnGAAT
+  </data>
+ </layer>
+ <layer name="chests" width="28" height="28">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2D4AsGBdsAoGAWDAIzmg1EwCkbBKBgF1AQAF4cAIw==
+  </data>
+ </layer>
+ <layer name="light sources" width="28" height="28">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2DoAe4B0jsKhgfAlQZG08YoGAxgNH0OLTBaH42CkQgAHsYAWQ==
+  </data>
+ </layer>
+ <layer name="Characters" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwYEAAAAAw6D5U1/hAFUBAAB8BgxAAAE=
+  </data>
+ </layer>
+ <layer name="Lights" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwYEAAAAAw6D5U1/hAFUBAAB8BgxAAAE=
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="28" height="28">
+  <object name="to room 3" x="160" y="416" width="32" height="64">
+   <properties>
+    <property name="change_map" value="data/darkDungeonRoom3.tmx, 20, 13"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="to room 5" x="704" y="416" width="32" height="64">
+   <properties>
+    <property name="change_map" value="data/darkDungeonRoom5.tmx, 6, 13"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="160" y="640" width="96" height="96">
+   <ellipse/>
+  </object>
+  <object x="640" y="640" width="96" height="96">
+   <ellipse/>
+  </object>
+  <object x="480" y="512" width="96" height="96">
+   <properties>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="288" y="512" width="96" height="96">
+   <properties>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="288" y="320" width="96" height="96">
+   <ellipse/>
+  </object>
+  <object x="480" y="320" width="96" height="96">
+   <properties>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="640" y="160" width="96" height="96">
+   <properties>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="160" y="160" width="96" height="96">
+   <ellipse/>
+  </object>
+  <object name="door 1" x="416" y="512" width="32" height="32">
+   <properties>
+    <property name="collide" value="true"/>
+   </properties>
+  </object>
+  <object name="chest_2_unused1" x="432" y="416" width="48" height="32">
+   <properties>
+    <property name="call_order" value="0"/>
+    <property name="interaction_type" value="player"/>
+    <property name="open_door" value="room_4_door1"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest_1_unused" x="496" y="192" width="48" height="32">
+   <properties>
+    <property name="call_order" value="0"/>
+    <property name="enable_object" value="door_1_lock"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="door_1_lock" x="416" y="544" width="32" height="32">
+   <properties>
+    <property name="disable_object" value="door_1"/>
+    <property name="display_text" value="You opened a door."/>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest_1_disable" x="496" y="192" width="48" height="32">
+   <properties>
+    <property name="call_order" value="1"/>
+    <property name="disable_object" value="chest_1_unused"/>
+    <property name="display_text" value="You found a key!"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest_2_disable1" x="432" y="416" width="48" height="33">
+   <properties>
+    <property name="call_order" value="1"/>
+    <property name="disable_object" value="chest_2_unused1"/>
+    <property name="display_text" value="You found a key!"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="room_4_door1" x="704" y="416" width="32" height="32">
+   <properties>
+    <property name="closed" value="21"/>
+    <property name="opened" value="2"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="chest_2_unused2" x="432" y="416" width="48" height="32">
+   <properties>
+    <property name="call_order" value="2"/>
+    <property name="interaction_type" value="player"/>
+    <property name="open_door" value="room_4_door2"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest_2_disable2" x="432" y="416" width="48" height="33">
+   <properties>
+    <property name="call_order" value="3"/>
+    <property name="disable_object" value="chest_2_unused2"/>
+    <property name="display_text" value="You found a key!"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="room_4_door2" x="704" y="448" width="32" height="32">
+   <properties>
+    <property name="closed" value="21"/>
+    <property name="opened" value="2"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
