@@ -87,7 +87,7 @@ public class HUD extends Sprite {
 			dialog.text(new Label(dialogText, new LabelStyle(new BitmapFont(), Color.WHITE)));
 			dialog.fadeDuration = 10;
 			dialog.setHeight(50);
-			dialog.setWidth(500);
+			dialog.setWidth(1000);
 			dialog.setPosition(100, 10);
 			//dialog.setBackground(new Image(new Texture(Gdx.files.internal("data/ui_block_test1.png"))));
 			stage.addActor(dialog);

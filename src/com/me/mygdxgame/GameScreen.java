@@ -137,6 +137,7 @@ public class GameScreen extends InputMultiplexer implements Screen {
 		        }
 				players.get(players.size() - 1).setCoin(ply.getCoin());
 	            players.get(players.size() - 1).setKeys(ply.getKeys());
+	            players.get(players.size() - 1).setHearts(ply.getHearts());
 			}
 		}
         
@@ -467,9 +468,15 @@ public class GameScreen extends InputMultiplexer implements Screen {
 	                            if (args.length == 1) {
 	                                game.setScreen(new GameScreen(this.game, object.properties.get("change_map").toString(), pNum, null, players), this);
 	                                Controllers.removeListener(player);
+	                                if (this.mapMusic != null) {
+	                                	this.mapMusic.stop();
+	                                }
 	                            } else {
 	                            	Vector2 spawnPos = new Vector2(Float.parseFloat(args[1]), Float.parseFloat(args[2]));
 	                            	Controllers.removeListener(player);
+	                            	if (this.mapMusic != null) {
+	                            		this.mapMusic.stop();
+	                            	}
 	                            	game.setScreen(new GameScreen(this.game, args[0], pNum, spawnPos, players), this);
 	                            }
 	

@@ -183,6 +183,7 @@ public class Player extends Character implements InputProcessor, ControllerListe
         float xAxis = 0;
         float yAxis = 0;
         Vector2 linV;
+        animate();
         if (isAttacking == true) {
         	meleeAttack();
         }
@@ -271,21 +272,25 @@ public class Player extends Character implements InputProcessor, ControllerListe
         yAxis = controller.getAxis(Ouya.AXIS_LEFT_Y);
         yAxis = -yAxis;
         linV = new Vector2(xAxis*speed, yAxis*speed);
-        this.body.setLinearVelocity(linV);
-        
-        if (xAxis > .15) {
+        float deadzone = .2f;
+        if (linV.len() > deadzone * speed) {
+        	this.body.setLinearVelocity(linV);
+        } else {
+        	this.body.setLinearVelocity(0, 0);
+        }
+        if (xAxis > deadzone) {
         	isRight = true;
         	tempdir = 1;
         }
-        if (xAxis < -.15) {
+        if (xAxis < -deadzone) {
         	isRight = false;
         	tempdir = 3;
         }
-        if (yAxis > .15) {
+        if (yAxis > deadzone) {
         	isUp = true;
         	tempdir = 0;
         }
-        if (yAxis < -.15) {
+        if (yAxis < -deadzone) {
         	isUp = false;
         	tempdir = 2;
         }
@@ -298,16 +303,16 @@ public class Player extends Character implements InputProcessor, ControllerListe
         	linV = new Vector2(0,0);
         }
         isRest = false;
-        if (Math.abs(yAxis) + Math.abs(xAxis) <= .15) {
+        if (Math.abs(yAxis) + Math.abs(xAxis) <= deadzone) {
         	isRest = true;
         }
         stateTime+=Gdx.graphics.getDeltaTime();
         
-        animate();
         camera.position.x = sprite.getX();
         camera.position.y = sprite.getY();
         lightCamera.position.x = sprite.getX() * Values.PIXEL_BOX;
         lightCamera.position.y = sprite.getY() * Values.PIXEL_BOX;
+        System.out.println(currentAnim);
         
     }
     
@@ -315,6 +320,15 @@ public class Player extends Character implements InputProcessor, ControllerListe
     	this.body.setTransform(position.cpy().scl(Values.PIXEL_BOX), body.getAngle());
     }
 
+    public void setHearts(float health) {
+    	this.health = health;
+    	this.hud.loseHeart();
+    }
+    
+    public float getHearts() {
+    	return health;
+    }
+    
     public void loadAttackAnim(String path, float animSpeed) {
 		TextureRegion[][] tRegions2 = Sprite.split(new Texture(Gdx.files.internal(attackTexturePath)), 28, 42);
         attackRegions = new TextureRegion[tRegions2.length * tRegions2[0].length];
@@ -336,7 +350,6 @@ public class Player extends Character implements InputProcessor, ControllerListe
 	}
     
     public void meleeAttack() {
-    	System.out.println("happening!!");
     	if (isRight && !isUp) {
         	currentAnim = eAttack;
         } else if (!isRight && !isUp) {
