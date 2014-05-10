@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="28" height="28" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="AmbientLight" value="0"/>
+  <property name="LightColor" value="210,120,20,0.5"/>
+  <property name="StartX" value="7"/>
+  <property name="StartY" value="7"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="Cavetileset" tilewidth="32" tileheight="32" spacing="2">
+  <image source="Cavetileset.png" width="203" height="373"/>
+ </tileset>
+ <layer name="floor" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwwENAAAMw6DOv+lbuABIWDVVVdXHA9VuAxE=
+  </data>
+ </layer>
+ <layer name="walls" width="28" height="28">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZmBgYB7Fo3gU48WUglH7Ru2jlX3UAoPVvuEef6P2DX37iHUHtcwlxk562DWKRzYGANNdBnM=
+  </data>
+ </layer>
+ <layer name="doors" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMFSBChXMUBrE9o2CUTAKiAfMUDwKRgGtAQB2CQCT
+  </data>
+ </layer>
+ <layer name="switches" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIKBBQJkyo2CUTAcwWh+GAWjYBQMdgAAlM8AQQ==
+  </data>
+ </layer>
+ <layer name="light sources" width="28" height="28">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUEAK8A6R3FIyCUTAKRgFpYLS8HgWjgPYAAEs3ADU=
+  </data>
+ </layer>
+ <layer name="Characters" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwYEAAAAAw6D5U1/hAFUBAAB8BgxAAAE=
+  </data>
+ </layer>
+ <layer name="Lights" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwYEAAAAAw6D5U1/hAFUBAAB8BgxAAAE=
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="28" height="28">
+  <object name="to room 4" x="161" y="418" width="30" height="61">
+   <properties>
+    <property name="change_map" value="data/darkDungeonRoom4.tmx, 20, 14"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="to room 6" x="416" y="704" width="64" height="32">
+   <properties>
+    <property name="change_map" value="data/darkDungeonRoom6.tmx, 13, 20"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="to room 7" x="704" y="416" width="32" height="64">
+   <properties>
+    <property name="change_map" value="data/darkDungeonRoom7.tmx, 7, 14"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_1_main1" x="544" y="544" width="32" height="32">
+   <properties>
+    <property name="call_order" value="0"/>
+    <property name="disable_object" value="switch_2_inactive"/>
+    <property name="display_text" value="You hear a click!"/>
+    <property name="enable_object" value="switch_2_main1"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_2_main1" x="320" y="320" width="32" height="32">
+   <properties>
+    <property name="disable_object" value="switch_3_inactive"/>
+    <property name="display_text" value="You hear 2 clicks!"/>
+    <property name="enable_object" value="switch_3_main1"/>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_4_main1" x="544" y="320" width="32" height="32">
+   <properties>
+    <property name="display_text" value="You hear 4 clicks! Something happened!"/>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
+    <property name="open_door" value="p_1"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_3_main1" x="320" y="544" width="32" height="32">
+   <properties>
+    <property name="disable_object" value="switch_4_inactive"/>
+    <property name="display_text" value="You hear 3 clicks!"/>
+    <property name="enable_object" value="switch_4_main1"/>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="160" y="192" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.6"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="640" y="608" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.6"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="160" y="608" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.6"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="640" y="192" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.6"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object name="p_1" x="384" y="672" width="32" height="32">
+   <properties>
+    <property name="closed" value="3"/>
+    <property name="opened" value="28"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="p_2" x="416" y="672" width="32" height="32">
+   <properties>
+    <property name="closed" value="3"/>
+    <property name="opened" value="29"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="p_4" x="480" y="672" width="32" height="32">
+   <properties>
+    <property name="closed" value="3"/>
+    <property name="opened" value="30"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="p_3" x="448" y="672" width="32" height="32">
+   <properties>
+    <property name="closed" value="3"/>
+    <property name="opened" value="29"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="switch_2_inactive" x="320" y="320" width="32" height="32">
+   <properties>
+    <property name="display_text" value="Nothing happens."/>
+    <property name="enabled" value="true"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_3_inactive" x="320" y="544" width="32" height="32">
+   <properties>
+    <property name="display_text" value="Nothing happens."/>
+    <property name="enabled" value="true"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_4_inactive" x="544" y="320" width="32" height="32">
+   <properties>
+    <property name="display_text" value="Nothing happens."/>
+    <property name="enabled" value="true"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_4_main2" x="544" y="320" width="32" height="32">
+   <properties>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
+    <property name="open_door" value="p_2"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_4_main3" x="544" y="320" width="32" height="32">
+   <properties>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
+    <property name="open_door" value="p_3"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_4_main4" x="544" y="320" width="32" height="32">
+   <properties>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
+    <property name="open_door" value="p_4"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_3_main2" x="320" y="544" width="32" height="32">
+   <properties>
+    <property name="disable_object" value="switch_4_inactive"/>
+    <property name="display_text" value="You hear 3 clicks!"/>
+    <property name="enable_object" value="switch_4_main2"/>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_3_main3" x="320" y="544" width="32" height="32">
+   <properties>
+    <property name="disable_object" value="switch_4_inactive"/>
+    <property name="display_text" value="You hear 3 clicks!"/>
+    <property name="enable_object" value="switch_4_main3"/>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_3_main4" x="320" y="544" width="32" height="32">
+   <properties>
+    <property name="disable_object" value="switch_4_inactive"/>
+    <property name="display_text" value="You hear 3 clicks!"/>
+    <property name="enable_object" value="switch_4_main4"/>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_2_main2" x="320" y="320" width="32" height="32">
+   <properties>
+    <property name="disable_object" value="switch_3_inactive"/>
+    <property name="display_text" value="You hear 2 clicks!"/>
+    <property name="enable_object" value="switch_3_main2"/>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_2_main3" x="320" y="320" width="32" height="32">
+   <properties>
+    <property name="disable_object" value="switch_3_inactive"/>
+    <property name="display_text" value="You hear 2 clicks!"/>
+    <property name="enable_object" value="switch_3_main3"/>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_2_main4" x="320" y="320" width="32" height="32">
+   <properties>
+    <property name="disable_object" value="switch_3_inactive"/>
+    <property name="display_text" value="You hear 2 clicks!"/>
+    <property name="enable_object" value="switch_3_main4"/>
+    <property name="enabled" value="false"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_1_main2" x="544" y="544" width="32" height="32">
+   <properties>
+    <property name="call_order" value="0"/>
+    <property name="disable_object" value="switch_2_inactive"/>
+    <property name="display_text" value="You hear a click!"/>
+    <property name="enable_object" value="switch_2_main2"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_1_main3" x="544" y="544" width="32" height="32">
+   <properties>
+    <property name="call_order" value="0"/>
+    <property name="disable_object" value="switch_2_inactive"/>
+    <property name="display_text" value="You hear a click!"/>
+    <property name="enable_object" value="switch_2_main3"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="switch_1_main4" x="544" y="544" width="32" height="32">
+   <properties>
+    <property name="call_order" value="0"/>
+    <property name="disable_object" value="switch_2_inactive"/>
+    <property name="display_text" value="You hear a click!"/>
+    <property name="enable_object" value="switch_2_main4"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="672" y="416" width="32" height="64">
+   <properties>
+    <property name="add_keys" value="-1"/>
+    <property name="call_order" value="0"/>
+    <property name="interaction_type" value="player"/>
+    <property name="open_door" value="door2_1"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="672" y="416" width="32" height="64">
+   <properties>
+    <property name="add_keys" value="-1"/>
+    <property name="call_order" value="1"/>
+    <property name="interaction_type" value="player"/>
+    <property name="open_door" value="door2_2"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="door2_1" x="704" y="416" width="32" height="32">
+   <properties>
+    <property name="closed" value="55"/>
+    <property name="opened" value="57"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="door2_2" x="704" y="448" width="32" height="32">
+   <properties>
+    <property name="closed" value="61"/>
+    <property name="opened" value="63"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object gid="31" x="496" y="568">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="31" x="542" y="519">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

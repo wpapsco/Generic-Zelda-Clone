@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="28" height="28" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="AmbientLight" value="0"/>
+  <property name="LightColor" value="210,120,20,0.5"/>
+  <property name="StartX" value="6"/>
+  <property name="StartY" value="14"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="Cavetileset" tilewidth="32" tileheight="32" spacing="2">
+  <image source="Cavetileset.png" width="203" height="373"/>
+ </tileset>
+ <layer name="floor" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYBzFo3gUj2IkLDnM7ZQcADsH0p+jeBSP4lE8ikcxNTEA6yoDoQ==
+  </data>
+ </layer>
+ <layer name="walls" width="28" height="28">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZmBgYB7Fo3iIYUrBULKPlnrI9d+ofYPHPnIANn2D1b7hHn+j9g28fdjsH8z2jeJRPBgwAHhVBmQ=
+  </data>
+ </layer>
+ <layer name="doors" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzTEBAAAIA6BlsX9IS+xSKEACwGdz/AOgawGkTwBF
+  </data>
+ </layer>
+ <layer name="light sources" width="28" height="28">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2DoAd4B0jsKRsEowA9G89coGGlgtD4aBSMRAACYMwBC
+  </data>
+ </layer>
+ <layer name="Characters" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwYEAAAAAw6D5U1/hAFUBAAB8BgxAAAE=
+  </data>
+ </layer>
+ <layer name="Lights" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwYEAAAAAw6D5U1/hAFUBAAB8BgxAAAE=
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="28" height="28">
+  <object name="exit" x="160" y="416" width="32" height="64">
+   <properties>
+    <property name="change_map" value="data/prototown.tmx,29 ,35"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="to room 2" x="704" y="416" width="32" height="64">
+   <properties>
+    <property name="change_map" value="data/darkDungeonRoom2.tmx, 7, 14"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="104" y="384" width="128" height="128">
+   <properties>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="160" y="160" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.6"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="640" y="160" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.6"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="640" y="640" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.6"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="160" y="640" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.6"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="288" y="320" width="288" height="288">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.5"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object gid="31" x="328" y="240">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="31" x="526" y="238">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="31" x="635" y="363">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="31" x="638" y="572">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="31" x="417" y="537">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="31" x="418" y="420">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

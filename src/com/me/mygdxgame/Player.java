@@ -62,8 +62,9 @@ public class Player extends Character implements InputProcessor, ControllerListe
 	protected Animation sAttack;
 	protected Animation eAttack;
 	protected Animation wAttack;
+	public boolean isAttacking;
 	
-public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd, String texturePath, GameScreen screen, Controller controller) {
+	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd, String texturePath, GameScreen screen, Controller controller) {
         super(Player.createBody(x, y, 16, 28, (short) -1), true, "data/Bully_Sheet1.png");
         Controllers.addListener(this);
         this.controller = controller;
@@ -279,7 +280,6 @@ public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightC
         if (xAxis < -.15) {
         	isRight = false;
         	tempdir = 3;
-        	//use isAttacking = true for attack
         }
         if (yAxis > .15) {
         	isUp = true;
@@ -289,19 +289,19 @@ public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightC
         	isUp = false;
         	tempdir = 2;
         }
-        
-	            if (!isAttacking) {
-	            	linV = new Vector2(xAxis*speed, yAxis*speed);
-	            } else {
-	            	linV = new Vector2(0,0);
-	            }
-	            System.out.println(linV);
+        if (controller.getButton(Ouya.BUTTON_Y)) {
+        	isAttacking = true;
+        }
+        if (!isAttacking) {
+        	linV = new Vector2(xAxis*speed, yAxis*speed);
+        } else {
+        	linV = new Vector2(0,0);
+        }
         isRest = false;
         if (Math.abs(yAxis) + Math.abs(xAxis) <= .15) {
         	isRest = true;
         }
         stateTime+=Gdx.graphics.getDeltaTime();
-        System.out.println(Math.abs(yAxis) + Math.abs(xAxis));
         
         animate();
         camera.position.x = sprite.getX();
@@ -336,6 +336,7 @@ public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightC
 	}
     
     public void meleeAttack() {
+    	System.out.println("happening!!");
     	if (isRight && !isUp) {
         	currentAnim = eAttack;
         } else if (!isRight && !isUp) {
@@ -373,7 +374,6 @@ public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightC
 	public void takeDamage(float damage, Vector2 pos) {
 		System.out.println("Health: " + health);
         health-=damage;
-        System.out.println(health);
         if (health <= 0) {
         	this.die();
         }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="13" height="13" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="AmbientLight" value="1"/>
+  <property name="LightColor" value="0,0,0,0"/>
+  <property name="StartX" value="9"/>
+  <property name="StartY" value="6"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="npcSheet" tilewidth="32" tileheight="32" spacing="2">
+  <image source="npcSheet.png" width="203" height="101"/>
+ </tileset>
+ <tileset firstgid="19" name="Inside" tilewidth="32" tileheight="32" spacing="2">
+  <image source="Inside.png" width="237" height="169"/>
+ </tileset>
+ <layer name="floor" width="13" height="13">
+  <data encoding="base64" compression="zlib">
+   eJwTZmBgEB7Fo3gQYwCsMAyM
+  </data>
+ </layer>
+ <layer name="walls" width="13" height="13">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJyTY2BgkIdiOSJpCQbSgDhULylAbpjqQcak2kMvPcQAdD3iROoBqZNAo/GJgTAADNgF8w==
+  </data>
+ </layer>
+ <layer name="doors" width="13" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYBg8gGmgHTAKBgxI4ZEDAAmsAB0=
+  </data>
+ </layer>
+ <layer name="decorations2" width="13" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYBhaQA2KiQU6ONjUtmckAVLDhZRwxwYAwHMBQw==
+  </data>
+ </layer>
+ <layer name="decorations" width="13" height="13">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYGBg0AViPQbSgAkQmwKxKhQjA2xixAJNMvXhA+pQPFSBBhBrD7QjKATSFOgFAH8gAj4=
+  </data>
+ </layer>
+ <layer name="Characters" width="13" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2BwAwACpAAB
+  </data>
+ </layer>
+ <layer name="Lights" width="13" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2BwAwACpAAB
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="13" height="13">
+  <object x="285" y="72" width="27" height="32">
+   <properties>
+    <property name="display_text" value="Can you help me? I'm afraid of the dark. At night, I can't tell if the monster is going to eat me."/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="184" y="368" width="48" height="48">
+   <properties>
+    <property name="change_map" value="data/prototown.tmx, 15, 29"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="-80" y="-80" width="576" height="576">
+   <properties>
+    <property name="LightColor" value="1,1,1,1"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+ </objectgroup>
+</map>

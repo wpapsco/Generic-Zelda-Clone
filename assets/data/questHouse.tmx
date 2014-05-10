@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="11" height="11" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="AmbientLight" value="1"/>
+  <property name="LightColor" value="0,0,0,0"/>
+  <property name="StartX" value="9"/>
+  <property name="StartY" value="6"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="npcSheet" tilewidth="32" tileheight="32" spacing="2">
+  <image source="npcSheet.png" width="203" height="101"/>
+ </tileset>
+ <tileset firstgid="19" name="Inside" tilewidth="32" tileheight="32" spacing="2">
+  <image source="Inside.png" width="237" height="169"/>
+ </tileset>
+ <layer name="floor" width="11" height="11">
+  <data encoding="base64" compression="zlib">
+   eJwTZmBgEB7FwxoDAJGYCPw=
+  </data>
+ </layer>
+ <layer name="walls" width="11" height="11">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJyTY2BgkAdiOSQaxsbGJwaMqqW9WnEgliCSBgCNUASA
+  </data>
+ </layer>
+ <layer name="doors" width="11" height="11">
+  <data encoding="base64" compression="zlib">
+   eJxjYKAfYKSjXSMRSOEQBwAFzAAc
+  </data>
+ </layer>
+ <layer name="details2" width="11" height="11">
+  <data encoding="base64" compression="zlib">
+   eJxjYBj+QI1IdTo0dcXAAQBNBABT
+  </data>
+ </layer>
+ <layer name="details" width="11" height="11">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYIAAXSDWY0AF2MRAwASITYkQoybQpqHZyMCYTvbQEwAAA8EB5w==
+  </data>
+ </layer>
+ <layer name="Characters" width="11" height="11">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFwx0AAAHkAAE=
+  </data>
+ </layer>
+ <layer name="Lights" width="11" height="11">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFwx0AAAHkAAE=
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="11" height="11">
+  <object name="to Prototown" x="152" y="304" width="48" height="48">
+   <properties>
+    <property name="change_map" value="data/prototown.tmx, 28, 15"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="152" y="64" width="48" height="48">
+   <properties>
+    <property name="display_text" value="If you go to the north of town you will find a dungeon. Inside is the manifestation of a child's fear. If you haven't talked to the child you should."/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="-80" y="-80" width="520" height="520">
+   <properties>
+    <property name="LightColor" value="1,1,1,1"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+ </objectgroup>
+</map>

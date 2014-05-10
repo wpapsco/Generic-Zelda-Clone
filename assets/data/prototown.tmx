@@ -4,7 +4,7 @@
   <property name="AmbientLight" value="1"/>
   <property name="LightColor" value="0,0,0,0"/>
   <property name="StartX" value="28"/>
-  <property name="StartY" value="35"/>
+  <property name="StartY" value="9"/>
   <property name="TileHeight" value="32"/>
   <property name="TileWidth" value="32"/>
  </properties>
@@ -35,7 +35,7 @@
    <property name="collide" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztmL0KwjAQgDOpQ5WO6qDVUR2KCq4i6ubPG1RF3/8VvGCDQZq/NgkH3sFHOsTweRfPoxljLAMmEVbOFNiWjGqcMY5Ila/rGRnll/L7c4YPH9P3Fs9N8xsjr7++T+AVIL8psARWHtc1+0ZesSdpkF+eiz1w8LgeJd9dxR7THTH5xo4Qvi2gLdFB7tsHBhJD5L4zYC6xQO57As7ApeTq4CPukuoOhfAtgFv5fAceDr6iNqqahO4PGwdXHrw2uppg62dFuapqgs1XhKouWH1VQb6fMPUlbL6mvoTN19SXsPma+hI2XxG2/xe2Mx2W/mA702HxtZ3psPjaznRYfG1nOiy+cuh+oxh9dUG+YYN8w8a/+XaBnqc1lbwSxb68ga/uc3WQ61Xn3S/5ki/5kq+ON1Lpo/I=
+   eJztmE0PwUAQhnvCoaRHHChHHBokriK4+bg7FOH//wXT2I2NdL/abr2JneTJ9rA2j5k1Jo2DIIiJUQ1rxphYMwYFzhjWSJ6v7Rmxz6/P79cZVfjovjd/LpvfOvL67fsgng7yGxFzYlHhugw+keTsCUvkN8vFlthVuO4F303OHt0d0fnWHS58G0RToAXu2yV6An1w3wkxFZiB+x6II3FinC18+F2S3SEXvilxZc834m7hy2sjq4nr/rCycM0iq42qJmj9LGWrrCZovjxkdUH1lYX3fYeuL6H56voSmq+uL6H56voSmi8P0/8L05kOpT+YznQovqYzHYqv6UyH4ms606H4iqH6jSL6qsL7ug3v6zb+zbdNdCpaI8ErlOxLSviqPlcEsV5F3v3+wvfC8L7+PnhffN8XEXylXg==
   </data>
  </layer>
  <layer name="doors" width="44" height="44">
@@ -43,13 +43,10 @@
    <property name="collide" value="false"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzt1EENAAAIAkCD2j+HBfzj3F0CNgZVAAB80ekArPQCXOOX4DYbBQAgaQAbSQFx
+   eJzt1LEJADAIBEAHzQrp3J/MkDSKuesfHsSPAABgilVd4AP5kHEXoBu7BL35UWCaXV0AgCsHJ0YCUg==
   </data>
  </layer>
  <layer name="Characters" width="44" height="44">
-  <properties>
-   <property name="collide" value="false"/>
-  </properties>
   <data encoding="base64" compression="zlib">
    eJztwQEBAAAAgJD+r+4ICgAAAAAAAABqHkAAAQ==
   </data>
@@ -65,14 +62,14 @@
  <objectgroup name="Objects" width="44" height="44">
   <object name="to dungeon" x="928" y="224" width="64" height="32">
    <properties>
-    <property name="change_map" value="data/dungeonTest1.tmx, 6, 13"/>
+    <property name="change_map" value="data/darkDungeonRoom1.tmx, 7, 13"/>
     <property name="interaction_type" value="player_auto"/>
     <property name="type" value="Interaction"/>
    </properties>
   </object>
   <object name="to timmy's house" x="480" y="448" width="32" height="32">
    <properties>
-    <property name="change_map" value="data/timmyHouse"/>
+    <property name="change_map" value="data/timmyHouse.tmx, 9, 6"/>
     <property name="interaction_type" value="player"/>
     <property name="type" value="Interaction"/>
    </properties>
@@ -86,7 +83,7 @@
   </object>
   <object name="to quest giver" x="896" y="896" width="32" height="32">
    <properties>
-    <property name="change_map" value="data/questHouse"/>
+    <property name="change_map" value="data/questHouse.tmx, 9, 6"/>
     <property name="interaction_type" value="player"/>
     <property name="type" value="Interaction"/>
    </properties>
@@ -119,17 +116,19 @@
     <property name="type" value="Interaction"/>
    </properties>
   </object>
-  <object x="896" y="1216" width="64" height="192">
-   <properties>
-    <property name="collide" value="true"/>
-   </properties>
-  </object>
   <object x="896" y="1184" width="64" height="32">
    <properties>
     <property name="display_text" value="We're here for a reason. We shouldn't leave till we've helped the village out."/>
     <property name="interaction_type" value="player_auto"/>
     <property name="type" value="Interaction"/>
    </properties>
+  </object>
+  <object x="0" y="0" width="1408" height="1408">
+   <properties>
+    <property name="LightColor" value="1,1,1,1"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
   </object>
  </objectgroup>
 </map>

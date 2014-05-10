@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="28" height="28" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="AmbientLight" value="0"/>
+  <property name="LightColor" value="210,120,20,0.5"/>
+  <property name="StartX" value="7"/>
+  <property name="StartY" value="7"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="Cavetileset" tilewidth="32" tileheight="32" spacing="2">
+  <image source="Cavetileset.png" width="203" height="373"/>
+ </tileset>
+ <layer name="floor" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYBzFo3gUj2IkLD3M7ZQeADsH0p+jeBSP4lE8ikcxNTEAQlkDrQ==
+  </data>
+ </layer>
+ <layer name="walls" width="28" height="28">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZmBgYB7Fo3iIYUrBULKPlnrI9d+ofYPHPnIANn2D1b7hHn+j9g28fdjsH8z2jeJRPBgwAHhVBmQ=
+  </data>
+ </layer>
+ <layer name="moveable blocks" width="28" height="28">
+  <properties>
+   <property name="collide" value="true"/>
+   <property name="moveable" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjAJUwD/QDhhmgB+NHk5gOPsNBoaz30bBKBgFo4AcAABTBgBb
+  </data>
+ </layer>
+ <layer name="doors" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMFSBChXMUBrE9o2CUTAKRsEoGHwAAGeNAI0=
+  </data>
+ </layer>
+ <layer name="light sources" width="28" height="28">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2DoAd4B0jsKRsEowA9G89coGGlgtD4aBSMRAACYMwBC
+  </data>
+ </layer>
+ <layer name="Characters" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwYEAAAAAw6D5U1/hAFUBAAB8BgxAAAE=
+  </data>
+ </layer>
+ <layer name="Lights" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwYEAAAAAw6D5U1/hAFUBAAB8BgxAAAE=
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="28" height="28">
+  <object name="to room 1" x="160" y="416" width="32" height="64">
+   <properties>
+    <property name="change_map" value="data/darkDungeonRoom1.tmx, 20, 14"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="to room 3" x="704" y="416" width="32" height="64">
+   <properties>
+    <property name="change_map" value="data/darkDungeonRoom3.tmx, 7, 14"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="160" y="160" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.6"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="160" y="640" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.6"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="640" y="640" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.6"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="640" y="160" width="96" height="96">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.6"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="288" y="320" width="288" height="288">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.5"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object name="plate1_2" x="330" y="298" width="13" height="13">
+   <properties>
+    <property name="interaction_type" value="block"/>
+    <property name="open_door" value="door2_p1"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate2_2" x="362" y="330" width="13" height="13">
+   <properties>
+    <property name="interaction_type" value="block"/>
+    <property name="open_door" value="door2_p2"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate3_2" x="394" y="362" width="13" height="13">
+   <properties>
+    <property name="interaction_type" value="block"/>
+    <property name="open_door" value="door2_p3"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate4_2" x="426" y="394" width="13" height="13">
+   <properties>
+    <property name="interaction_type" value="block"/>
+    <property name="open_door" value="door2_p4"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate6_2" x="394" y="426" width="13" height="13">
+   <properties>
+    <property name="interaction_type" value="block"/>
+    <property name="open_door" value="door2_p6"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate5_2" x="330" y="362" width="13" height="13">
+   <properties>
+    <property name="interaction_type" value="block"/>
+    <property name="open_door" value="door2_p5"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate1_1" x="330" y="298" width="13" height="13">
+   <properties>
+    <property name="interaction_type" value="block"/>
+    <property name="open_door" value="door1_p1"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate2_1" x="362" y="330" width="13" height="13">
+   <properties>
+    <property name="interaction_type" value="block"/>
+    <property name="open_door" value="door2_p2"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate3_1" x="394" y="362" width="13" height="13">
+   <properties>
+    <property name="interaction_type" value="block"/>
+    <property name="open_door" value="door1_p3"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate4_1" x="426" y="394" width="13" height="13">
+   <properties>
+    <property name="interaction_type" value="block"/>
+    <property name="open_door" value="door1_p4"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate6_1" x="394" y="426" width="13" height="13">
+   <properties>
+    <property name="interaction_type" value="block"/>
+    <property name="open_door" value="door1_p6"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate5_1" x="330" y="362" width="13" height="13">
+   <properties>
+    <property name="interaction_type" value="block"/>
+    <property name="open_door" value="door1_p5"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="door1_p1" x="704" y="416" width="32" height="32">
+   <properties>
+    <property name="closed" value="55"/>
+    <property name="opened" value="57"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="door1_p2" x="704" y="416" width="32" height="32">
+   <properties>
+    <property name="closed" value="55"/>
+    <property name="opened" value="57"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="door1_p3" x="704" y="416" width="32" height="32">
+   <properties>
+    <property name="closed" value="55"/>
+    <property name="opened" value="57"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="door1_p4" x="704" y="416" width="32" height="32">
+   <properties>
+    <property name="closed" value="55"/>
+    <property name="opened" value="57"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="door1_p5" x="704" y="416" width="32" height="32">
+   <properties>
+    <property name="closed" value="55"/>
+    <property name="opened" value="57"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="door1_p6" x="704" y="416" width="32" height="32">
+   <properties>
+    <property name="closed" value="55"/>
+    <property name="opened" value="57"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="door2_p1" x="704" y="448" width="32" height="32">
+   <properties>
+    <property name="closed" value="61"/>
+    <property name="opened" value="63"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="door2_p2" x="704" y="448" width="32" height="32">
+   <properties>
+    <property name="closed" value="61"/>
+    <property name="opened" value="63"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="door2_p3" x="704" y="448" width="32" height="32">
+   <properties>
+    <property name="closed" value="61"/>
+    <property name="opened" value="63"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="door2_p4" x="704" y="448" width="32" height="32">
+   <properties>
+    <property name="closed" value="61"/>
+    <property name="opened" value="63"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="door2_p5" x="704" y="448" width="32" height="32">
+   <properties>
+    <property name="closed" value="61"/>
+    <property name="opened" value="63"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="door2_p6" x="704" y="448" width="32" height="32">
+   <properties>
+    <property name="closed" value="61"/>
+    <property name="opened" value="63"/>
+    <property name="type" value="Door"/>
+   </properties>
+  </object>
+  <object name="plate1_release1" x="298" y="298" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p1"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate1_release2" x="298" y="298" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p1"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate1_release3" x="362" y="298" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p1"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate1_release4" x="362" y="298" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p1"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate1_release5" x="330" y="330" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p1"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate1_release6" x="330" y="330" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p1"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate2_release1" x="362" y="298" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p2"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate2_release2" x="362" y="298" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p2"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate2_release3" x="330" y="330" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p2"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate2_release4" x="330" y="330" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p2"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate2_release5" x="394" y="330" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p2"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate2_release6" x="394" y="330" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p2"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate2_release7" x="362" y="362" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p2"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate2_release8" x="362" y="362" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p2"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate3_release1" x="394" y="330" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p3"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate3_release2" x="394" y="330" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p3"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate3_release5" x="426" y="362" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p3"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate3_release4" x="362" y="362" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p3"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate3_release4" x="362" y="362" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p3"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate3_release6" x="426" y="362" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p3"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate3_release7" x="394" y="394" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p3"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate3_release8" x="394" y="394" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p3"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate4_release1" x="426" y="362" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p4"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate4_release2" x="426" y="362" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p4"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate4_release4" x="458" y="394" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p4"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate4_release5" x="394" y="394" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p4"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate4_release6" x="394" y="394" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p4"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate6_release1" x="394" y="394" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p6"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate6_release2" x="394" y="394" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p6"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate6_release3" x="362" y="426" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p6"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate6_release4" x="362" y="426" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p6"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate6_release5" x="394" y="458" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p6"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate6_release6" x="394" y="458" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p6"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate5_release1" x="298" y="362" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p5"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate5_release2" x="298" y="362" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p5"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate5_release3" x="330" y="330" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p5"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate5_release4" x="330" y="330" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p5"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate5_release5" x="362" y="362" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p5"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate5_release6" x="362" y="362" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p5"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate5_release7" x="330" y="394" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door1_p5"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="plate5_release8" x="330" y="394" width="13" height="13">
+   <properties>
+    <property name="close_door" value="door2_p5"/>
+    <property name="interaction_type" value="block"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="10" height="10" tilewidth="32" tileheight="32">
  <properties>
-  <property name="AmbientLight" value="0"/>
+  <property name="AmbientLight" value=".2"/>
   <property name="BossRoom" value="true"/>
-  <property name="LightColor" value="1,1,1,.2"/>
-  <property name="Shadows" value="false"/>
+  <property name="LightColor" value="0,0,0,0"/>
+  <property name="Shadows" value="true"/>
   <property name="StartX" value="4"/>
   <property name="StartY" value="1"/>
   <property name="TileHeight" value="32"/>
@@ -35,7 +35,7 @@
    <property name="moveable" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYCAecJMpRyrAZhY1zacUoLuFmuECAD0IAE4=
+   eJxjYBh8gJtIsYECtHQLABpQACI=
   </data>
  </layer>
  <layer name="Characters" width="10" height="10">
@@ -49,36 +49,13 @@
   </data>
  </layer>
  <objectgroup name="Objects" width="10" height="10">
-  <object gid="2" x="160" y="16">
+  <object gid="8" x="32" y="64">
    <properties>
-    <property name="direction" value="180"/>
-    <property name="type" value="BossLocation"/>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="interval" value="1"/>
+    <property name="type" value="Spawner"/>
    </properties>
   </object>
-  <object gid="2" x="304" y="160">
-   <properties>
-    <property name="direction" value="90"/>
-    <property name="type" value="BossLocation"/>
-   </properties>
-  </object>
-  <object gid="2" x="160" y="304">
-   <properties>
-    <property name="direction" value="0"/>
-    <property name="type" value="BossLocation"/>
-   </properties>
-  </object>
-  <object gid="2" x="16" y="160">
-   <properties>
-    <property name="direction" value="270"/>
-    <property name="type" value="BossLocation"/>
-   </properties>
-  </object>
-  <object x="-80" y="-80" width="480" height="480">
-   <properties>
-    <property name="LightColor" value="1,1,1,.2"/>
-    <property name="type" value="MapLight"/>
-   </properties>
-   <ellipse/>
-  </object>
+  <object gid="9" x="134" y="219"/>
  </objectgroup>
 </map>

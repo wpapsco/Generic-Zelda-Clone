@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="76" height="33" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="AmbientLight" value="0"/>
+  <property name="LightColor" value="210,120,20,0.5"/>
+  <property name="StartX" value="7"/>
+  <property name="StartY" value="26"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="Cavetileset" tilewidth="32" tileheight="32" spacing="2">
+  <image source="Cavetileset.png" width="203" height="373"/>
+ </tileset>
+ <layer name="floor" width="76" height="33">
+  <data encoding="base64" compression="zlib">
+   eJzt0LENADAMw7Dk/6c7eu5ktKAAPcCdmbVt27Zt27Y//aXaVrx48UptK168eKW2FS9evFLbihcvXqltxYsXr9S24nX/AaSyBvI=
+  </data>
+ </layer>
+ <layer name="walls" width="76" height="33">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0zEKgEAMBdGFLSxtvP9ZVRC0EZ0iJisz8MFy88DeWuvOOeece7WqTdvmY/t31Fv/4nVtaXqR9Hqu6v840iLKvkmvOoso+ya96iyi7Jv+4jVSerH0YunF0oulF0svll4svVh6sfRi6cW6u+HLjVS2lV566XWWbaUX3woB+A4x
+  </data>
+ </layer>
+ <layer name="portals" width="76" height="33">
+  <data encoding="base64" compression="zlib">
+   eJzt0LEJADAIRFHnyCruv5eNbcBGAuE9+P1xEQAAe/L1gIvTMeMvAAAAAAAA4AcFQskApA==
+  </data>
+ </layer>
+ <layer name="moveable blocks" width="76" height="33">
+  <properties>
+   <property name="collide" value="true"/>
+   <property name="moveable" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0rENADAIA0EWyP7r0iNFgYYiumvcvxwBAAAAwIZTlrvaSrM3rfr8a04rAAAA4BcJ5UUAnQ==
+  </data>
+ </layer>
+ <layer name="Characters" width="76" height="33">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAAAAAAAAAAD8GycwAAE=
+  </data>
+ </layer>
+ <layer name="light sources" width="76" height="33">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzgENAAAIA6AXsH9dY9w5SEACAAAAAHww7QAAAAAAHLchswAO
+  </data>
+ </layer>
+ <layer name="Lights" width="76" height="33">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAAAAAAAAAAD8GycwAAE=
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="76" height="33">
+  <object name="teleport to boss" x="1448" y="224" width="56" height="64">
+   <properties>
+    <property name="change_map" value="data/pointOfNoReturn.tmx, 58, 11"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="1376" y="160" width="192" height="192">
+   <properties>
+    <property name="LightColor" value="50,50,225,0.6"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="1824" y="448" width="160" height="160">
+   <properties>
+    <property name="LightColor" value="225,125,0,0.5"/>
+    <property name="type" value="MapLight"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object x="224" y="224" width="32" height="32">
+   <properties>
+    <property name="display_text" value="The ladder is broken! We can't go back!"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

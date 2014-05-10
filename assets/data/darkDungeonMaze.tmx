@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="36" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="AmbientLight" value="0.01"/>
+  <property name="LightColor" value="210,120,20,0.5"/>
+  <property name="StartX" value="6"/>
+  <property name="StartY" value="6"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="testingTiles" tilewidth="32" tileheight="32">
+  <image source="testingTiles.png" width="128" height="64"/>
+ </tileset>
+ <tileset firstgid="9" name="Cavetileset" tilewidth="32" tileheight="32" spacing="2">
+  <image source="Cavetileset.png" width="203" height="373"/>
+ </tileset>
+ <layer name="floor" width="50" height="36">
+  <data encoding="base64" compression="zlib">
+   eJztlEEOgCAMBHvlG/D/P3oiIYQCAoUN7GGi0Wg6u1UnIo4QQghZhAeYYQWhk9pzpx3iPK1ONA/tXul9CL3HWX3hWqu/kd6snLX5Wt5BOe/NzbKXFC03bedQPP741jxGvkc0j9H/I5JH2kV+zO8jgJYr2YsXrH209Dw9w+uwg/msmCEzuJGbO73ZjWCyY+de2etXPK35AHyDSIk=
+  </data>
+ </layer>
+ <layer name="walls" width="50" height="36">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztU8sKBDEI633+/3/3tFDER5LagV0UZIbWqGn0WWs94+Pj4z/sX9v/I/Nw3nlWx6vVyaPKifLx7AG+nXqg8cr5TR6MZTNY5cr67uaBaLCKs6w3hC/aj6IJwiPrIzpTZlfdD69XpJbFef9KP6weUT7EkF24wQPZBRWr8Didq93Qt/cwFQ8mn/KGbKyHq3hkMRlG1SMzO8PZ/ds8unVh6t3goZoy+x7Oan1jP6o4trbHR82F6NGpm5fbfk95oHtQ1WB76OaRvVU2xxEmuqtwHTwYPWx8da9of3s/GB5RjqiWrcvyQN+og4faz4keu6HxGY8Ks8d37QfzXvaczXuiBatHZKd4m2t8fHz8H/wD8KY5qw==
+  </data>
+ </layer>
+ <layer name="doors" width="50" height="36">
+  <data encoding="base64" compression="zlib">
+   eJzt0lEJADAMQ8EKqn99+52AdYVwpyAPUgUA3Hp7wCMpHcxJ+UhKBwAAAMAvB0nDALE=
+  </data>
+ </layer>
+ <layer name="chests" width="50" height="36">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt1kEJAEAIRUGD2D+nBbytIKwzCYT3D0YA3JTbBzBKTwAAeOOn/lfXVm+usHWAXgFkuACp
+  </data>
+ </layer>
+ <layer name="Characters" width="50" height="36">
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgiD/r25IQAEAAAAAAAAvBhwgAAE=
+  </data>
+ </layer>
+ <layer name="Lights" width="50" height="36">
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgiD/r25IQAEAAAAAAAAvBhwgAAE=
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="50" height="36">
+  <object name="to room 10" x="160" y="288" width="32" height="64">
+   <properties>
+    <property name="change_map" value="data/darkDungeonRoom10.tmx, 21, 13"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="to point of no return" x="1344" y="384" width="32" height="64">
+   <properties>
+    <property name="change_map" value="data/pointOfNoReturn.tmx"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="warning" x="1376" y="368" width="32" height="96">
+   <properties>
+    <property name="call_order" value="0"/>
+    <property name="display_text" value="Point of no return!"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest1_unused" x="640" y="192" width="48" height="32">
+   <properties>
+    <property name="add_coin" value="20"/>
+    <property name="call_order" value="0"/>
+    <property name="display_text" value="You found 20 clams!"/>
+    <property name="enabled" value="true"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest2_unused" x="1152" y="240" width="32" height="48">
+   <properties>
+    <property name="add_coin" value="20"/>
+    <property name="call_order" value="0"/>
+    <property name="display_text" value="You found 20 clams!"/>
+    <property name="enabled" value="true"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest6_unused" x="1120" y="800" width="48" height="32">
+   <properties>
+    <property name="add_coin" value="20"/>
+    <property name="call_order" value="0"/>
+    <property name="display_text" value="You found 20 clams!"/>
+    <property name="enabled" value="true"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest5_unused" x="960" y="800" width="32" height="48">
+   <properties>
+    <property name="add_coin" value="20"/>
+    <property name="call_order" value="0"/>
+    <property name="display_text" value="You found 20 clams!"/>
+    <property name="enabled" value="true"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest4_unused" x="688" y="928" width="48" height="32">
+   <properties>
+    <property name="add_coin" value="20"/>
+    <property name="call_order" value="0"/>
+    <property name="display_text" value="You found 20 clams!"/>
+    <property name="enabled" value="true"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest3_unused" x="336" y="736" width="48" height="32">
+   <properties>
+    <property name="add_coin" value="20"/>
+    <property name="call_order" value="0"/>
+    <property name="display_text" value="You found 20 clams!"/>
+    <property name="enabled" value="true"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest1_disable" x="640" y="192" width="48" height="32">
+   <properties>
+    <property name="call_order" value="1"/>
+    <property name="disable_object" value="chest1_unused"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest2_disable" x="1152" y="240" width="32" height="48">
+   <properties>
+    <property name="call_order" value="1"/>
+    <property name="disable_object" value="chest2_unused"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest3_disable" x="336" y="736" width="48" height="32">
+   <properties>
+    <property name="call_order" value="1"/>
+    <property name="disable_object" value="chest3_unused"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest4_disable" x="688" y="928" width="48" height="32">
+   <properties>
+    <property name="call_order" value="1"/>
+    <property name="disable_object" value="chest4_unused"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest5_disable" x="960" y="800" width="32" height="48">
+   <properties>
+    <property name="call_order" value="1"/>
+    <property name="disable_object" value="chest5_unused"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest6_disable" x="1120" y="800" width="48" height="32">
+   <properties>
+    <property name="call_order" value="1"/>
+    <property name="disable_object" value="chest6_unused"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="warningp2" x="1376" y="368" width="32" height="96">
+   <properties>
+    <property name="call_order" value="1"/>
+    <property name="disable_object" value="warning"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

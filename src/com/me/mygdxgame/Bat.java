@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 public class Bat extends Enemy {
 
 	public Bat(GameScreen screen, Vector2 position) {
-		super(Bat.createBody(position), true, screen, 5000, 2);
+		super(Bat.createBody(position), true, screen, 5000, 2, "data/batw.png");
 	}
 	
 	@Override

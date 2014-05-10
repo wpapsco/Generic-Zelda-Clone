@@ -129,23 +129,12 @@
    </properties>
    <ellipse/>
   </object>
-  <object gid="8" x="30" y="133">
+  <object x="-80" y="-80" width="480" height="480">
    <properties>
-    <property name="enemy_type" value="NudeDude"/>
-    <property name="type" value="Enemy"/>
+    <property name="LightColor" value="1,1,1,.3"/>
+    <property name="type" value="MapLight"/>
    </properties>
-  </object>
-  <object gid="8" x="257" y="134">
-   <properties>
-    <property name="enemy_type" value="NudeDude"/>
-    <property name="type" value="Enemy"/>
-   </properties>
-  </object>
-  <object gid="8" x="162" y="253">
-   <properties>
-    <property name="enemy_type" value="BatGuy"/>
-    <property name="type" value="Enemy"/>
-   </properties>
+   <ellipse/>
   </object>
  </objectgroup>
 </map>

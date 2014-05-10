@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="28" height="28" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="AmbientLight" value="0"/>
+  <property name="LightColor" value="210,120,20,0.5"/>
+  <property name="StartX" value="7"/>
+  <property name="StartY" value="7"/>
+  <property name="TileHeight" value="32"/>
+  <property name="TileWidth" value="32"/>
+ </properties>
+ <tileset firstgid="1" name="Cavetileset" tilewidth="32" tileheight="32" spacing="2">
+  <image source="Cavetileset.png" width="203" height="373"/>
+ </tileset>
+ <layer name="floor" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwwENAAAMw6DOv+lbuABIWDVVVdXHA9VuAxE=
+  </data>
+ </layer>
+ <layer name="walls" width="28" height="28">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZmBgYB7Fo5iGGAZoYSa5YNS+UftG7Ru1b9S+UfuGon2jeBQPBgwAxa8GKw==
+  </data>
+ </layer>
+ <layer name="below door" width="28" height="28">
+  <data encoding="base64" compression="zlib">
+   eJztwYEAAAAAw6D5U1/hAFUBAAB8BgxAAAE=
+  </data>
+ </layer>
+ <layer name="doors" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwzENAAAIA7DZwb9BnlngIGmTJnBrGgCA/xY0QQBT
+  </data>
+ </layer>
+ <layer name="chest" width="28" height="28">
+  <properties>
+   <property name="collide" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzkERAAAMAiBDrH/WpfD8QAISAAAabh2AggdFIAAV
+  </data>
+ </layer>
+ <layer name="Characters" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwYEAAAAAw6D5U1/hAFUBAAB8BgxAAAE=
+  </data>
+ </layer>
+ <layer name="Lights" width="28" height="28">
+  <properties>
+   <property name="collide" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwYEAAAAAw6D5U1/hAFUBAAB8BgxAAAE=
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="28" height="28">
+  <object name="to room 5" x="416" y="160" width="64" height="32">
+   <properties>
+    <property name="change_map" value="data/darkDungeonRoom5.tmx, 13, 8"/>
+    <property name="interaction_type" value="player_auto"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object name="chest_3" x="432" y="672" width="48" height="32">
+   <properties>
+    <property name="add_keys" value="2"/>
+    <property name="call_order" value="0"/>
+    <property name="display_text" value="You found a Key!"/>
+    <property name="enabled" value="true"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object x="432" y="672" width="48" height="32">
+   <properties>
+    <property name="call_order" value="1"/>
+    <property name="disable_object" value="chest_3"/>
+    <property name="interaction_type" value="player"/>
+    <property name="type" value="Interaction"/>
+   </properties>
+  </object>
+  <object gid="31" x="383" y="646">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object gid="31" x="479" y="645">
+   <properties>
+    <property name="enemy_type" value="NudeDude"/>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
