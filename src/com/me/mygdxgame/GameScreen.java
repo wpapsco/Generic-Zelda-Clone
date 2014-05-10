@@ -303,6 +303,9 @@ public class GameScreen extends InputMultiplexer implements Screen {
                 	spawner.draw(game.batch);
                 }
                 for (Player ply : players) {
+                	if (ply.isDead) {
+                		game.setScreen(new DeadScreen(game));
+                	}
                     ply.draw(game.batch); 
                 }
                 if (boss != null) {

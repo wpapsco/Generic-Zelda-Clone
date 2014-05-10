@@ -63,10 +63,12 @@ public class Player extends Character implements InputProcessor, ControllerListe
 	protected Animation eAttack;
 	protected Animation wAttack;
 	public boolean isAttacking;
+	public boolean isDead;
 	
 	public Player(int x, int y, OrthographicCamera camera, OrthographicCamera lightCamera, boolean isWasd, String texturePath, GameScreen screen, Controller controller) {
         super(Player.createBody(x, y, 16, 28, (short) -1), true, "data/Bully_Sheet1.png");
         Controllers.addListener(this);
+        isDead = false;
         this.controller = controller;
         this.screen = screen;
 		this.camera = camera;
@@ -312,7 +314,9 @@ public class Player extends Character implements InputProcessor, ControllerListe
         camera.position.y = sprite.getY();
         lightCamera.position.x = sprite.getX() * Values.PIXEL_BOX;
         lightCamera.position.y = sprite.getY() * Values.PIXEL_BOX;
-        System.out.println(currentAnim);
+        if (this.health <= 0) {
+        	isDead = true;
+        }
         
     }
     
